@@ -23,6 +23,11 @@ public class NewsController {
     public List<NewsDto> getNewsFeed() {
         return newsService.fetchAndProcessNews();
     }
-
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<NewsDetailDto> getNewsById(@PathVariable("id") String id) {
+        NewsDetailDto detail = newsService.getNewsById(id);
+        return detail != null ? ResponseEntity.ok(detail) : ResponseEntity.notFound().build();
+    }
     
 }

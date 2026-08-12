@@ -1,11 +1,14 @@
 package com.finai.service;
 
 import com.finai.dto.NewsDto;
+import com.finai.dto.NewsDetailDto;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,17 +92,30 @@ public class NewsService {
         );
     }
     //  Hàm tìm bài viết theo ID
-    public NewsDto getNewsById(String id) {
-        // 1. Nếu dự án của fen dùng JPA / Spring Data Mongo:
-        // return newsRepository.findById(id)
-        //         .map(this::mapToDto)
-        //         .orElse(null);
-
-        // 2. Nếu tin tức lưu tạm trong Cache / List kết quả cào:
+    public NewsDetailDto getNewsById(String id) {
         List<NewsDto> allNews = fetchAndProcessNews();
-        return allNews.stream()
+
+        // Tìm bài viết theo ID, nếu không có thì throw Exception 404
+        NewsDto matchedNews = allNews.stream()
                 .filter(news -> news.getId().equals(id))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, 
+                        "Không tìm thấy tin tức với ID: " + id
+                ));
+
+        // Map sang NewsDetailDto
+        return NewsDetailDto.builder()
+                .id(matchedNews.getId())
+                .ticker(matchedNews.getTicker())
+                .title(matchedNews.getTitle())
+                .link(matchedNews.getLink())
+                .source(matchedNews.getSource())
+                .publishedDate(matchedNews.getPublishedDate())
+                .sentimentType(matchedNews.getSentimentType())
+                .sentimentScore(matchedNews.getSentimentScore())
+                .aiSummary(matchedNews.getAiSummary())
+                .keywords(matchedNews.getKeywords())
+                .build();
     }
 }
