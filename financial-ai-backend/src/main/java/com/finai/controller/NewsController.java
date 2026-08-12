@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/news")
-@CrossOrigin(origins = "*") // Đảm bảo React gọi không bị dính lỗi CORS
+@CrossOrigin(origins = "*")
 public class NewsController {
 
     private final NewsService newsService;
@@ -29,5 +29,4 @@ public class NewsController {
         NewsDetailDto detail = newsService.getNewsById(id);
         return detail != null ? ResponseEntity.ok(detail) : ResponseEntity.notFound().build();
     }
-    
 }

@@ -6,30 +6,25 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class NewsService {
 
-    // Kênh RSS Tin nhanh Kinh doanh / Thị trường của VnExpress
     private static final String RSS_URL = "https://vnexpress.net/rss/kinh-doanh.rss";
 
     public List<NewsDto> fetchAndProcessNews() {
         List<NewsDto> newsList = new ArrayList<>();
 
         try {
-            // Dùng Jsoup kết nối trực tiếp với User-Agent giả lập trình duyệt
             Document doc = Jsoup.connect(RSS_URL)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
                     .timeout(10000)
-                    .parser(org.jsoup.parser.Parser.xmlParser()) // Parse dưới dạng XML
+                    .parser(org.jsoup.parser.Parser.xmlParser())
                     .get();
 
             Elements items = doc.select("item");
@@ -43,16 +38,17 @@ public class NewsService {
                 String pubDate = item.select("pubDate").text();
                 String rawDescription = item.select("description").text();
 
-                // Lọc bỏ HTML trong description
                 String cleanSummary = Jsoup.parse(rawDescription).text();
 
-                // Logic gán Ticker & Sentiment giả lập cho demo
                 String ticker = (i % 3 == 0) ? "VĨ MÔ" : (i % 2 == 0 ? "HPG" : "VNM");
                 String sentiment = (i % 2 == 0) ? "POSITIVE" : "NEUTRAL";
                 int score = (i % 2 == 0) ? 80 : 60;
 
+                // 🟢 ĐỔI UUID THÀNH HASH CỦA LINK ĐỂ DÙNG ID CỐ ĐỊNH
+                String stableId = String.valueOf(Math.abs(link.hashCode()));
+
                 NewsDto dto = NewsDto.builder()
-                        .id(UUID.randomUUID().toString())
+                        .id(stableId)
                         .ticker(ticker)
                         .title(title)
                         .link(link)
@@ -68,7 +64,6 @@ public class NewsService {
             }
         } catch (Exception e) {
             System.err.println("🔴 Lỗi cào tin RSS Jsoup: " + e.getMessage());
-            e.printStackTrace();
             return getFallbackNews();
         }
 
@@ -91,20 +86,20 @@ public class NewsService {
                 .build()
         );
     }
-    //  Hàm tìm bài viết theo ID
+
+    // 🟢 SỬA LẠI: Trả về null khi không tìm thấy để Controller chủ động bắt 404
     public NewsDetailDto getNewsById(String id) {
         List<NewsDto> allNews = fetchAndProcessNews();
 
-        // Tìm bài viết theo ID, nếu không có thì throw Exception 404
         NewsDto matchedNews = allNews.stream()
                 .filter(news -> news.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, 
-                        "Không tìm thấy tin tức với ID: " + id
-                ));
+                .orElse(null);
 
-        // Map sang NewsDetailDto
+        if (matchedNews == null) {
+            return null;
+        }
+
         return NewsDetailDto.builder()
                 .id(matchedNews.getId())
                 .ticker(matchedNews.getTicker())
