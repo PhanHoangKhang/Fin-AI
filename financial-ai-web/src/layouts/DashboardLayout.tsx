@@ -53,13 +53,13 @@ export const DashboardLayout: React.FC = () => {
   const currentTitle = currentMenu ? currentMenu.label : 'Tổng quan';
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-slate-50 text-slate-800 antialiased select-none">
+    <div className="flex h-screen w-screen overflow-hidden bg-slate-50 text-black antialiased select-none">
       
       {/* SIDEBAR BÊN TRÁI - Semantic <aside> */}
       <aside 
         aria-label="Thanh điều hướng chính"
         aria-expanded={!collapsed}
-        className={`h-full shrink-0 bg-slate-900 text-white flex flex-col justify-between relative transition-all duration-300 ease-in-out border-r border-slate-800 z-20 ${
+        className={`h-full shrink-0 text-black flex flex-col justify-between relative transition-all duration-300 ease-in-out border-r border-slate-800 z-20 ${
           collapsed ? 'w-20' : 'w-64'
         }`}
       >

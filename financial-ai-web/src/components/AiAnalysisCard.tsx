@@ -18,29 +18,26 @@ interface AiAnalysisCardProps {
 
 export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
   return (
-    <section className="bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950 text-white p-8 rounded-3xl border border-slate-800 shadow-2xl space-y-8 font-poppins">
+    <section className="bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950 text-white p-8 border border-slate-800 shadow-2xl space-y-8 font-poppins">
       {/* 1. Header Báo cáo */}
       <header className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-cyan-500/10 rounded-2xl border border-cyan-500/30">
-            <SparklesIcon className="w-7 h-7 text-cyan-400" />
-          </div>
           <div>
             <h2 className="text-lg font-extrabold text-white tracking-tight">
-              Báo Cáo Phân Tách Định Giá & Tác Động AI
+              Báo Cáo Phân Tách Định Giá & Tác Động
             </h2>
             <p className="text-xs text-slate-400">
-              Gemini Institutional Engine • Real-time Analysis
+               Real-time Analysis
             </p>
           </div>
         </div>
-        <span className="text-xs font-bold px-3.5 py-1.5 bg-gradient-to-r from-cyan-900 to-blue-900 text-cyan-300 rounded-xl border border-cyan-700/50 shadow-inner">
+        <span className="text-md font-bold px-3.5 py-1.5 text-white">
           Rating: {news.sentimentScore}/100
         </span>
       </header>
 
       {/* 2. Vùng Giá Mục Tiêu & Khuyến Nghị Nhanh (Target Price Banner) */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-800/60 p-4 border border-slate-700/60">
         <div className="text-center sm:text-left border-b sm:border-b-0 sm:border-r border-slate-700 pb-3 sm:pb-0">
           <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
             Vùng Mua Khuyến Nghị
@@ -70,9 +67,9 @@ export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
       {/* 3. Khối Giải Thích Lý Do  */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Luận điểm giải thích VÌ SAO */}
-        <article className="space-y-2 bg-cyan-950/30 p-5 rounded-2xl border border-cyan-900/40">
-          <h3 className="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-2">
-            <LightBulbIcon className="w-4 h-4 text-cyan-400" /> Giải Thích Luận
+        <article className="space-y-2 bg-cyan-950/30 p-5 border border-cyan-900/40">
+          <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+            <LightBulbIcon className="w-4 h-4 " /> Giải Thích Luận
             Điểm 
           </h3>
           <p className="text-xs text-slate-200 leading-relaxed whitespace-pre-line">
@@ -82,9 +79,9 @@ export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
         </article>
 
         {/* Động lực chính  */}
-        <article className="space-y-2 bg-slate-800/40 p-5 rounded-2xl border border-slate-800">
-          <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
-            <RocketLaunchIcon className="w-4 h-4 text-emerald-400" /> Động Lực
+        <article className="space-y-2 bg-slate-800/40 p-5 border border-slate-800">
+          <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+            <RocketLaunchIcon className="w-4 h-4" /> Động Lực
             Tăng Giá 
           </h3>
           <p className="text-xs text-slate-300 leading-relaxed whitespace-pre-line">
