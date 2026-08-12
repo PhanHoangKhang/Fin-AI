@@ -33,4 +33,10 @@ export interface NewsItem {
   // Trường mở rộng cho Detail Page (optional)
   marketContext?: string;
   recommendation?: string;
+  impactAnalysis?: string;
+  investorAction?: string;
+  // Dữ liệu cho biểu đồ (key -> score 0-100)
+  chartData?: Record<string, number>;
+  // Các mốc sự kiện chính
+  keyEvents?: string[];
 }

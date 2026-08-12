@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ import java.util.List;
 public class NewsService {
 
     private static final String RSS_URL = "https://vnexpress.net/rss/kinh-doanh.rss";
+
+    @Autowired
+    private GeminiService geminiService;
 
     public List<NewsDto> fetchAndProcessNews() {
         List<NewsDto> newsList = new ArrayList<>();
@@ -87,6 +91,7 @@ public class NewsService {
         );
     }
 
+    // Hàm lấy chi tiết tin tức kết hợp phân tích nâng cao từ Gemini
     public NewsDetailDto getNewsById(String id) {
         List<NewsDto> allNews = fetchAndProcessNews();
 
@@ -95,21 +100,26 @@ public class NewsService {
                 .findFirst()
                 .orElse(null);
 
+        // Nếu không tìm thấy bài viết, trả về null để Controller trả về HTTP 404
         if (matchedNews == null) {
             return null;
         }
 
-        return NewsDetailDto.builder()
-                .id(matchedNews.getId())
-                .ticker(matchedNews.getTicker())
-                .title(matchedNews.getTitle())
-                .link(matchedNews.getLink())
-                .source(matchedNews.getSource())
-                .publishedDate(matchedNews.getPublishedDate())
-                .sentimentType(matchedNews.getSentimentType())
-                .sentimentScore(matchedNews.getSentimentScore())
-                .aiSummary(matchedNews.getAiSummary())
-                .keywords(matchedNews.getKeywords())
-                .build();
+        // Gọi Gemini phân tích nâng cao dựa trên thông tin cào được từ RSS
+        NewsDetailDto aiAnalysis = geminiService.analyzeNewsWithGemini(
+                matchedNews.getTitle(), 
+                matchedNews.getAiSummary(), 
+                matchedNews.getTicker()
+        );
+
+        // Đè/Gán lại các thông tin gốc từ RSS vào DTO kết quả
+        aiAnalysis.setId(matchedNews.getId());
+        aiAnalysis.setTicker(matchedNews.getTicker());
+        aiAnalysis.setTitle(matchedNews.getTitle());
+        aiAnalysis.setLink(matchedNews.getLink());
+        aiAnalysis.setSource(matchedNews.getSource());
+        aiAnalysis.setPublishedDate(matchedNews.getPublishedDate());
+
+        return aiAnalysis;
     }
 }
