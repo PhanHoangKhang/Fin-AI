@@ -29,7 +29,7 @@ public class NewsService {
 
             Elements items = doc.select("item");
 
-            int limit = Math.min(6, items.size());
+            int limit = Math.min(10, items.size());
             for (int i = 0; i < limit; i++) {
                 Element item = items.get(i);
 
@@ -44,7 +44,7 @@ public class NewsService {
                 String sentiment = (i % 2 == 0) ? "POSITIVE" : "NEUTRAL";
                 int score = (i % 2 == 0) ? 80 : 60;
 
-                // 🟢 ĐỔI UUID THÀNH HASH CỦA LINK ĐỂ DÙNG ID CỐ ĐỊNH
+                // ĐỔI UUID THÀNH HASH CỦA LINK ĐỂ DÙNG ID CỐ ĐỊNH
                 String stableId = String.valueOf(Math.abs(link.hashCode()));
 
                 NewsDto dto = NewsDto.builder()
@@ -63,7 +63,7 @@ public class NewsService {
                 newsList.add(dto);
             }
         } catch (Exception e) {
-            System.err.println("🔴 Lỗi cào tin RSS Jsoup: " + e.getMessage());
+            System.err.println("Lỗi cào tin RSS Jsoup: " + e.getMessage());
             return getFallbackNews();
         }
 
@@ -87,7 +87,6 @@ public class NewsService {
         );
     }
 
-    // 🟢 SỬA LẠI: Trả về null khi không tìm thấy để Controller chủ động bắt 404
     public NewsDetailDto getNewsById(String id) {
         List<NewsDto> allNews = fetchAndProcessNews();
 

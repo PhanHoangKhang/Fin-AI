@@ -12,27 +12,11 @@ import {
   ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
 import { newsService } from '../../services/api';
-
-// Interface hứng Data từ Spring Boot DTO
-interface NewsDetail {
-  id: string;
-  ticker: string;
-  title: string;
-  link: string;
-  source: string;
-  publishedDate: string;
-  sentimentType: string;
-  sentimentScore: number;
-  aiSummary: string;
-  keywords: string[];
-  // Các trường phân tích nâng cao (nếu Spring Boot có trả về)
-  marketContext?: string;
-  recommendation?: string;
-}
+import type { NewsItem } from '../../types';
 
 export const NewsDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [news, setNews] = useState<NewsDetail | null>(null);
+  const [news, setNews] = useState<NewsItem | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +27,7 @@ export const NewsDetailPage: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        // 🟢 Gọi API Spring Boot lấy thông tin chi tiết bài báo theo ID
+        // Gọi API Spring Boot lấy thông tin chi tiết bài báo theo ID
         const data = await newsService.getById(id);
         setNews(data);
       } catch (err) {

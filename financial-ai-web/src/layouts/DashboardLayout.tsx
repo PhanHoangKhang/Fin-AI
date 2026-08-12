@@ -108,7 +108,7 @@ export const DashboardLayout: React.FC = () => {
                       to={item.path}
                       aria-current={isActive ? 'page' : undefined}
                       title={collapsed ? item.label : undefined}
-                      className={`flex items-center gap-3 px-3.5 py-3 rounded-2xl text-sm font-semibold transition-all duration-200 ${
+                      className={`flex items-center gap-3 px-3.5 py-3 text-sm font-semibold transition-all duration-200 ${
                         isActive 
                           ? 'bg-cyan-800 text-white shadow-sm' 
                           : 'text-slate-400 hover:text-white hover:bg-slate-800/60'

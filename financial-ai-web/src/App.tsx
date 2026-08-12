@@ -12,7 +12,7 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* 1. Layout cho Landing Page */}
+        {/* Layout cho Landing Page */}
         <Route 
           path="/" 
           element={
@@ -22,7 +22,7 @@ const App: React.FC = () => {
           } 
         />
 
-        {/* 2. 🔥 LAYOUT DÀNH RIÊNG CHO DASHBOARD (CÓ SIDEBAR) */}
+        {/* LAYOUT DÀNH RIÊNG CHO DASHBOARD (CÓ SIDEBAR) */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<OverviewPage />} />
           <Route path="news/:id" element={<NewsDetailPage />} />
