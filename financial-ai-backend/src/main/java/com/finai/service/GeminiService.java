@@ -29,26 +29,57 @@ public class GeminiService {
         try {
             // Prompt yêu cầu Gemini trả về JSON chuẩn
             String prompt = String.format("""
-                Bạn là một chuyên gia phân tích tài chính chứng khoán hàng đầu. Hãy phân tích bài báo sau:
-                Tiêu đề: "%s"
-                Nội dung ngắn: "%s"
-                Mã cổ phiếu/Ngành: "%s"
+                Bạn là Giám đốc Phân tích Đầu tư (Head of Research) tại một Quỹ Đầu tư Tài chính Quốc tế. 
+                Hãy lập BÁO CÁO PHÂN TÍCH CHUYÊN SÂU TOÀN DIỆN cho tin tức sau:
+                - Tiêu đề: "%s"
+                - Tóm tắt: "%s"
+                - Mã CK/Ngành: "%s"
 
-                Hãy trả về dữ liệu đúng định dạng JSON sau (không chứa markdown ```json):
+                Trả về đúng định dạng JSON chuẩn (KHÔNG bọc trong markdown ```json):
                 {
-                  "sentimentType": "POSITIVE/NEGATIVE/NEUTRAL",
-                  "sentimentScore": 85,
-                  "aiSummary": "Tóm tắt ngắn gọn 2 câu dễ hiểu nhất",
-                  "marketContext": "Bối cảnh thị trường và động lực giá",
-                  "impactAnalysis": "Tác động chi tiết tới doanh nghiệp/ngành",
-                  "investorAction": "Khuyến nghị hành động cho nhà đầu tư",
-                  "keyEvents": ["Sự kiện 1", "Sự kiện 2"],
-                  "keywords": ["Từ khóa 1", "Từ khóa 2"],
-                  "chartData": {
-                    "Biên lợi nhuận": 75,
-                    "Áp lực chi phí": 40,
-                    "Kỳ vọng tăng trưởng": 85
-                  }
+                "sentimentType": "POSITIVE",
+                "sentimentScore": 88,
+                "aiSummary": "Tóm tắt ngắn gọn 2 câu cô đọng nhất.",
+                "marketContext": "Bối cảnh dòng tiền và tâm lý chung của ngành liên quan.",
+                "reasoning": "GIẢI THÍCH CHI TIẾT VÌ SAO: Dẫn chứng dữ liệu từ tin tức, lập luận logic vì sao tin này ảnh hưởng trực tiếp đến doanh thu/lợi nhuận.",
+                "catalystAnalysis": "3 Động lực tăng trưởng chính được kích hoạt từ tin tức này.",
+                "riskAnalysis": "Các yếu tố rủi ro tiềm ẩn (Chi phí, vĩ mô, chốt lời ngắn hạn).",
+                "macroImpact": "Ảnh hưởng từ các yếu tố Vĩ mô, Lãi suất, Tỷ giá hoặc Chính sách nhà nước.",
+                
+                "investorAction": "Khuyến nghị tổng quan hành động.",
+                "shortTermStrategy": "Chiến lược ngắn hạn T+ (Điểm bứt phá, nhịp rũ bỏ).",
+                "mediumTermStrategy": "Chiến lược 3-6 tháng (Sự tăng trưởng từ BCTC).",
+                "longTermStrategy": "Chiến lược dài hạn 1-3 năm (Chu kỳ ngành).",
+                "entryZone": "Vùng giá gom mua khuyến nghị",
+                "targetPrice": "Giá mục tiêu kỳ vọng",
+                "stopLossZone": "Mức cắt lỗ quản trị rủi ro",
+
+                "radarMetrics": {
+                    "Định Giá FCFF": 75,
+                    "Sức Mạnh Tài Chính": 85,
+                    "Tăng Trưởng EPS": 90,
+                    "Lợi Thế Cạnh Tranh": 80,
+                    "Sức Mạnh Dòng Tiền": 88
+                },
+                "timelineGrowthData": {
+                    "Q1/2026": 50,
+                    "Q2/2026": 65,
+                    "Q3/2026 (Dự báo)": 82,
+                    "Q4/2026 (Dự báo)": 95
+                },
+                "sentimentBreakdown": {
+                    "Tích cực": 70,
+                    "Trung tính": 20,
+                    "Tiêu cực": 10
+                },
+                "technicalSignals": {
+                    "Dòng Tiền Cá Nhan": 40,
+                    "Dòng Tiền Tổ Chức": 85,
+                    "Xung Lực RSI": 72,
+                    "Tín Hiệu MACD": 80
+                },
+                "keyEvents": ["Mở rộng công suất", "Công bố BCTC Q3"],
+                "keywords": ["Tăng trưởng", "Định giá lại", "Khối ngoại mua ròng"]
                 }
                 """, title, summary, ticker);
 
@@ -104,6 +135,30 @@ public class GeminiService {
         mockChart.put("Rủi Rõ Ngắn Hạn", 35);
         mockChart.put("Sức Mạnh Dòng Tiền", 82);
 
+        Map<String, Integer> radarMetrics = new LinkedHashMap<>();
+        radarMetrics.put("Định Giá FCFF", 75);
+        radarMetrics.put("Sức Mạnh Tài Chính", 85);
+        radarMetrics.put("Tăng Trưởng EPS", 90);
+        radarMetrics.put("Lợi Thế Cạnh Tranh", 80);
+        radarMetrics.put("Sức Mạnh Dòng Tiền", 88);
+
+        Map<String, Integer> timelineGrowthData = new LinkedHashMap<>();
+        timelineGrowthData.put("Q1/2026", 50);
+        timelineGrowthData.put("Q2/2026", 65);
+        timelineGrowthData.put("Q3/2026 (Dự báo)", 82);
+        timelineGrowthData.put("Q4/2026 (Dự báo)", 95);
+
+        Map<String, Integer> sentimentBreakdown = new LinkedHashMap<>();
+        sentimentBreakdown.put("Tích cực", 70);
+        sentimentBreakdown.put("Trung tính", 20);
+        sentimentBreakdown.put("Tiêu cực", 10);
+
+        Map<String, Integer> technicalSignals = new LinkedHashMap<>();
+        technicalSignals.put("Dòng Tiền Cá Nhân", 40);
+        technicalSignals.put("Dòng Tiền Tổ Chức", 85);
+        technicalSignals.put("Xung Lực RSI", 72);
+        technicalSignals.put("Tín Hiệu MACD", 80);
+
         return NewsDetailDto.builder()
                 .sentimentType("POSITIVE")
                 .sentimentScore(82)
@@ -114,6 +169,10 @@ public class GeminiService {
                 .keyEvents(Arrays.asList("Công bố báo cáo tài chính", "Kế hoạch mở rộng công suất năm 2026"))
                 .keywords(Arrays.asList("Tăng trưởng", "Biên lợi nhuận", "Dòng tiền"))
                 .chartData(mockChart)
+                .radarMetrics(radarMetrics)
+                .timelineGrowthData(timelineGrowthData)
+                .sentimentBreakdown(sentimentBreakdown)
+                .technicalSignals(technicalSignals)
                 .build();
     }
 }
