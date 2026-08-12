@@ -1,11 +1,5 @@
 import React from "react";
 import {
-  SparklesIcon,
-  LightBulbIcon,
-  ShieldExclamationIcon,
-  RocketLaunchIcon,
-  GlobeAltIcon,
-  CurrencyDollarIcon,
   TagIcon,
   AcademicCapIcon,
 } from "@heroicons/react/24/outline";
@@ -18,7 +12,7 @@ interface AiAnalysisCardProps {
 
 export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
   return (
-    <section className="bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950 text-white p-8 border border-slate-800 shadow-2xl space-y-8 font-poppins">
+    <section className="bg-cyan-950 text-white p-8 shadow-2xl border-cyan-800/50 border space-y-8">
       {/* 1. Header Báo cáo */}
       <header className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-5">
         <div className="flex items-center gap-3">
@@ -37,7 +31,7 @@ export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
       </header>
 
       {/* 2. Vùng Giá Mục Tiêu & Khuyến Nghị Nhanh (Target Price Banner) */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-800/60 p-4 border border-slate-700/60">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-cyan-900/30 border border-cyan-800/50 p-4">
         <div className="text-center sm:text-left border-b sm:border-b-0 sm:border-r border-slate-700 pb-3 sm:pb-0">
           <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
             Vùng Mua Khuyến Nghị
@@ -69,7 +63,7 @@ export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
         {/* Luận điểm giải thích VÌ SAO */}
         <article className="space-y-2 bg-cyan-950/30 p-5 border border-cyan-900/40">
           <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-            <LightBulbIcon className="w-4 h-4 " /> Giải Thích Luận
+             Giải Thích Luận
             Điểm 
           </h3>
           <p className="text-xs text-slate-200 leading-relaxed whitespace-pre-line">
@@ -81,7 +75,7 @@ export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
         {/* Động lực chính  */}
         <article className="space-y-2 bg-slate-800/40 p-5 border border-slate-800">
           <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-            <RocketLaunchIcon className="w-4 h-4" /> Động Lực
+             Động Lực
             Tăng Giá 
           </h3>
           <p className="text-xs text-slate-300 leading-relaxed whitespace-pre-line">
@@ -113,7 +107,7 @@ export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
               <span className="text-[11px] font-bold text-sky-400 block">
                 Lướt Sóng Ngắn Hạn (T+)
               </span>
-              <span className="text-[10px] bg-sky-950 text-sky-300 px-2 py-0.5 rounded-md border border-sky-800">
+              <span className="text-xs text-sky-300 px-2 py-0.5 rounded-md">
                 Kỹ thuật
               </span>
             </div>
@@ -129,7 +123,7 @@ export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
               <span className="text-[11px] font-bold text-indigo-400 block">
                 Trung Hạn (3 - 6 Tháng)
               </span>
-              <span className="text-[10px] bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded-md border border-indigo-800">
+              <span className="text-xs text-indigo-300 px-2 py-0.5 rounded-md">
                 Tăng trưởng
               </span>
             </div>
@@ -145,7 +139,7 @@ export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
               <span className="text-[11px] font-bold text-purple-400 block">
                 Dài Hạn (1 - 3 Năm)
               </span>
-              <span className="text-[10px] bg-purple-950 text-purple-300 px-2 py-0.5 rounded-md border border-purple-800">
+              <span className="text-xs text-purple-300 px-2 py-0.5">
                 Nội tại
               </span>
             </div>
@@ -161,7 +155,7 @@ export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
       <div className="grid md:grid-cols-2 gap-6">
         <div className="bg-slate-800/30 p-5 rounded-2xl border border-slate-800 space-y-2">
           <h4 className="text-xs font-bold text-blue-400 flex items-center gap-1.5 uppercase tracking-wider">
-            <GlobeAltIcon className="w-4 h-4" /> Tác Động Vĩ Mô & Cơ Cấu Ngành
+             Tác Động Vĩ Mô & Cơ Cấu Ngành
           </h4>
           <p className="text-xs text-slate-300 leading-relaxed font-normal whitespace-pre-line">
             {news.macroImpact ||
@@ -169,9 +163,9 @@ export const AiAnalysisCard: React.FC<AiAnalysisCardProps> = ({ news }) => {
           </p>
         </div>
 
-        <div className="bg-rose-950/20 p-5 rounded-2xl border border-rose-900/40 space-y-2">
+        <div className="bg-cyan-900/30 border border-cyan-800/50 p-5 rounded-2xl space-y-2">
           <h4 className="text-xs font-bold text-rose-400 flex items-center gap-1.5 uppercase tracking-wider">
-            <ShieldExclamationIcon className="w-4 h-4" /> Bối Cảnh Rủi Ro & Kịch
+             Bối Cảnh Rủi Ro & Kịch
             Bản Cảnh Báo
           </h4>
           <p className="text-xs text-rose-200/90 leading-relaxed font-normal whitespace-pre-line">

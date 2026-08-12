@@ -12,7 +12,7 @@ export const HeroSection: React.FC = () => {
   };
 
   return (
-    <section className="w-full px-8 md:px-16 lg:px-24 pt-10 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <section className="w-full px-8 md:px-16 lg:px-24 pt-25 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
       {/* Left Content */}
       <div className="lg:col-span-7 space-y-8">
         <h1 className="text-5xl lg:text-[64px] font-semibold text-slate-900 leading-[1.1] tracking-[-0.035em]">

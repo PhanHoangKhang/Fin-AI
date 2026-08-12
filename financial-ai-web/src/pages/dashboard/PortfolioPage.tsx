@@ -1,5 +1,4 @@
 import React from 'react';
-import { ShieldAlert, Zap, ArrowUpRight } from 'lucide-react';
 
 export const PortfolioPage: React.FC = () => {
   return (
