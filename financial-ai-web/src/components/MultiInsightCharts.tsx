@@ -213,7 +213,11 @@ export const MultiInsightCharts: React.FC<MultiInsightChartsProps> = ({
                   axisLine={false}
                   tick={{ fill: "#94a3b8", fontSize: 10 }}
                 />
-                <Tooltip contentStyle={customTooltipStyle} />
+                <Tooltip 
+                    contentStyle={customTooltipStyle} 
+                    itemStyle={{ color: '#ffffff' }} // Đổi màu chữ giá trị (Điểm số) thành trắng
+                    labelStyle={{ color: '#ffffff', fontWeight: 'bold' }} // Đảm bảo tiêu đề (Sức Mạnh Dòng Tiền) luôn trắng
+                />
                 <Bar dataKey="score" barSize={14} radius={[0, 6, 6, 0]}>
                   {techData.map((_, index) => (
                     <Cell

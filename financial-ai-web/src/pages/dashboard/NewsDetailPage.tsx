@@ -59,7 +59,7 @@ export const NewsDetailPage: React.FC = () => {
   }
 
   return (
-    <article className="max-w-4xl mx-auto space-y-8 font-poppins pb-12">
+    <article className="max-w-8xl space-y-8 font-poppins pb-12">
       {/* Nút Điều hướng */}
       <nav aria-label="Điều hướng">
         <Link 

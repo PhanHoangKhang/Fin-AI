@@ -55,7 +55,7 @@ export const DashboardLayout: React.FC = () => {
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-slate-50 text-slate-800 antialiased select-none">
       
-      {/* 🟢 SIDEBAR BÊN TRÁI - Semantic <aside> */}
+      {/* SIDEBAR BÊN TRÁI - Semantic <aside> */}
       <aside 
         aria-label="Thanh điều hướng chính"
         aria-expanded={!collapsed}
@@ -153,7 +153,7 @@ export const DashboardLayout: React.FC = () => {
         </footer>
       </aside>
 
-      {/* 🔵 KHU VỰC NỘI DUNG CHÍNH BÊN PHẢI - Semantic Container */}
+      {/* KHU VỰC NỘI DUNG CHÍNH BÊN PHẢI - Semantic Container */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         
         {/* Header Top Bar của Dashboard - Semantic <header> */}

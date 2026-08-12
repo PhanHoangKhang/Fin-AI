@@ -29,7 +29,7 @@ export const NewsChart: React.FC<NewsChartProps> = ({ chartData }) => {
   return (
     <div className="bg-slate-800/40 p-5 border border-slate-800 space-y-3">
       <h3 className="text-xs font-bold text-cyan-300 uppercase tracking-wider">
-        Chỉ Số Đánh Giá Động Lực (Gemini AI Score)
+        Chỉ Số Đánh Giá Động Lực 
       </h3>
       <div className="h-48 w-full pt-2">
         <ResponsiveContainer width="100%" height="100%">
