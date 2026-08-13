@@ -23,5 +23,5 @@ export const newsService = {
   getFeed: () => fetchAPI<any[]>('/news/feed'),
 
   // Lấy chi tiết 1 bài viết theo ID (Dùng chung fetchAPI)
-  getById: (id: string) => fetchAPI<any>(`/news/${id}`),
+  getById: (id: string) => fetchAPI<any>(`/news/${encodeURIComponent(id)}`),
 };

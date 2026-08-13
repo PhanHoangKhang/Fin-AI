@@ -9,6 +9,9 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+// import java.nio.charset.StandardCharsets;
+// import java.security.MessageDigest;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,8 +51,11 @@ public class NewsService {
                 String sentiment = (i % 2 == 0) ? "POSITIVE" : "NEUTRAL";
                 int score = (i % 2 == 0) ? 80 : 60;
 
-                // ĐỔI UUID THÀNH HASH CỦA LINK ĐỂ DÙNG ID CỐ ĐỊNH
-                String stableId = String.valueOf(Math.abs(link.hashCode()));
+                // 1. Kiểm tra an toàn biến link để tránh NullPointerException
+                String safeLink = (link != null) ? link.trim() : title; // Nếu link null thì lấy tạm title
+
+                // 2. Tạo ID cố định dạng chuỗi số dương (Luôn an toàn 100%, không bao giờ ra số âm)
+                String stableId = String.valueOf(safeLink.hashCode() & 0x7fffffff);
 
                 NewsDto dto = NewsDto.builder()
                         .id(stableId)
@@ -91,7 +97,6 @@ public class NewsService {
         );
     }
 
-    // Hàm lấy chi tiết tin tức kết hợp phân tích nâng cao từ Gemini
     public NewsDetailDto getNewsById(String id) {
         List<NewsDto> allNews = fetchAndProcessNews();
 
@@ -100,19 +105,26 @@ public class NewsService {
                 .findFirst()
                 .orElse(null);
 
-        // Nếu không tìm thấy bài viết, trả về null để Controller trả về HTTP 404
+        // 1. Không tìm thấy tin tức trong danh sách
         if (matchedNews == null) {
             return null;
         }
 
-        // Gọi Gemini phân tích nâng cao dựa trên thông tin cào được từ RSS
-        NewsDetailDto aiAnalysis = geminiService.analyzeNewsWithGemini(
-                matchedNews.getTitle(), 
-                matchedNews.getAiSummary(), 
-                matchedNews.getTicker()
-        );
+        NewsDetailDto aiAnalysis;
+        try {
+            // 2. Bọc try-catch riêng cho Gemini để tránh làm sập API nếu AI lỗi/timeout
+            aiAnalysis = geminiService.analyzeNewsWithGemini(
+                    matchedNews.getTitle(), 
+                    matchedNews.getAiSummary(), 
+                    matchedNews.getTicker()
+            );
+        } catch (Exception e) {
+            System.err.println("Gemini Service bị lỗi/timeout, sử dụng fallback data: " + e.getMessage());
+            // Trả về DTO rỗng/fallback thay vì ném exception 500
+            aiAnalysis = new NewsDetailDto(); 
+        }
 
-        // Đè/Gán lại các thông tin gốc từ RSS vào DTO kết quả
+        // 3. Đảm bảo gán lại thông tin từ RSS
         aiAnalysis.setId(matchedNews.getId());
         aiAnalysis.setTicker(matchedNews.getTicker());
         aiAnalysis.setTitle(matchedNews.getTitle());
@@ -122,4 +134,21 @@ public class NewsService {
 
         return aiAnalysis;
     }
+
+    // private String generateFixedId(String link) {
+    //     if (link == null || link.trim().isEmpty()) {
+    //         return String.valueOf(System.currentTimeMillis());
+    //     }
+    //     try {
+    //         MessageDigest md = MessageDigest.getInstance("MD5");
+    //         byte[] hash = md.digest(link.trim().getBytes(StandardCharsets.UTF_8));
+    //         StringBuilder sb = new StringBuilder();
+    //         for (byte b : hash) {
+    //             sb.append(String.format("%02x", b));
+    //         }
+    //         return sb.toString().substring(0, 8); // Lấy 8 ký tự MD5 làm ID
+    //     } catch (Exception e) {
+    //         return String.valueOf(Math.abs(link.hashCode()));
+    //     }
+    // }
 }
