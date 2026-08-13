@@ -66,3 +66,35 @@ export interface NewsItem {
   keyEvents?: string[];
   keywords?: string[];
 }
+
+export interface Term {
+  id: string;
+  term: string;
+  fullName: string;
+  category: string;
+  categoryName?: string;
+  shortDefinition: string;
+  fullDefinition: string;
+  example?: string;
+  firstLetter: string;
+}
+
+export interface CategoryOption {
+  key: string;
+  label: string;
+}
+
+export interface StockInfo {
+  ticker: string;
+  companyName: string;
+  industry: string;
+  sector: string;
+  currentPrice: number;
+  marketCap: number;
+  peRatio: number;
+  pbRatio: number;
+  fiftyTwoWeekHigh: number;
+  fiftyTwoWeekLow: number;
+  summary: string;
+  searchKeyword: string
+}

@@ -7,6 +7,7 @@ import { LandingPage } from './pages/LandingPage';
 import { OverviewPage } from './pages/dashboard/OverviewPage';
 import { PortfolioPage } from './pages/dashboard/PortfolioPage';
 import { NewsDetailPage } from './pages/dashboard/NewsDetailPage';
+import DictionaryPage from './pages/dashboard/DictionaryPage';
 
 const App: React.FC = () => {
   return (
@@ -27,7 +28,7 @@ const App: React.FC = () => {
           <Route index element={<OverviewPage />} />
           <Route path="news/:id" element={<NewsDetailPage />} />
           <Route path="portfolio" element={<PortfolioPage />} />
-          <Route path="dictionary" element={<div className="font-bold text-slate-800">Trang Từ điển F0 (Sắp ra mắt)</div>} />
+          <Route path="dictionary" element={<DictionaryPage />} />
           <Route path="history" element={<div className="font-bold text-slate-800">Trang Lịch sử tra cứu (Sắp ra mắt)</div>} />
         </Route>
       </Routes>
