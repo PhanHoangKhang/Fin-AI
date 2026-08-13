@@ -3,6 +3,10 @@ import yfinance as yf
 
 app = FastAPI()
 
+# pip install -r requirements.txt
+# pip install fastapi uvicorn yfinance
+# uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+
 @app.get("/")
 def home():
     return {"message": "Stock Service qua Yahoo Finance API đang chạy mượt mà!"}
