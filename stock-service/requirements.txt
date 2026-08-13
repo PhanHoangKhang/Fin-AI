@@ -1,4 +1,4 @@
 fastapi
 uvicorn
-vnstock
 pandas
+yfinance
