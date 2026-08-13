@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@RestController // 👈 Phải có annotation này
-@RequestMapping("/api/v1") // 👈 Phải có / ở đầu
+@RestController // Phải có annotation này
+@RequestMapping("/api/v1") // Phải có / ở đầu
 public class HealthCheckController {
 
-    @GetMapping("/health") // 👈 Phải có / ở đầu
+    @GetMapping("/health") // Phải có / ở đầu
     public Map<String, String> healthCheck() {
         return Map.of(
             "status", "UP",
