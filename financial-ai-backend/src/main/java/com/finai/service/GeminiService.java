@@ -2,6 +2,7 @@ package com.finai.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finai.dto.NewsDetailDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -21,6 +22,10 @@ public class GeminiService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    /** Bộ bóc tách rule-based, dùng khi không gọi được Gemini. */
+    @Autowired
+    private NewsInsightExtractor insightExtractor;
+
     // Constructor: Cấu hình RestTemplate có Timeout chống treo App
     public GeminiService() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
@@ -31,7 +36,8 @@ public class GeminiService {
 
     public NewsDetailDto analyzeNewsWithGemini(String title, String summary, String ticker) {
         if ("MOCK_KEY".equals(apiKey) || apiKey == null || apiKey.isBlank()) {
-            return getMockAnalysis(title, summary, ticker);
+            // Chưa cấu hình API key -> dựng báo cáo từ chính nội dung bài báo
+            return insightExtractor.buildAnalysis(title, summary, ticker);
         }
 
         try {
@@ -201,8 +207,8 @@ public class GeminiService {
                     .build();
 
         } catch (Exception e) {
-            System.err.println("Lỗi gọi Gemini API (Chuyển sang dùng Mock Data): " + e.getMessage());
-            return getMockAnalysis(title, summary, ticker); // Fallback an toàn
+            System.err.println("Lỗi gọi Gemini API (Chuyển sang bóc tách từ nội dung bài báo): " + e.getMessage());
+            return insightExtractor.buildAnalysis(title, summary, ticker); // Fallback an toàn
         }
     }
 
