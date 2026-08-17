@@ -77,7 +77,7 @@ const DictionarySearch: React.FC<DictionarySearchProps> = ({
           value={searchKeyword}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Nhập thuật ngữ cần tìm (VD: RSI, P/E, cổ tức...)"
-          className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm placeholder-slate-400 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400"
+          className="w-full px-4 py-2.5 bg-white border border-[#E8EDE0] rounded-lg text-sm placeholder-slate-400 focus:outline-none focus:border-[#7A9B58] focus:ring-1 focus:ring-[#9CB953]"
         />
       </div>
 
@@ -90,8 +90,8 @@ const DictionarySearch: React.FC<DictionarySearchProps> = ({
             onClick={() => onCategoryChange(cat.key)}
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition ${
               selectedCategory === cat.key
-                ? 'bg-slate-900 text-white'
-                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                ? 'bg-[#3D5226] text-white'
+                : 'bg-white text-slate-600 border border-[#E8EDE0] hover:bg-slate-50'
             }`}
           >
             {cat.label}
@@ -105,7 +105,7 @@ const DictionarySearch: React.FC<DictionarySearchProps> = ({
           type="button"
           onClick={() => onLetterChange('')}
           className={`px-2 py-1 text-xs rounded font-medium ${
-            !selectedLetter ? 'bg-slate-200 text-slate-900' : 'text-slate-500 hover:bg-slate-100'
+            !selectedLetter ? 'bg-[#3D5226] text-white' : 'text-slate-500 hover:bg-slate-100'
           }`}
         >
           Tất cả
@@ -117,7 +117,7 @@ const DictionarySearch: React.FC<DictionarySearchProps> = ({
             onClick={() => onLetterChange(letter === selectedLetter ? '' : letter)}
             className={`px-2 py-1 text-xs rounded font-medium ${
               selectedLetter === letter
-                ? 'bg-slate-900 text-white'
+                ? 'bg-[#3D5226] text-white'
                 : 'text-slate-500 hover:bg-slate-100'
             }`}
           >
@@ -210,12 +210,12 @@ export const DictionaryPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 p-6 md:p-10 font-sans text-slate-800">
+    <div className="min-h-screen bg-[#F5F0E8]/50 p-6 md:p-10 font-sans text-slate-800">
       <div className="max-w-6xl mx-auto space-y-6">
         
         {/* Header chính */}
         <div className="space-y-2">
-          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">
+          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-[#2B3A1A]">
             Trung tâm Tra cứu Tài chính
           </h1>
           <p className="text-sm text-slate-500">
@@ -229,8 +229,8 @@ export const DictionaryPage: React.FC = () => {
             onClick={() => setActiveTab('dictionary')}
             className={`pb-3 text-sm font-medium transition relative ${
               activeTab === 'dictionary'
-                ? 'text-slate-900 border-b-2 border-slate-900'
-                : 'text-slate-500 hover:text-slate-700'
+                ? 'text-[#2B3A1A] border-b-2 border-[#3D5226]'
+                : 'text-slate-500 hover:text-[#3D5226]'
             }`}
           >
             Từ điển Thuật ngữ
@@ -239,8 +239,8 @@ export const DictionaryPage: React.FC = () => {
             onClick={() => setActiveTab('stock')}
             className={`pb-3 text-sm font-medium transition relative ${
               activeTab === 'stock'
-                ? 'text-slate-900 border-b-2 border-slate-900'
-                : 'text-slate-500 hover:text-slate-700'
+                ? 'text-[#2B3A1A] border-b-2 border-[#3D5226]'
+                : 'text-slate-500 hover:text-[#3D5226]'
             }`}
           >
             Tra cứu Cổ phiếu
@@ -287,12 +287,12 @@ export const DictionaryPage: React.FC = () => {
                 placeholder="Nhập mã CP (VD: HPG, VNM, FPT...)"
                 value={ticker}
                 onChange={(e) => setTicker(e.target.value)}
-                className="flex-1 px-3.5 py-2 bg-white border border-slate-200 rounded-lg text-sm placeholder-slate-400 focus:outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400 uppercase"
+                className="flex-1 px-3.5 py-2 bg-white border border-[#E8EDE0] rounded-lg text-sm placeholder-slate-400 focus:outline-none focus:border-[#7A9B58] focus:ring-1 focus:ring-[#9CB953] uppercase"
               />
               <button
                 type="submit"
                 disabled={loadingStock}
-                className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium rounded-lg transition disabled:opacity-50"
+                className="px-4 py-2 bg-[#3D5226] hover:bg-[#2B3A1A] text-white text-sm font-medium rounded-lg transition disabled:opacity-50"
               >
                 {loadingStock ? 'Đang tìm...' : 'Tra cứu'}
               </button>
@@ -305,18 +305,18 @@ export const DictionaryPage: React.FC = () => {
             )}
 
             {stockInfo && (
-              <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-6 shadow-sm">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+              <div className="bg-white border border-[#E8EDE0] rounded-xl p-6 space-y-6 shadow-sm">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#F8F5F0] pb-4">
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-2xl font-bold text-slate-900">{stockInfo.ticker}</h2>
-                      <span className="text-xs px-2 py-0.5 bg-slate-100 text-slate-600 rounded font-medium">HOSE / HNX</span>
+                      <h2 className="text-2xl font-bold text-[#2B3A1A]">{stockInfo.ticker}</h2>
+                      <span className="text-xs px-2 py-0.5 bg-[#F8F5F0] text-slate-600 rounded font-medium">HOSE / HNX</span>
                     </div>
                     <p className="text-sm text-slate-500 mt-0.5">{stockInfo.companyName}</p>
                   </div>
 
                   <div className="text-left md:text-right">
-                    <div className="text-2xl font-bold text-slate-900">
+                    <div className="text-2xl font-bold text-[#2B3A1A]">
                       {stockInfo.currentPrice ? stockInfo.currentPrice.toLocaleString('vi-VN') + ' VND' : 'N/A'}
                     </div>
                     <span className="text-xs text-slate-400">Giá thị trường</span>
@@ -324,33 +324,33 @@ export const DictionaryPage: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
-                  <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                  <div className="p-3 bg-[#F8F5F0] rounded-lg border border-[#E8EDE0]">
                     <span className="text-xs text-slate-400 block mb-1">P/E Ratio</span>
-                    <span className="font-semibold text-slate-800">{stockInfo.peRatio ? stockInfo.peRatio.toFixed(2) : 'N/A'}</span>
+                    <span className="font-semibold text-[#2B3A1A]">{stockInfo.peRatio ? stockInfo.peRatio.toFixed(2) : 'N/A'}</span>
                   </div>
-                  <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                  <div className="p-3 bg-[#F8F5F0] rounded-lg border border-[#E8EDE0]">
                     <span className="text-xs text-slate-400 block mb-1">P/B Ratio</span>
-                    <span className="font-semibold text-slate-800">{stockInfo.pbRatio ? stockInfo.pbRatio.toFixed(2) : 'N/A'}</span>
+                    <span className="font-semibold text-[#2B3A1A]">{stockInfo.pbRatio ? stockInfo.pbRatio.toFixed(2) : 'N/A'}</span>
                   </div>
-                  <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                  <div className="p-3 bg-[#F8F5F0] rounded-lg border border-[#E8EDE0]">
                     <span className="text-xs text-slate-400 block mb-1">Cao nhất 52 tuần</span>
-                    <span className="font-semibold text-slate-800">{stockInfo.fiftyTwoWeekHigh ? stockInfo.fiftyTwoWeekHigh.toLocaleString('vi-VN') : 'N/A'}</span>
+                    <span className="font-semibold text-[#2B3A1A]">{stockInfo.fiftyTwoWeekHigh ? stockInfo.fiftyTwoWeekHigh.toLocaleString('vi-VN') : 'N/A'}</span>
                   </div>
-                  <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                  <div className="p-3 bg-[#F8F5F0] rounded-lg border border-[#E8EDE0]">
                     <span className="text-xs text-slate-400 block mb-1">Thấp nhất 52 tuần</span>
-                    <span className="font-semibold text-slate-800">{stockInfo.fiftyTwoWeekLow ? stockInfo.fiftyTwoWeekLow.toLocaleString('vi-VN') : 'N/A'}</span>
+                    <span className="font-semibold text-[#2B3A1A]">{stockInfo.fiftyTwoWeekLow ? stockInfo.fiftyTwoWeekLow.toLocaleString('vi-VN') : 'N/A'}</span>
                   </div>
                 </div>
 
                 <div className="space-y-3 pt-2 text-sm text-slate-600">
                   <div className="flex gap-4 text-xs font-medium text-slate-500">
-                    <span>Ngành: <strong className="text-slate-800">{stockInfo.industry || 'N/A'}</strong></span>
+                    <span>Ngành: <strong className="text-[#2B3A1A]">{stockInfo.industry || 'N/A'}</strong></span>
                     <span>•</span>
-                    <span>Lĩnh vực: <strong className="text-slate-800">{stockInfo.sector || 'N/A'}</strong></span>
+                    <span>Lĩnh vực: <strong className="text-[#2B3A1A]">{stockInfo.sector || 'N/A'}</strong></span>
                   </div>
 
                   {stockInfo.summary && (
-                    <div className="pt-2 border-t border-slate-100">
+                    <div className="pt-2 border-t border-[#F8F5F0]">
                       <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Tổng quan doanh nghiệp</h4>
                       <p className="leading-relaxed text-xs text-slate-600">{stockInfo.summary}</p>
                     </div>

@@ -54,7 +54,7 @@ const toBullets = (text: string | undefined, max: number, maxChars = 150): strin
 /** Điểm số 0-100 -> màu thanh bar. */
 const barTone = (value: number): string => {
   if (value >= 70) return 'bg-emerald-500';
-  if (value >= 45) return 'bg-cyan-500';
+  if (value >= 45) return 'bg-[#7A9B58]';
   if (value >= 30) return 'bg-amber-500';
   return 'bg-rose-500';
 };
@@ -84,9 +84,9 @@ const SENTIMENT_STYLES = {
   NEUTRAL: {
     label: 'Trung tính',
     icon: MinusIcon,
-    className: 'bg-slate-50 text-slate-700 border-slate-200',
-    iconClassName: 'text-slate-500',
-    barClassName: 'bg-slate-400',
+    className: 'bg-[#F8F5F0] text-[#5A5248] border-[#E8EDE0]',
+    iconClassName: 'text-[#7A7060]',
+    barClassName: 'bg-[#A09888]',
   },
 } as const;
 
@@ -101,13 +101,13 @@ const ValueTile: React.FC<{
   value?: string;
   tone: string;
 }> = ({ icon: Icon, label, value, tone }) => (
-  <div className="p-3 rounded-xl border border-slate-200/70 bg-white flex items-start gap-2.5">
+  <div className="p-3 rounded-xl border border-[#E8EDE0]/70 bg-white flex items-start gap-2.5">
     <Icon className={`w-5 h-5 shrink-0 mt-0.5 ${tone}`} />
     <div className="min-w-0">
-      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide block">
+      <span className="text-[10px] font-bold text-[#7A7060] uppercase tracking-wide block">
         {label}
       </span>
-      <p className="text-xs font-bold text-slate-800 mt-0.5 wrap-break-word">
+      <p className="text-xs font-bold text-[#3D5226] mt-0.5 wrap-break-word">
         {value?.trim() || 'Chưa xác định'}
       </p>
     </div>
@@ -126,17 +126,17 @@ const InsightBlock: React.FC<{
   if (lines.length === 0) return null;
 
   return (
-    <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/60 space-y-1.5">
+    <div className="p-3.5 rounded-xl bg-[#F8F5F0]/80 border border-[#E8EDE0]/60 space-y-1.5">
       <div className="flex items-center gap-1.5">
         <Icon className={`w-4 h-4 shrink-0 ${accent}`} />
-        <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wide">
+        <span className="text-[10px] font-bold text-[#5A5248] uppercase tracking-wide">
           {label}
         </span>
       </div>
-      <ul className="space-y-1 text-xs text-slate-700 leading-relaxed">
+      <ul className="space-y-1 text-xs text-[#5A5248] leading-relaxed">
         {lines.map((line, idx) => (
           <li key={idx} className="flex items-start gap-1.5">
-            <span className="text-slate-400 mt-px">›</span>
+            <span className="text-[#A09888] mt-px">›</span>
             <span>{line}</span>
           </li>
         ))}
@@ -157,10 +157,10 @@ const MetricGroup: React.FC<{
   const entries = Object.entries(data!).slice(0, limit);
 
   return (
-    <div className="p-3.5 rounded-xl bg-white border border-slate-200/70 space-y-2">
+    <div className="p-3.5 rounded-xl bg-white border border-[#E8EDE0]/70 space-y-2">
       <div className="flex items-center gap-1.5">
         <Icon className={`w-4 h-4 shrink-0 ${accent}`} />
-        <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wide">
+        <span className="text-[10px] font-bold text-[#5A5248] uppercase tracking-wide">
           {label}
         </span>
       </div>
@@ -168,10 +168,10 @@ const MetricGroup: React.FC<{
         {entries.map(([key, value]) => (
           <li key={key} className="space-y-0.5">
             <div className="flex items-center justify-between gap-2 text-[11px]">
-              <span className="text-slate-600 font-medium truncate">{key}</span>
-              <span className="text-slate-900 font-bold tabular-nums shrink-0">{value}</span>
+              <span className="text-[#5A5248] font-medium truncate">{key}</span>
+              <span className="text-[#2B3A1A] font-bold tabular-nums shrink-0">{value}</span>
             </div>
-            <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-[#F0EDE6] rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full ${barTone(value)}`}
                 style={{ width: `${Math.max(0, Math.min(100, value))}%` }}
@@ -195,12 +195,12 @@ const StrategyTile: React.FC<{
   if (lines.length === 0) return null;
 
   return (
-    <div className="p-3.5 rounded-xl bg-white border border-slate-200/70 space-y-1.5">
+    <div className="p-3.5 rounded-xl bg-white border border-[#E8EDE0]/70 space-y-1.5">
       <div className="flex items-center justify-between gap-2">
         <span className={`text-[11px] font-extrabold ${accent}`}>{label}</span>
-        <span className="text-[10px] font-semibold text-slate-400">{horizon}</span>
+        <span className="text-[10px] font-semibold text-[#A09888]">{horizon}</span>
       </div>
-      <ul className="space-y-1 text-xs text-slate-700 leading-relaxed">
+      <ul className="space-y-1 text-xs text-[#5A5248] leading-relaxed">
         {lines.map((line, idx) => (
           <li key={idx}>{line}</li>
         ))}
@@ -233,19 +233,19 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
     hasEntries(news.chartData);
 
   return (
-    <header className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+    <header className="bg-white rounded-2xl p-6 md:p-8 border border-[#E8EDE0]/80 shadow-sm space-y-6">
 
       {/* 1. TOP METADATA & BADGES */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#F0EDE6] pb-4">
         <div className="flex items-center gap-3">
-          <span className="px-3.5 py-1 bg-cyan-600 text-white font-extrabold text-xs rounded-lg tracking-wider">
+          <span className="px-3.5 py-1 bg-[#3D5226] text-white font-extrabold text-xs rounded-lg tracking-wider">
             {news.ticker || 'VĨ MÔ'}
           </span>
-          <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-slate-500">
-            <BuildingLibraryIcon className="w-4 h-4 text-slate-400" />
+          <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-[#7A7060]">
+            <BuildingLibraryIcon className="w-4 h-4 text-[#A09888]" />
             <span>{news.source}</span>
             <span>•</span>
-            <ClockIcon className="w-4 h-4 text-slate-400" />
+            <ClockIcon className="w-4 h-4 text-[#A09888]" />
             <span>{news.publishedDate}</span>
           </div>
         </div>
@@ -261,12 +261,12 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
 
       {/* 2. TITLE + TÓM TẮT AI */}
       <div className="space-y-3">
-        <h1 className="text-xl md:text-2xl font-black text-slate-900 leading-snug tracking-tight">
+        <h1 className="text-xl md:text-2xl font-black text-[#2B3A1A] leading-snug tracking-tight">
           {news.title}
         </h1>
 
         {news.aiSummary && (
-          <p className="text-sm text-slate-600 leading-relaxed font-medium border-l-2 border-cyan-500 pl-3">
+          <p className="text-sm text-[#5A5248] leading-relaxed font-medium border-l-2 border-[#7A9B58] pl-3">
             {truncate(news.aiSummary, 420)}
           </p>
         )}
@@ -274,16 +274,16 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
         {/* Thanh điểm tâm lý tổng hợp */}
         {score > 0 && (
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide shrink-0">
+            <span className="text-[10px] font-bold text-[#7A7060] uppercase tracking-wide shrink-0">
               Điểm tác động
             </span>
-            <div className="h-2 flex-1 bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-2 flex-1 bg-[#F0EDE6] rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full ${sentiment.barClassName}`}
                 style={{ width: `${score}%` }}
               />
             </div>
-            <span className="text-xs font-black text-slate-800 tabular-nums shrink-0">
+            <span className="text-xs font-black text-[#3D5226] tabular-nums shrink-0">
               {score}/100
             </span>
           </div>
@@ -296,7 +296,7 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
           icon={CurrencyDollarIcon}
           label="Con số / Vùng mua ghi nhận"
           value={news.entryZone}
-          tone="text-cyan-600"
+          tone="text-[#3D5226]"
         />
         <ValueTile
           icon={FlagIcon}
@@ -320,22 +320,22 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
 
       {/* 4. ĐIỂM TIN CHÍNH + BỐI CẢNH THỊ TRƯỜNG */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-        <div className="md:col-span-7 bg-slate-50 p-4 rounded-xl border border-slate-200/60 space-y-2">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 uppercase tracking-wide">
-            <QueueListIcon className="w-4 h-4 text-cyan-600" />
+        <div className="md:col-span-7 bg-[#F8F5F0] p-4 rounded-xl border border-[#E8EDE0]/60 space-y-2">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-[#5A5248] uppercase tracking-wide">
+            <QueueListIcon className="w-4 h-4 text-[#3D5226]" />
             <span>Điểm tin chính (Key Takeaways)</span>
           </div>
-          <ul className="space-y-1.5 text-xs text-slate-700 font-medium">
+          <ul className="space-y-1.5 text-xs text-[#5A5248] font-medium">
             {keyEvents.length > 0 ? (
               keyEvents.slice(0, 5).map((event, idx) => (
                 <li key={idx} className="flex items-start gap-2">
-                  <span className="text-cyan-600 font-bold">•</span>
+                  <span className="text-[#3D5226] font-bold">•</span>
                   <span>{truncate(event, 180)}</span>
                 </li>
               ))
             ) : (
               <li className="flex items-start gap-2">
-                <span className="text-cyan-600 font-bold">•</span>
+                <span className="text-[#3D5226] font-bold">•</span>
                 <span>{news.aiSummary}</span>
               </li>
             )}
@@ -344,28 +344,28 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
 
         <div className="md:col-span-5 space-y-3">
           {news.marketContext && (
-            <div className="p-3.5 bg-cyan-50/60 rounded-xl border border-cyan-100 space-y-1.5">
+            <div className="p-3.5 bg-[#F5F8F0]/60 rounded-xl border border-[#E0E8D4] space-y-1.5">
               <div className="flex items-center gap-1.5">
-                <GlobeAltIcon className="w-4 h-4 text-cyan-700 shrink-0" />
-                <span className="text-[10px] font-bold text-cyan-800 uppercase tracking-wide">
+                <GlobeAltIcon className="w-4 h-4 text-[#3D5226] shrink-0" />
+                <span className="text-[10px] font-bold text-[#2B3A1A] uppercase tracking-wide">
                   Bối cảnh thị trường
                 </span>
               </div>
-              <p className="text-xs text-slate-700 leading-relaxed">
+              <p className="text-xs text-[#5A5248] leading-relaxed">
                 {truncate(news.marketContext, 260)}
               </p>
             </div>
           )}
 
           {news.impactAnalysis && (
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/60 space-y-1.5">
+            <div className="p-3.5 bg-[#F8F5F0] rounded-xl border border-[#E8EDE0]/60 space-y-1.5">
               <div className="flex items-center gap-1.5">
-                <ScaleIcon className="w-4 h-4 text-slate-600 shrink-0" />
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">
+                <ScaleIcon className="w-4 h-4 text-[#5A5248] shrink-0" />
+                <span className="text-[10px] font-bold text-[#7A7060] uppercase tracking-wide">
                   Mức độ tác động
                 </span>
               </div>
-              <p className="text-xs text-slate-700 leading-relaxed">
+              <p className="text-xs text-[#5A5248] leading-relaxed">
                 {truncate(news.impactAnalysis, 260)}
               </p>
             </div>
@@ -379,7 +379,7 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
                   Nhà đầu tư nên làm gì
                 </span>
               </div>
-              <p className="text-xs text-slate-700 leading-relaxed">
+              <p className="text-xs text-[#5A5248] leading-relaxed">
                 {truncate(actionAdvice, 260)}
               </p>
             </div>
@@ -390,7 +390,7 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
       {/* 5. LUẬN ĐIỂM - ĐỘNG LỰC - RỦI RO - VĨ MÔ (rút gọn) */}
       {(news.reasoning || news.catalystAnalysis || news.riskAnalysis || news.macroImpact) && (
         <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 uppercase tracking-wide">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-[#5A5248] uppercase tracking-wide">
             <LightBulbIcon className="w-4 h-4 text-amber-500" />
             <span>Đúc kết phân tích</span>
           </div>
@@ -426,8 +426,8 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
       {/* 6. CHIẾN LƯỢC 3 KHUNG THỜI GIAN (rút gọn) */}
       {hasStrategy && (
         <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 uppercase tracking-wide">
-            <CalendarDaysIcon className="w-4 h-4 text-cyan-600" />
+          <div className="flex items-center gap-1.5 text-xs font-bold text-[#5A5248] uppercase tracking-wide">
+            <CalendarDaysIcon className="w-4 h-4 text-[#3D5226]" />
             <span>Chiến lược theo khung thời gian</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -456,8 +456,8 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
       {/* 7. TOÀN BỘ CHỈ SỐ ĐỊNH LƯỢNG (radar, kỹ thuật, tăng trưởng, tâm lý) */}
       {hasMetrics && (
         <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 uppercase tracking-wide">
-            <ChartBarIcon className="w-4 h-4 text-cyan-600" />
+          <div className="flex items-center gap-1.5 text-xs font-bold text-[#5A5248] uppercase tracking-wide">
+            <ChartBarIcon className="w-4 h-4 text-[#3D5226]" />
             <span>Chỉ số định lượng tổng hợp</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
@@ -465,7 +465,7 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
               icon={ChartBarIcon}
               label="Khía cạnh trọng yếu (360°)"
               data={news.radarMetrics}
-              accent="text-cyan-600"
+              accent="text-[#3D5226]"
             />
             <MetricGroup
               icon={SignalIcon}
@@ -489,7 +489,7 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
               icon={BoltIcon}
               label="Chỉ số bổ sung"
               data={news.chartData}
-              accent="text-slate-600"
+              accent="text-[#5A5248]"
             />
           </div>
         </div>
@@ -498,11 +498,11 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
       {/* 8. KEYWORDS */}
       {news.keywords && news.keywords.length > 0 && (
         <div className="flex items-start gap-2 flex-wrap">
-          <TagIcon className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+          <TagIcon className="w-4 h-4 text-[#A09888] shrink-0 mt-0.5" />
           {news.keywords.map((keyword, idx) => (
             <span
               key={idx}
-              className="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full border border-slate-200"
+              className="text-[11px] font-semibold bg-[#F0EDE6] text-[#5A5248] px-2.5 py-0.5 rounded-full border border-[#E8EDE0]"
             >
               #{keyword}
             </span>
@@ -511,15 +511,15 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
       )}
 
       {/* 9. FOOTER */}
-      <footer className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
-        <span className="text-xs text-slate-400 font-medium">
+      <footer className="pt-3 border-t border-[#F0EDE6] flex flex-wrap items-center justify-between gap-2">
+        <span className="text-xs text-[#A09888] font-medium">
           Bóc tách tự động từ dữ liệu báo chí • Mã tin #{news.id}
         </span>
         <a
           href={news.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-700 hover:text-cyan-900 transition"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#3D5226] hover:text-[#2B3A1A] transition"
         >
           <span>Đọc bài viết gốc trên {news.source}</span>
           <ArrowUpRightIcon className="w-3.5 h-3.5" />

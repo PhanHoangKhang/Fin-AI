@@ -1,37 +1,64 @@
-import React from 'react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Users, Zap } from 'lucide-react';
 
-export const StatsBento: React.FC = () => {
+export const StatsBento = () => {
   return (
-    <section className="w-full px-8 md:px-16 lg:px-24 py-12">
-      <div className="text-center mb-14">
-        <span className="text-xs font-bold uppercase tracking-wider text-cyan-700">Tại sao chọn FinAI</span>
-        <h2 className="text-3xl md:text-4xl font-semibold text-slate-900 mt-1 tracking-tight">
-          Được tin dùng bởi cộng đồng nhà đầu tư F0
-        </h2>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-slate-50 border border-slate-100 p-10 rounded-3xl flex flex-col justify-between">
-          <h3 className="text-6xl font-black text-cyan-800 tracking-tight">5k+</h3>
-          <p className="text-slate-700 font-semibold text-lg mt-12 max-w-sm">
-            Nhà đầu tư cá nhân đọc tin và học kiến thức mỗi ngày trên FinAI.
-          </p>
-        </div>
-
-        <div className="bg-slate-50 border border-slate-100 p-10 rounded-3xl flex flex-col justify-between">
-          <div>
-            <p className="text-xl font-semibold text-slate-900 mb-2">Gõ bất kỳ mã cổ phiếu nào để nhận tóm tắt AI ngay lập tức.</p>
+    <section className="py-24 bg-white">
+      <div className="container mx-auto px-6 max-w-7xl">
+        <div className="grid md:grid-cols-3 gap-6 font-sans">
+          
+          {/* Stat 1 */}
+          <div className="bg-[#F8F5F0] p-8 rounded-3xl border border-[#E8EDE0] flex flex-col justify-between">
+            <div className="bg-white w-12 h-12 rounded-full flex items-center justify-center mb-12 shadow-sm">
+              <Users className="text-[#3D5226]" size={24} />
+            </div>
+            <div>
+              <div className="text-5xl font-bold text-[#3D5226] mb-2 font-serif" style={{ fontFamily: 'Lora, serif' }}>5k+</div>
+              <p className="text-[#7A7060] font-medium">Nhà đầu tư F0 đã tin dùng</p>
+            </div>
           </div>
-          <div className="mt-8 flex items-center justify-center gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
-            <span className="px-3.5 py-1.5 bg-cyan-50 text-cyan-800 font-bold rounded-xl text-sm">MBB</span>
-            <ArrowRight className="w-4 h-4 text-slate-400" />
-            <span className="px-3.5 py-1.5 bg-emerald-50 text-emerald-700 font-bold rounded-xl text-sm flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4" /> Lãi Q2 tăng 15%
-            </span>
+
+          {/* Stat 2 - Demo Card */}
+          <div className="md:col-span-2 bg-[#2B3A1A] p-8 rounded-3xl border border-[#3D5226] flex flex-col md:flex-row gap-8 items-center justify-between text-white overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#7A9B58]/20 rounded-full blur-3xl"></div>
+            
+            <div className="relative z-10 md:max-w-xs">
+              <div className="inline-flex items-center gap-2 bg-[#3D5226] px-3 py-1 rounded-full mb-4">
+                <Zap size={16} className="text-[#9CB953]" />
+                <span className="text-xs font-bold tracking-wider text-white">XỬ LÝ REAL-TIME</span>
+              </div>
+              <h3 className="text-3xl font-bold mb-4 font-serif" style={{ fontFamily: 'Lora, serif' }}>1M+ Tin tức</h3>
+              <p className="text-white/70">Được hệ thống AI của chúng tôi phân tích, tóm tắt và đánh giá tác động mỗi ngày từ các nguồn tin uy tín nhất.</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-5 shadow-2xl relative z-10 w-full md:w-72 border border-[#E8EDE0]">
+              <div className="flex justify-between items-center mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded bg-[#F5F0E8] flex items-center justify-center font-bold text-[#2B3A1A] text-sm">MB</div>
+                  <span className="font-bold text-[#2B3A1A]">MBB</span>
+                </div>
+                <span className="text-[#3D5226] font-bold">+1.2%</span>
+              </div>
+              
+              <div className="space-y-3">
+                <div className="h-2 w-full bg-[#E8EDE0] rounded-full overflow-hidden">
+                  <div className="h-full bg-[#3D5226] w-[75%] rounded-full"></div>
+                </div>
+                <div className="flex justify-between text-xs text-[#7A7060] font-medium">
+                  <span>Sentiment Score</span>
+                  <span className="text-[#3D5226] font-bold">75/100 (Tích cực)</span>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-[#E8EDE0]">
+                <p className="text-sm text-[#2B3A1A] font-medium">Lợi nhuận quý 3 tăng trưởng 20% so với cùng kỳ nhờ đẩy mạnh tín dụng bán lẻ...</p>
+              </div>
+            </div>
           </div>
+          
         </div>
       </div>
     </section>
   );
 };
+
+export default StatsBento;

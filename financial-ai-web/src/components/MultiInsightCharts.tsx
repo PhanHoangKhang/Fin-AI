@@ -62,21 +62,21 @@ export const MultiInsightCharts: React.FC<MultiInsightChartsProps> = ({
     ? Object.entries(technicalSignals).map(([name, score]) => ({ name, score }))
     : [];
 
-  const PIE_COLORS = ["#10b981", "#64748b", "#ef4444"];
-  const BAR_COLORS = ["#38bdf8", "#818cf8", "#a855f7", "#f43f5e"];
+  const PIE_COLORS = ["#9CB953", "#C9973E", "#C96B54"];
+  const BAR_COLORS = ["#7A9B58", "#9CB953", "#3D5226", "#C9973E"];
 
   const customTooltipStyle = {
-    backgroundColor: "#0f172a",
-    borderColor: "#334155",
-    color: "#ffffff",
+    backgroundColor: "#2B3A1A",
+    borderColor: "#3D5226",
+    color: "#F5F0E8",
     borderRadius: "12px",
     fontSize: "12px",
   };
 
   return (
     <div className="grid md:grid-cols-2 gap-6 pt-4">
-      <div className="bg-slate-800/40 p-5 rounded-2xl border border-slate-800 space-y-3">
-        <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+      <div className="bg-[#3D5226]/30 p-5 rounded-2xl border border-[#3D5226]/50 space-y-3">
+        <h3 className="text-xs font-bold text-[#9CB953] uppercase tracking-wider">
           Phân Tích Chỉ Số Tổng Quan
         </h3>
         <NewsChart chartData={chartData} />
@@ -84,17 +84,17 @@ export const MultiInsightCharts: React.FC<MultiInsightChartsProps> = ({
 
       {/* 1. Radar Chart: Sức Mạnh 360 Độ */}
       {radarData.length > 0 && (
-        <div className="bg-slate-800/40 p-5 rounded-2xl border border-slate-800 space-y-2">
-          <h3 className="text-xs font-bold text-cyan-300 uppercase tracking-wider">
+        <div className="bg-[#3D5226]/30 p-5 rounded-2xl border border-[#3D5226]/50 space-y-2">
+          <h3 className="text-xs font-bold text-[#9CB953] uppercase tracking-wider">
             1. Đánh Giá Toàn Diện 360° (Radar Model)
           </h3>
           <div className="h-60 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={radarData}>
-                <PolarGrid stroke="#334155" />
+                <PolarGrid stroke="#3D5226" />
                 <PolarAngleAxis
                   dataKey="subject"
-                  tick={{ fill: "#94a3b8", fontSize: 10 }}
+                  tick={{ fill: "#D8D0C0", fontSize: 10 }}
                 />
                 <PolarRadiusAxis
                   domain={[0, 100]}
@@ -104,8 +104,8 @@ export const MultiInsightCharts: React.FC<MultiInsightChartsProps> = ({
                 <Radar
                   name="Scoring"
                   dataKey="A"
-                  stroke="#06b6d4"
-                  fill="#0891b2"
+                  stroke="#9CB953"
+                  fill="#7A9B58"
                   fillOpacity={0.6}
                 />
                 <Tooltip contentStyle={customTooltipStyle} />
@@ -117,8 +117,8 @@ export const MultiInsightCharts: React.FC<MultiInsightChartsProps> = ({
 
       {/* 2. Area Chart: Dự Báo Xung Lực Tăng Trưởng */}
       {timelineData.length > 0 && (
-        <div className="bg-slate-800/40 p-5 rounded-2xl border border-slate-800 space-y-2">
-          <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+        <div className="bg-[#3D5226]/30 p-5 rounded-2xl border border-[#3D5226]/50 space-y-2">
+          <h3 className="text-xs font-bold text-[#9CB953] uppercase tracking-wider">
             2. Dự Báo Xung Lực Tăng Trưởng Theo Quý
           </h3>
           <div className="h-60 w-full">
@@ -126,30 +126,30 @@ export const MultiInsightCharts: React.FC<MultiInsightChartsProps> = ({
               <AreaChart data={timelineData}>
                 <defs>
                   <linearGradient id="growthGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#9CB953" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#7A9B58" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
                   strokeDasharray="3 3"
-                  stroke="#334155"
+                  stroke="#3D5226"
                   opacity={0.5}
                 />
                 <XAxis
                   dataKey="period"
                   axisLine={false}
-                  tick={{ fill: "#94a3b8", fontSize: 10 }}
+                  tick={{ fill: "#D8D0C0", fontSize: 10 }}
                 />
                 <YAxis
                   domain={[0, 100]}
                   axisLine={false}
-                  tick={{ fill: "#94a3b8", fontSize: 10 }}
+                  tick={{ fill: "#D8D0C0", fontSize: 10 }}
                 />
                 <Tooltip contentStyle={customTooltipStyle} />
                 <Area
                   type="monotone"
                   dataKey="growth"
-                  stroke="#10b981"
+                  stroke="#9CB953"
                   fillOpacity={1}
                   fill="url(#growthGrad)"
                 />
@@ -161,8 +161,8 @@ export const MultiInsightCharts: React.FC<MultiInsightChartsProps> = ({
 
       {/* 3. Donut Chart: Phân Tách Tâm Lý Thị Trường */}
       {pieData.length > 0 && (
-        <div className="bg-slate-800/40 p-5 rounded-2xl border border-slate-800 space-y-2">
-          <h3 className="text-xs font-bold text-amber-400 uppercase tracking-wider">
+        <div className="bg-[#3D5226]/30 p-5 rounded-2xl border border-[#3D5226]/50 space-y-2">
+          <h3 className="text-xs font-bold text-[#C9973E] uppercase tracking-wider">
             3. Phân Tách Cơ Cấu Tâm Lý Thị Trường
           </h3>
           <div className="h-60 w-full flex items-center justify-center">
@@ -198,8 +198,8 @@ export const MultiInsightCharts: React.FC<MultiInsightChartsProps> = ({
 
       {/* 4. Bar Chart: Dòng Tiền & Tín Hiệu Kỹ Thuật */}
       {techData.length > 0 && (
-        <div className="bg-slate-800/40 p-5 rounded-2xl border border-slate-800 space-y-2">
-          <h3 className="text-xs font-bold text-indigo-400 uppercase tracking-wider">
+        <div className="bg-[#3D5226]/30 p-5 rounded-2xl border border-[#3D5226]/50 space-y-2">
+          <h3 className="text-xs font-bold text-[#7A9B58] uppercase tracking-wider">
             4. Chỉ Số Dòng Tiền & Kỹ Thuật
           </h3>
           <div className="h-60 w-full">
@@ -211,12 +211,12 @@ export const MultiInsightCharts: React.FC<MultiInsightChartsProps> = ({
                   type="category"
                   width={110}
                   axisLine={false}
-                  tick={{ fill: "#94a3b8", fontSize: 10 }}
+                  tick={{ fill: "#D8D0C0", fontSize: 10 }}
                 />
                 <Tooltip 
                     contentStyle={customTooltipStyle} 
-                    itemStyle={{ color: '#ffffff' }} // Đổi màu chữ giá trị (Điểm số) thành trắng
-                    labelStyle={{ color: '#ffffff', fontWeight: 'bold' }} // Đảm bảo tiêu đề (Sức Mạnh Dòng Tiền) luôn trắng
+                    itemStyle={{ color: '#F5F0E8' }}
+                    labelStyle={{ color: '#F5F0E8', fontWeight: 'bold' }}
                 />
                 <Bar dataKey="score" barSize={14} radius={[0, 6, 6, 0]}>
                   {techData.map((_, index) => (
@@ -234,3 +234,5 @@ export const MultiInsightCharts: React.FC<MultiInsightChartsProps> = ({
     </div>
   );
 };
+
+export default MultiInsightCharts;

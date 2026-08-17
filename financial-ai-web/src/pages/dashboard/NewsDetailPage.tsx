@@ -35,7 +35,7 @@ export const NewsDetailPage: React.FC = () => {
   if (loading) {
     return (
       <div role="status" aria-label="Đang tải dữ liệu" className="p-12 text-center font-poppins">
-        <p className="text-slate-500 font-medium text-sm animate-pulse">
+        <p className="text-[#7A7060] font-medium text-sm animate-pulse">
           Đang kết nối Server & Tải phân tích AI chi tiết...
         </p>
       </div>
@@ -44,12 +44,12 @@ export const NewsDetailPage: React.FC = () => {
 
   if (error || !news) {
     return (
-      <div role="alert" className="p-12 text-center font-poppins space-y-4 bg-white rounded-3xl border border-slate-200/80 max-w-xl mx-auto my-8">
-        <ExclamationTriangleIcon className="w-10 h-10 text-amber-500 mx-auto" aria-hidden="true" />
-        <p className="text-slate-700 font-bold text-sm">{error || 'Không tìm thấy dữ liệu sự kiện.'}</p>
+      <div role="alert" className="p-12 text-center font-poppins space-y-4 bg-white rounded-3xl border border-[#E8EDE0] max-w-xl mx-auto my-8">
+        <ExclamationTriangleIcon className="w-10 h-10 text-[#C9973E] mx-auto" aria-hidden="true" />
+        <p className="text-[#7A7060] font-bold text-sm">{error || 'Không tìm thấy dữ liệu sự kiện.'}</p>
         <Link 
           to="/dashboard" 
-          className="inline-flex items-center gap-2 text-xs font-bold text-cyan-800 hover:underline"
+          className="inline-flex items-center gap-2 text-xs font-bold text-[#3D5226] hover:underline"
         >
           <ArrowLeftIcon className="w-4 h-4" aria-hidden="true" />
           <span>Quay lại Trang Tổng Quan</span>
@@ -64,7 +64,7 @@ export const NewsDetailPage: React.FC = () => {
       <nav aria-label="Điều hướng">
         <Link 
           to="/dashboard" 
-          className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-cyan-800 transition focus:outline-none focus:underline"
+          className="inline-flex items-center gap-2 text-xs font-bold text-[#7A7060] hover:text-[#3D5226] transition focus:outline-none focus:underline"
         >
           <ArrowLeftIcon className="w-4 h-4" aria-hidden="true" />
           <span>Quay lại Trang Tổng Quan</span>

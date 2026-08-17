@@ -24,11 +24,11 @@ export const NewsChart: React.FC<NewsChartProps> = ({ chartData }) => {
     score: value,
   }));
 
-  const colors = ['#38bdf8', '#818cf8', '#34d399', '#f39c12', '#a855f7'];
+  const colors = ['#9CB953', '#7A9B58', '#3D5226', '#C9973E', '#8B9D6E'];
 
   return (
-    <div className="bg-slate-800/40 p-5 border border-slate-800 space-y-3">
-      <h3 className="text-xs font-bold text-cyan-300 uppercase tracking-wider">
+    <div className="bg-[#3D5226]/40 p-5 rounded-xl border border-[#3D5226]/60 space-y-3">
+      <h3 className="text-xs font-bold text-[#9CB953] uppercase tracking-wider">
         Chỉ Số Đánh Giá Động Lực 
       </h3>
       <div className="h-48 w-full pt-2">
@@ -40,13 +40,13 @@ export const NewsChart: React.FC<NewsChartProps> = ({ chartData }) => {
               type="category" 
               axisLine={false} 
               tickLine={false} 
-              tick={{ fill: '#94a3b8', fontSize: 11 }}
+              tick={{ fill: '#D8D0C0', fontSize: 11 }}
               width={110}
             />
             <Tooltip 
-              contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', color: '#fff', fontSize: '12px' }}
-              itemStyle={{ color: '#ffffff' }} // Đổi màu chữ giá trị (Điểm số) thành trắng
-              labelStyle={{ color: '#ffffff', fontWeight: 'bold' }} // Đảm bảo tiêu đề (Sức Mạnh Dòng Tiền) luôn trắng
+              contentStyle={{ backgroundColor: '#2B3A1A', borderColor: '#3D5226', borderRadius: '8px', color: '#F5F0E8', fontSize: '12px' }}
+              itemStyle={{ color: '#F5F0E8' }}
+              labelStyle={{ color: '#F5F0E8', fontWeight: 'bold' }}
               formatter={(value: any) => [`${value}/100`, 'Điểm số']}
             />
             <Bar dataKey="score" radius={[0, 6, 6, 0]} barSize={16}>
@@ -60,3 +60,5 @@ export const NewsChart: React.FC<NewsChartProps> = ({ chartData }) => {
     </div>
   );
 };
+
+export default NewsChart;
