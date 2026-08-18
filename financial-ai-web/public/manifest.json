@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "FinAI - Trợ Lý Đầu Tư",
+  "version": "1.0.0",
+  "description": "Cảnh báo tin tức và cá nhân hóa danh mục đầu tư.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "sidePanel"
+  ],
+  "action": {
+    "default_popup": "index.html"
+  },
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "host_permissions": [
+    "http://localhost:8080/*"
+  ]
+}
