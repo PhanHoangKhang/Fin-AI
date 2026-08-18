@@ -1,5 +1,6 @@
 import React from "react";
 import type { PortfolioAlertDto } from "../../types/index";
+import { StockLogo } from "../StockLogo";
 
 interface AlertListProps {
   alerts: PortfolioAlertDto[];
@@ -9,16 +10,16 @@ interface AlertListProps {
 export const AlertList: React.FC<AlertListProps> = ({ alerts, loading }) => {
   if (loading) {
     return (
-      <div className="text-sm text-slate-400 py-8 text-center">
-        Đang tải dữ liệu cảnh báo...
+      <div className="text-sm text-[#7A7060] py-8 text-center bg-white rounded-2xl border border-[#E8EDE0]">
+        Đang tải dữ liệu cảnh báo từ hệ thống AI...
       </div>
     );
   }
 
   if (alerts.length === 0) {
     return (
-      <div className="text-sm text-slate-400 py-8 text-center bg-slate-50 border border-dashed border-slate-200 rounded-xl">
-        Không có cảnh báo phù hợp với danh mục hiện tại.
+      <div className="text-sm text-[#7A7060] py-8 text-center bg-white border border-dashed border-[#DDD5C7] rounded-2xl p-6">
+        Không có cảnh báo rủi ro nào cho các mã cổ phiếu trong danh mục của bạn lúc này.
       </div>
     );
   }
@@ -31,31 +32,34 @@ export const AlertList: React.FC<AlertListProps> = ({ alerts, loading }) => {
         return (
           <div
             key={alert.alertId}
-            className={`p-5 bg-white border rounded-xl shadow-sm transition-all ${
-              isNegative ? "border-l-4 border-l-red-500 border-slate-200" : "border-l-4 border-l-emerald-600 border-slate-200"
+            className={`p-5 bg-white border rounded-2xl shadow-sm transition-all overflow-hidden relative ${
+              isNegative ? "border-l-4 border-l-[#C96B54] border-[#E8EDE0]" : "border-l-4 border-l-[#3D5226] border-[#E8EDE0]"
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span
-                className={`text-xs font-bold uppercase tracking-wider ${
-                  isNegative ? "text-red-600" : "text-emerald-700"
-                }`}
-              >
-                [{alert.ticker}] — {isNegative ? "Cảnh báo rủi ro" : "Tín hiệu tích cực"}
-              </span>
-              <span className="text-xs text-slate-400">{alert.publishedDate}</span>
+            <div className="flex items-center justify-between mb-3 gap-2">
+              <div className="flex items-center gap-2">
+                <StockLogo ticker={alert.ticker} size="xs" />
+                <span
+                  className={`text-xs font-bold font-mono tracking-wider ${
+                    isNegative ? "text-[#C96B54]" : "text-[#3D5226]"
+                  }`}
+                >
+                  [{alert.ticker}] — {isNegative ? "Cảnh báo rủi ro" : "Tín hiệu tích cực"}
+                </span>
+              </div>
+              <span className="text-xs text-[#7A7060]">{alert.publishedDate}</span>
             </div>
 
-            <h3 className="text-base font-bold text-slate-800 mb-2 leading-snug">
+            <h3 className="text-base font-serif font-bold text-[#2B3A1A] mb-2 leading-snug">
               {alert.title}
             </h3>
 
-            <p className="text-sm text-slate-600 mb-4 line-clamp-3 leading-relaxed">
+            <p className="text-sm text-[#5A5248] mb-4 line-clamp-3 leading-relaxed">
               {alert.summary}
             </p>
 
-            <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-xs text-slate-700">
-              <span className="font-semibold text-slate-900">Khuyến nghị: </span>
+            <div className="p-3 bg-[#F5F8F0] rounded-xl border border-[#E0E8D4] text-xs text-[#3D5226]">
+              <span className="font-bold text-[#2B3A1A]">Khuyến nghị AI: </span>
               {alert.suggestedAction}
             </div>
           </div>
@@ -64,3 +68,5 @@ export const AlertList: React.FC<AlertListProps> = ({ alerts, loading }) => {
     </div>
   );
 };
+
+export default AlertList;

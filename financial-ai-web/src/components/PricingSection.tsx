@@ -6,8 +6,11 @@ export const PricingSection = () => {
     <section className="py-24 bg-[#F5F0E8] font-sans" id="pricing">
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center bg-[#E8F5E0] text-[#3D5226] px-4 py-1.5 rounded-full text-sm font-bold tracking-wider font-sans mb-4 uppercase border border-[#3D5226]/10">
-            CHỌN GÓI PHÙ HỢP
+          <div 
+            className="text-[#7A9B58] text-[34px] sm:text-[40px] font-bold mb-2 tracking-wide select-none"
+            style={{ fontFamily: "'Dancing Script', cursive, sans-serif" }}
+          >
+            Chọn gói phù hợp
           </div>
           <h2 className="text-4xl text-[#2B3A1A] font-serif mb-6" style={{ fontFamily: 'Lora, serif' }}>Bảng giá Dịch vụ</h2>
           <p className="text-[#7A7060] text-lg max-w-2xl mx-auto">Bắt đầu miễn phí, nâng cấp khi cần. Chọn gói phù hợp với nhu cầu đầu tư của bạn.</p>

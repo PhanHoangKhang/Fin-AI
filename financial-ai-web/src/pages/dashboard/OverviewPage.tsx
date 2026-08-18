@@ -1,12 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { newsService } from '../../services/api';
 import type { NewsItem } from '../../types';
 import { NewsCard } from '../../components/NewsCard';
 import { NewsSkeleton } from '../../components/NewsSkeleton';
+import { StockLogo } from '../../components/StockLogo';
+import { getPortfolio } from '../../utils/portfolioStorage';
 
 const SOURCES = ['Tất cả', 'CAFEF', 'VIETSTOCK', 'VNECONOMY', 'NDH'];
 
-const WATCHLIST = [
+const STOCK_DETAILS_MAP: Record<string, { name: string; price: string; ch: string; up: boolean }> = {
+  HPG: { name: 'Hòa Phát Group', price: '29,300', ch: '+1.2%', up: true },
+  MBB: { name: 'MB Bank', price: '21,850', ch: '-0.8%', up: false },
+  FPT: { name: 'FPT Corporation', price: '125,400', ch: '+2.1%', up: true },
+  VNM: { name: 'Vinamilk', price: '72,100', ch: '-0.5%', up: false },
+  VIC: { name: 'Vingroup', price: '44,200', ch: '-1.2%', up: false },
+  VHM: { name: 'Vinhomes', price: '38,700', ch: '+0.8%', up: true },
+  PLX: { name: 'Petrolimex', price: '41,500', ch: '+0.5%', up: true },
+  VCB: { name: 'Vietcombank', price: '92,600', ch: '+0.65%', up: true },
+  TCB: { name: 'Techcombank', price: '24,300', ch: '+1.4%', up: true },
+  SSI: { name: 'Chứng khoán SSI', price: '32,500', ch: '-0.3%', up: false },
+  MWG: { name: 'Thế Giới Di Động', price: '64,200', ch: '+1.8%', up: true },
+};
+
+const DEFAULT_WATCHLIST = [
   { t: 'HPG', name: 'Hòa Phát Group', price: '29,300', ch: '+1.2%', up: true },
   { t: 'MBB', name: 'MB Bank', price: '21,850', ch: '-0.8%', up: false },
   { t: 'FPT', name: 'FPT Corporation', price: '125,400', ch: '+2.1%', up: true },
@@ -19,6 +36,7 @@ export const OverviewPage: React.FC = () => {
   const [newsFeed, setNewsFeed] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeSource, setActiveSource] = useState('Tất cả');
+  const [portfolioTickers, setPortfolioTickers] = useState<string[]>([]);
 
   const loadNews = async () => {
     setLoading(true);
@@ -34,7 +52,28 @@ export const OverviewPage: React.FC = () => {
 
   useEffect(() => {
     loadNews();
+    const saved = getPortfolio();
+    if (saved && saved.length > 0) {
+      setPortfolioTickers(saved.map(item => item.ticker.toUpperCase()));
+    }
   }, []);
+
+  // Compute watchlist items: priority to user's tracked portfolio stocks
+  const displayWatchlist = useMemo(() => {
+    if (portfolioTickers.length > 0) {
+      return portfolioTickers.map(t => {
+        const known = STOCK_DETAILS_MAP[t];
+        return {
+          t,
+          name: known?.name || `Cổ phiếu ${t}`,
+          price: known?.price || '28,500',
+          ch: known?.ch || '+0.8%',
+          up: known ? known.up : true,
+        };
+      });
+    }
+    return DEFAULT_WATCHLIST;
+  }, [portfolioTickers]);
 
   const filteredNews = activeSource === 'Tất cả' 
     ? newsFeed 
@@ -114,67 +153,71 @@ export const OverviewPage: React.FC = () => {
         {/* Right Column - Sidebar */}
         <aside className="space-y-4 sticky top-20">
           
-          {/* Watchlist Card */}
+          {/* Watchlist Card - Hiển thị mã cổ phiếu trong Danh mục với Logo thật */}
           <div className="bg-white rounded-2xl border border-[#E8EDE0] overflow-hidden shadow-sm">
             <div className="px-4 py-3.5 border-b border-[#F0EDE6] flex items-center justify-between">
               <div>
                 <h3 className="text-xs font-bold text-[#2B3A1A] mb-0.5">Bảng giá thời gian thực</h3>
-                <p className="text-[10px] text-[#A09888]">HOSE · HNX · UPCOM</p>
+                <p className="text-[10px] text-[#A09888]">
+                  {portfolioTickers.length > 0 ? 'Mã trong Danh mục của bạn' : 'HOSE · HNX · UPCOM'}
+                </p>
               </div>
-              <span className="text-[10px] font-bold text-[#3D5226] bg-[#E8F5E0] px-2 py-0.5 rounded-full">
-                Realtime
-              </span>
+              <Link 
+                to="/dashboard/portfolio" 
+                className="text-[11px] font-bold text-[#2B3A1A] bg-transparent hover:text-[#3D5226] border border-[#DDD8CE] hover:border-[#7A9B58] px-3 py-1 rounded-full transition-all duration-200 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-98"
+                title="Quản lý danh mục theo dõi"
+              >
+                {portfolioTickers.length > 0 ? `${portfolioTickers.length} mã` : 'Quản lý'}
+              </Link>
             </div>
-            {WATCHLIST.map(stock => (
-              <div key={stock.t} className="flex items-center justify-between px-4 py-3 border-b border-[#F8F5F0] last:border-b-0 hover:bg-[#FAFAF7] transition-colors cursor-pointer group">
-                <div className="flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-[9px] font-bold transition-colors ${stock.up ? 'bg-[#E8F5E0] text-[#3D5226] group-hover:bg-[#D4ECC0]' : 'bg-[#FBF0EE] text-[#C96B54] group-hover:bg-[#F5E0DC]'}`}>
-                    {stock.t}
+            
+            <div className="divide-y divide-[#F8F5F0]">
+              {displayWatchlist.map(stock => (
+                <div key={stock.t} className="flex items-center justify-between px-4 py-3 hover:bg-[#FAFAF7] transition-colors cursor-pointer group">
+                  <div className="flex items-center gap-3">
+                    <StockLogo ticker={stock.t} size="sm" />
+                    <div>
+                      <div className="text-xs font-bold text-[#2B3A1A] font-mono group-hover:text-[#3D5226] transition-colors">{stock.t}</div>
+                      <div className="text-[10px] text-[#7A7060]">{stock.name}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-xs font-semibold text-[#2B3A1A]">{stock.t}</div>
-                    <div className="text-[10px] text-[#A09888]">{stock.name}</div>
+                  <div className="text-right">
+                    <div className="text-xs font-mono font-bold text-[#2B3A1A]">{stock.price}</div>
+                    <div className={`text-[10px] font-mono font-bold ${stock.up ? 'text-[#3D5226]' : 'text-[#C96B54]'}`}>{stock.ch}</div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-xs font-mono font-bold text-[#2B3A1A]">{stock.price}</div>
-                  <div className={`text-[10px] font-mono font-bold ${stock.up ? 'text-[#3D5226]' : 'text-[#C96B54]'}`}>{stock.ch}</div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          {/* AI Tip Card */}
-          <div className="bg-[#2B3A1A] rounded-2xl p-4 text-white shadow-sm relative overflow-hidden">
+          {/* AI Tip Card - Nền màu xám nhạt */}
+          <div className="bg-[#F2EFE9] rounded-2xl p-4 text-[#2B3A1A] shadow-xs border border-[#DDD8CE] relative overflow-hidden">
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-6 h-6 bg-[#9CB953] rounded-full flex items-center justify-center">
-                <span className="text-[9px] text-[#2B3A1A] font-bold">AI</span>
+              <div className="w-6 h-6 bg-[#3D5226] text-white rounded-full flex items-center justify-center shadow-2xs">
+                <span className="text-[9px] font-bold">AI</span>
               </div>
-              <span className="text-[11px] font-bold text-[#9CB953] uppercase tracking-widest">Mẹo hôm nay</span>
+              <span className="text-[11px] font-bold text-[#3D5226] uppercase tracking-widest">Mẹo hôm nay</span>
             </div>
-            <p className="text-[12px] text-[#D8D0C0] leading-relaxed mb-3">
+            <p className="text-[12px] text-[#5A5248] leading-relaxed mb-3">
               Bôi đen bất kỳ từ ngữ tài chính nào trong bài báo để nhận giải thích tức thì từ AI — không cần tìm Google.
             </p>
-            <div className="bg-[#3D5226] rounded-xl px-3 py-2 flex items-center gap-2">
-              <span className="text-[11px] text-[#9CB953] font-mono">Thử với: "EBITDA", "NIM", "P/E"</span>
+            <div className="bg-white border border-[#E0DDD5] rounded-xl px-3 py-2 flex items-center gap-2 shadow-2xs">
+              <span className="text-[11px] text-[#3D5226] font-mono font-medium">Thử với: "EBITDA", "NIM", "P/E"</span>
             </div>
           </div>
 
           {/* Community Stats */}
           <div className="bg-white rounded-2xl border border-[#E8EDE0] p-4 shadow-sm">
             <div className="text-[10px] font-bold tracking-widest text-[#A09888] uppercase mb-3">Cộng đồng FinAI</div>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { v: '5k+', l: 'Nhà đầu tư' },
-                { v: '120+', l: 'Bản tin/ngày' },
-                { v: '98%', l: 'Độ chính xác AI' },
-                { v: '4.8★', l: 'Đánh giá' },
-              ].map(s => (
-                <div key={s.l} className="bg-[#F8F5F0] rounded-xl p-3">
-                  <div className="font-serif text-lg font-bold text-[#3D5226]">{s.v}</div>
-                  <div className="text-[10px] text-[#7A7060]">{s.l}</div>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 gap-3 text-center">
+              <div className="bg-[#F8F5F0] rounded-xl p-3">
+                <div className="text-base font-bold text-[#2B3A1A] font-serif">5,200+</div>
+                <div className="text-[10px] text-[#7A7060] mt-0.5">Nhà đầu tư F0</div>
+              </div>
+              <div className="bg-[#F8F5F0] rounded-xl p-3">
+                <div className="text-base font-bold text-[#3D5226] font-serif">94.2%</div>
+                <div className="text-[10px] text-[#7A7060] mt-0.5">Độ chuẩn xác</div>
+              </div>
             </div>
           </div>
 

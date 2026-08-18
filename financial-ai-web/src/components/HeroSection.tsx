@@ -58,7 +58,7 @@ export const HeroSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Left Column */}
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 bg-[#E8F5E0] border border-[#C8DFB0] px-4 py-1.5 rounded-full shadow-sm">
+            <div className="inline-flex items-center gap-2 select-none">
               <span className="w-2 h-2 rounded-full bg-[#9CB953] live-dot"></span>
               <span className="text-[#3D5226] text-xs font-extrabold tracking-wider uppercase font-sans">NỀN TẢNG AI CHỨNG KHOÁN</span>
             </div>
@@ -93,8 +93,8 @@ export const HeroSection = () => {
               </button>
             </form>
 
-            {/* Interactive Financial Term Highlight Feature Demo */}
-            <div className="bg-[#FAF8F5] border border-[#E8E1D5] rounded-3xl p-5 shadow-2xs max-w-xl">
+            {/* Interactive Financial Term Highlight Feature Demo - Không khung bao */}
+            <div className="max-w-xl">
               <div className="flex items-center gap-2 mb-2">
                 <Sparkles className="w-4 h-4 text-[#7A9B58] shrink-0" />
                 <span className="text-xs font-bold text-[#3D5226] uppercase tracking-wider">

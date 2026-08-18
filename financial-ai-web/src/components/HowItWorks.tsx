@@ -3,7 +3,12 @@ export const HowItWorks = () => {
     <section id="how-it-works" className="py-24 bg-[#2B3A1A]">
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="text-center mb-16">
-          <h2 className="text-4xl text-white font-serif mb-6" style={{ fontFamily: 'Lora, serif' }}>Cách thức hoạt động</h2>
+          <h2 
+            className="text-white text-[34px] sm:text-[40px] font-bold mb-3 tracking-wide select-none"
+            style={{ fontFamily: "'Dancing Script', cursive, sans-serif" }}
+          >
+            Cách thức hoạt động
+          </h2>
           <p className="text-white/70 text-lg max-w-2xl mx-auto font-sans">Đơn giản hóa hành trình đầu tư của bạn với 3 bước dễ dàng.</p>
         </div>
 
