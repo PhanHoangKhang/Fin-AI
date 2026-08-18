@@ -9,6 +9,7 @@ import {
   ChevronRightIcon, 
   HomeIcon
 } from '@heroicons/react/24/outline';
+import finAiLogo from '../assets/LOGO Fin-AI with slogan.svg';
 
 interface MenuItem {
   path: string;
@@ -80,19 +81,13 @@ export const DashboardLayout: React.FC = () => {
             <Link 
               to="/dashboard" 
               aria-label="FinAI Hub - Trang chủ" 
-              className="flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-[#7A9B58] rounded-xl"
+              className="flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-[#7A9B58] rounded-xl overflow-hidden"
             >
-              <div className="w-8 h-8 bg-[#3D5226] rounded-xl flex items-center justify-center shadow-md shadow-[#3D5226]/20 shrink-0">
-                <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
-                  <path d="M2 10L5 6L8 8L12 3" stroke="#9CB953" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="12" cy="3" r="1.5" fill="#9CB953"/>
-                </svg>
-              </div>
-              {!collapsed && (
-                <span className="font-bold text-xl tracking-tight text-[#2B3A1A]">
-                  Fin<span className="text-[#3D5226]">AI</span>
-                </span>
-              )}
+              <img 
+                src={finAiLogo} 
+                alt="FinAI Logo" 
+                className={`${collapsed ? 'h-7 w-7 object-cover' : 'h-8 w-auto object-contain'}`} 
+              />
             </Link>
           </header>
 

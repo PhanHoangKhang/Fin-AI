@@ -41,10 +41,6 @@ export const PricingSection = () => {
                 <Check className="text-[#7A7060]/30 mt-0.5" size={20} />
                 <span>Cảnh báo rủi ro danh mục cá nhân</span>
               </li>
-              <li className="flex items-start gap-3 text-[#7A7060]/50 line-through">
-                <Check className="text-[#7A7060]/30 mt-0.5" size={20} />
-                <span>AI Tutor & Phân tích 4 biểu đồ chuyên sâu</span>
-              </li>
             </ul>
 
             <button className="w-full py-3.5 rounded-full font-bold bg-[#E8EDE0] text-[#2B3A1A] hover:bg-[#E0DDD6] transition-colors">
@@ -83,10 +79,6 @@ export const PricingSection = () => {
               <li className="flex items-start gap-3 text-white">
                 <Check className="text-[#9CB953] mt-0.5" size={20} />
                 <span>Đánh giá Sentiment chuyên sâu (MultiInsight)</span>
-              </li>
-              <li className="flex items-start gap-3 text-white">
-                <Check className="text-[#9CB953] mt-0.5" size={20} />
-                <span>Kế hoạch giao dịch 3 tầng (T+, Trung hạn, Dài hạn)</span>
               </li>
             </ul>
 

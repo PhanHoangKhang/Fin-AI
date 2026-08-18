@@ -94,46 +94,9 @@ export const OverviewPage: React.FC = () => {
             <NewsSkeleton />
           ) : filteredNews.length > 0 ? (
             <div className="flex flex-col gap-4">
-              {filteredNews.map((news, index) => {
-                // Bài từ thứ 3 trở đi (index >= 2) sẽ bị mờ và hiển thị form đăng ký/đăng nhập
-                const isLocked = index >= 2;
-                
-                if (isLocked) {
-                  return (
-                    <div key={news.id} className="relative rounded-2xl overflow-hidden group">
-                      {/* Blurred Card Content */}
-                      <div className="blur-[6px] pointer-events-none select-none opacity-60">
-                        <NewsCard news={news} />
-                      </div>
-                      
-                      {/* Paywall Overlay */}
-                      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/70 backdrop-blur-[2px] p-6 text-center border border-[#E8EDE0] rounded-2xl">
-                        <div className="w-12 h-12 bg-[#E8F5E0] border border-[#C8DFB0] rounded-full flex items-center justify-center shadow-sm mb-3 text-[#3D5226]">
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                          </svg>
-                        </div>
-                        <h3 className="font-serif font-bold text-[#2B3A1A] mb-1.5 text-lg">
-                          Đăng ký / Đăng nhập để xem đầy đủ
-                        </h3>
-                        <p className="text-xs text-[#7A7060] mb-5 max-w-sm leading-relaxed">
-                          Tạo tài khoản miễn phí để mở khóa toàn bộ bài báo, nhận phân tích AI chuyên sâu và cảnh báo danh mục cá nhân hóa.
-                        </p>
-                        <div className="flex flex-wrap justify-center gap-3">
-                          <button className="px-5 py-2.5 bg-[#3D5226] hover:bg-[#2B3A1A] text-white rounded-full font-bold text-xs transition-all shadow-md hover:-translate-y-px">
-                            Đăng ký miễn phí
-                          </button>
-                          <button className="px-5 py-2.5 bg-white border border-[#3D5226] text-[#3D5226] hover:bg-[#F5F8F0] rounded-full font-bold text-xs transition-all">
-                            Đăng nhập
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-
-                return <NewsCard key={news.id} news={news} />;
-              })}
+              {filteredNews.map((news) => (
+                <NewsCard key={news.id} news={news} />
+              ))}
             </div>
           ) : (
             <div className="bg-white rounded-2xl p-10 text-center border border-[#E8EDE0] shadow-sm">

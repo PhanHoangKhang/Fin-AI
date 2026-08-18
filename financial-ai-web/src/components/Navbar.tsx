@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import finAiLogo from '../assets/LOGO Fin-AI with slogan.svg';
 
 export const Navbar = () => {
   const [darkNav, setDarkNav] = useState(false);
@@ -18,18 +19,14 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${darkNav ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${darkNav ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
       <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#3D5226] rounded-xl flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
-              <path d="M2 10L5 6L8 8L12 3" stroke="#9CB953" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="12" cy="3" r="1.5" fill="#9CB953"/>
-            </svg>
-          </div>
-          <span className="text-xl font-bold text-[#2B3A1A] font-sans">
-            Fin<span className="text-[#3D5226]">AI</span>
-          </span>
+        <Link to="/" className="flex items-center gap-2 group">
+          <img 
+            src={finAiLogo} 
+            alt="FinAI Logo" 
+            className="h-10 w-auto object-contain transition-transform group-hover:scale-105" 
+          />
         </Link>
         
         <div className="hidden md:flex items-center gap-8 text-[#2B3A1A] font-medium font-sans">
