@@ -63,9 +63,18 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
       <div className={`h-[3px] w-full ${sentimentInfo.color}`}></div>
       
       <div className="p-5 flex-1 flex flex-col">
-        {/* Header: Source, Time, Ticker, Sentiment Badge */}
+        {/* Header: Category/Ticker with nametag icon on LEFT, Sentiment Badge on RIGHT */}
         <div className="flex items-center justify-between gap-3 mb-3">
+          {/* Cụm góc trái: Thẻ phân loại/Ticker (có icon nametag) + Nguồn báo + Thời gian */}
           <div className="flex items-center gap-2 flex-wrap">
+            {/* Thẻ phân loại tin tức / Ticker góc trái có icon nametag */}
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#E8F5E0] text-[#3D5226] font-bold text-xs rounded-lg border border-[#C8DFB0] shadow-2xs">
+              <svg className="w-3.5 h-3.5 text-[#7A9B58] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+              </svg>
+              <span className="font-mono uppercase">{news.ticker || 'VĨ MÔ'}</span>
+            </span>
+
             <span 
               className="text-[10px] font-bold px-2 py-0.5 rounded text-white" 
               style={{ backgroundColor: getSourceColor(news.source) }}
@@ -75,12 +84,8 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
             <span className="text-xs text-[#7A7060]">{news.publishedDate}</span>
           </div>
           
+          {/* Góc phải: Sentiment Rating */}
           <div className="flex items-center gap-2 shrink-0">
-            {news.ticker && (
-              <span className="bg-[#E8F5E0] text-[#3D5226] text-xs font-mono font-bold px-2 py-0.5 rounded border border-[#C8DFB0]">
-                {news.ticker}
-              </span>
-            )}
             <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider border ${sentimentInfo.bg} ${sentimentInfo.textColor} ${sentimentInfo.border}`}>
               {sentimentInfo.text} {score > 0 && `(${score}%)`}
             </span>
@@ -94,12 +99,15 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
           </h2>
         </Link>
 
-        {/* Keywords / Tags */}
+        {/* Keywords / Tags với nametag icon */}
         {news.keywords && news.keywords.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-3">
+          <div className="flex items-center gap-1.5 flex-wrap mb-3">
             {news.keywords.map((kw, idx) => (
-              <span key={idx} className="text-[11px] text-[#7A7060] bg-[#F5F0E8] px-2 py-0.5 rounded-full">
-                #{kw}
+              <span key={idx} className="inline-flex items-center gap-1 text-[11px] text-[#5A5248] bg-[#F5F0E8] border border-[#E8EDE0] px-2.5 py-0.5 rounded-full font-medium">
+                <svg className="w-3 h-3 text-[#7A9B58] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                </svg>
+                <span>{kw}</span>
               </span>
             ))}
           </div>

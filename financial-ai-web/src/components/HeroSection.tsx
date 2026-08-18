@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Search, TrendingUp, TrendingDown, Sparkles } from 'lucide-react';
 
 const TICKER_ITEMS = [
-  { symbol: 'VN-Index', value: '1,287.45', change: '+8.32', percent: '+0.65%', up: true },
+  { symbol: 'HPG', value: '29,550', change: '+350', percent: '+1.22%', up: true },
+  { symbol: 'VN-Index', value: '1,262.45', change: '+4.02', percent: '+0.32%', up: true },
+  { symbol: 'MBB', value: '21,150', change: '-25', percent: '-0.12%', up: false },
+  { symbol: 'FPT', value: '125,200', change: '+450', percent: '+0.36%', up: true },
+  { symbol: 'VCB', value: '92,600', change: '+600', percent: '+0.65%', up: true },
+  { symbol: 'VIC', value: '44,800', change: '+200', percent: '+0.45%', up: true },
   { symbol: 'HNX-Index', value: '228.17', change: '+1.45', percent: '+0.64%', up: true },
   { symbol: 'UPCOM', value: '91.24', change: '-0.18', percent: '-0.20%', up: false },
-  { symbol: 'HPG', value: '29,300', change: '+350', percent: '+1.21%', up: true },
-  { symbol: 'FPT', value: '125,400', change: '+2,600', percent: '+2.12%', up: true },
-  { symbol: 'MBB', value: '21,850', change: '-175', percent: '-0.80%', up: false },
 ];
 
 const WATCHLIST = [
@@ -29,19 +31,25 @@ export const HeroSection = () => {
 
   return (
     <div className="relative pt-24 pb-16 overflow-hidden">
-      {/* Ticker bar */}
-      <div className="bg-[#2B3A1A] text-white py-2 overflow-hidden flex whitespace-nowrap text-sm font-sans mb-12 border-y border-[#3D5226]/50 shadow-inner">
-        <div className="animate-[ticker_30s_linear_infinite] flex items-center gap-8 ticker-track">
-          {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <span className="font-semibold text-white/90">{item.symbol}</span>
-              <span className="text-white/80 font-mono">{item.value}</span>
-              <span className={`flex items-center font-mono text-xs ${item.up ? 'text-[#9CB953]' : 'text-[#C96B54]'}`}>
-                {item.up ? <TrendingUp size={13} className="mr-0.5" /> : <TrendingDown size={13} className="mr-0.5" />}
-                {item.change} ({item.percent})
-              </span>
-            </div>
-          ))}
+      {/* Ticker bar - Khung đóng tách biệt màu be đậm */}
+      <div className="container mx-auto px-6 max-w-7xl mb-12">
+        <div className="bg-[#EBE4D5] border border-[#DDD4C1] text-[#2B3A1A] py-2.5 px-4 rounded-2xl overflow-hidden shadow-2xs">
+          <div className="animate-[ticker_32s_linear_infinite] flex items-center gap-10 whitespace-nowrap text-xs font-sans ticker-track">
+            {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+              <div key={i} className="flex items-center gap-2 font-mono">
+                <span className="font-bold text-[#3D5226] uppercase">{item.symbol}</span>
+                <span className="font-semibold text-[#2B3A1A]">{item.value}</span>
+                <span className={`flex items-center font-bold text-[11px] ${item.up ? 'text-[#4D6E28]' : 'text-[#C96B54]'}`}>
+                  {item.percent}
+                  {item.up ? (
+                    <TrendingUp size={12} className="ml-1 text-[#4D6E28]" />
+                  ) : (
+                    <TrendingDown size={12} className="ml-1 text-[#C96B54]" />
+                  )}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -84,38 +92,38 @@ export const HeroSection = () => {
               </button>
             </form>
 
-            {/* Interactive Liquid-Glass Financial Term Highlight Feature Demo */}
-            <div className="bg-white/90 border border-[#E8EDE0] rounded-2xl p-4 shadow-sm backdrop-blur-md max-w-xl">
+            {/* Interactive Financial Term Highlight Feature Demo */}
+            <div className="bg-[#FAF8F5] border border-[#E8E1D5] rounded-3xl p-5 shadow-2xs max-w-xl">
               <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-4 h-4 text-[#7A9B58]" />
-                <span className="text-xs font-bold text-[#2B3A1A] uppercase tracking-wide">
-                  Trải nghiệm giải thích thuật ngữ (Click hoặc Bôi đen):
+                <Sparkles className="w-4 h-4 text-[#7A9B58] shrink-0" />
+                <span className="text-xs font-bold text-[#3D5226] uppercase tracking-wider">
+                  TRẢI NGHIỆM GIẢI THÍCH THUẬT NGỮ (CLICK HOẶC BÔI ĐEN):
                 </span>
               </div>
               
-              <p className="text-xs text-[#5A5248] leading-relaxed mb-3">
-                Thử click hoặc bôi đen các thuật ngữ nổi bật dưới đây để xem popup AI giải thích ngay:
+              <p className="text-xs text-[#6B6355] leading-relaxed mb-4">
+                Thử click hoặc bôi đen các thuật ngữ khó hiểu để xem popup AI giải thích ngay:
               </p>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="liquid-glass-highlight text-xs font-mono cursor-pointer" data-term="ebitda" title="Click để xem giải thích EBITDA">
-                  ✨ EBITDA
-                </span>
-                <span className="liquid-glass-highlight text-xs font-mono cursor-pointer" data-term="p/e" title="Click để xem giải thích P/E">
-                  ✨ Chỉ số P/E
-                </span>
-                <span className="liquid-glass-highlight text-xs font-mono cursor-pointer" data-term="roe" title="Click để xem giải thích ROE">
-                  ✨ ROE
-                </span>
-                <span className="liquid-glass-highlight text-xs font-mono cursor-pointer" data-term="nim" title="Click để xem giải thích NIM">
-                  ✨ NIM
-                </span>
-                <span className="liquid-glass-highlight text-xs font-mono cursor-pointer" data-term="margin call" title="Click để xem giải thích Margin Call">
-                  ✨ Margin Call
-                </span>
-                <span className="liquid-glass-highlight text-xs font-mono cursor-pointer" data-term="cagr" title="Click để xem giải thích CAGR">
-                  ✨ CAGR
-                </span>
+              <div className="flex flex-wrap items-center gap-2.5">
+                {[
+                  { term: 'ebitda', label: 'EBITDA' },
+                  { term: 'p/e', label: 'Chỉ số P/E' },
+                  { term: 'roe', label: 'ROE' },
+                  { term: 'nim', label: 'NIM' },
+                  { term: 'margin call', label: 'Margin Call' },
+                  { term: 'cagr', label: 'CAGR' },
+                ].map((item) => (
+                  <span
+                    key={item.term}
+                    data-term={item.term}
+                    title={`Click để xem giải thích AI: ${item.label}`}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#F5F2EC] hover:bg-[#EAE4D7] border border-[#E2DDD3] hover:border-[#D0C7B8] rounded-xl text-xs font-bold text-[#2B3A1A] cursor-pointer shadow-2xs transition-all hover:-translate-y-px active:scale-95"
+                  >
+                    <span className="text-[#D4A03D] text-[13px] leading-none">✨</span>
+                    <span>{item.label}</span>
+                  </span>
+                ))}
               </div>
             </div>
 
@@ -131,33 +139,41 @@ export const HeroSection = () => {
 
           {/* Right Column */}
           <div className="relative space-y-6 lg:pt-2">
-            {/* Alert Card With Liquid-Glass Highlight inside */}
-            <div className="bg-[#2B3A1A] text-white p-6 rounded-3xl shadow-xl relative overflow-hidden border border-[#3D5226]">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-[#3D5226] flex items-center justify-center font-bold text-[#9CB953] shadow-inner">
+            {/* Alert Card With Liquid-Glass Highlight & LOGO Fin-AI_Gray Watermark */}
+            <div className="bg-[#FAF7F0] text-[#2B3A1A] p-6 rounded-3xl shadow-md border border-[#EBE4D5] relative overflow-hidden">
+              
+              {/* Hoạ tiết LOGO Fin-AI_Gray ở góc phải box */}
+              <img 
+                src="/LOGO Fin-AI_Gray.svg" 
+                alt="" 
+                className="absolute -right-2 -bottom-2 w-48 h-48 object-contain opacity-35 pointer-events-none select-none z-0"
+              />
+
+              <div className="relative z-10 flex justify-between items-start mb-4">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-full bg-[#5C7140] flex items-center justify-center font-bold text-white shadow-xs shrink-0">
                     HPG
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-white text-base leading-snug">Hòa Phát Group</h3>
-                    <span className="text-xs text-[#D8D0C0] font-mono">Giá: 29,300đ (+1.2%)</span>
+                    <h3 className="font-serif font-bold text-[#2B3A1A] text-lg leading-snug">Hòa Phát Group</h3>
+                    <span className="text-xs text-[#7A7060] font-mono">Giá: 29,550đ (+1.22%)</span>
                   </div>
                 </div>
-                <span className="bg-[#3D5226] text-[#9CB953] border border-[#9CB953]/30 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                  <TrendingUp size={12} /> Tích cực 85%
+                <span className="bg-transparent border border-[#DDD5C7] text-[#3D5226] text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-2xs">
+                  <TrendingUp size={13} className="text-[#3D5226]" /> Tích cực 86%
                 </span>
               </div>
 
-              {/* AI Summary Box with Highlighted Term */}
-              <div className="bg-[#3D5226]/80 backdrop-blur-sm p-4 rounded-2xl mb-4 border border-[#9CB953]/25 shadow-inner">
-                <div className="text-[10px] font-bold text-[#9CB953] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#9CB953] live-dot"></span>
-                  AI TÓM TẮT TRỌNG TÂM CHO F0
+              {/* AI Summary Box (Ô chữ nhật nhỏ với hiệu ứng Liquid-Glass trắng trong suốt) */}
+              <div className="bg-white/55 backdrop-blur-md p-5 rounded-2xl mb-4 border border-white/80 shadow-[0_4px_20px_rgba(43,58,26,0.04)] relative z-10">
+                <div className="text-xs font-bold text-[#3D5226] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#5C7140] shrink-0" />
+                  AI TÓM TẮT TRỌNG TÂM CHO NHÀ ĐẦU TƯ MỚI
                 </div>
-                <p className="text-xs text-[#F5F0E8] leading-relaxed select-text font-sans">
+                <p className="text-xs text-[#2B3A1A] leading-relaxed select-text font-sans">
                   Giá quặng sắt thế giới giảm giúp HPG cải thiện biên lợi nhuận{' '}
                   <span 
-                    className="liquid-glass-highlight bg-white/20 text-[#9CB953] border-b-2 border-[#9CB953] px-1.5 py-0.5 rounded cursor-pointer font-bold shadow-sm"
+                    className="inline-flex items-center mx-1 px-2.5 py-0.5 bg-white/80 hover:bg-white border border-[#D5CFC0]/60 rounded-lg font-bold text-[#2B3A1A] cursor-pointer shadow-2xs transition-all hover:-translate-y-px"
                     data-term="ebitda"
                     title="Bôi đen hoặc click để xem giải thích"
                   >
@@ -165,19 +181,19 @@ export const HeroSection = () => {
                   </span>{' '}
                   tăng 38% và duy trì định giá{' '}
                   <span 
-                    className="liquid-glass-highlight bg-white/20 text-[#9CB953] border-b-2 border-[#9CB953] px-1.5 py-0.5 rounded cursor-pointer font-bold shadow-sm"
+                    className="inline-flex items-center mx-1 px-2.5 py-0.5 bg-white/80 hover:bg-white border border-[#D5CFC0]/60 rounded-lg font-bold text-[#2B3A1A] cursor-pointer shadow-2xs transition-all hover:-translate-y-px"
                     data-term="p/e"
                     title="Bôi đen hoặc click để xem giải thích"
                   >
                     P/E
                   </span>{' '}
-                  ở mức 12× rất hấp dẫn so với trung bình ngành.
+                  ở mức 12x — hấp dẫn so với trung bình ngành.
                 </p>
               </div>
 
-              <div className="flex justify-between items-center text-xs text-[#A09888] pt-2 border-t border-[#3D5226]">
-                <span className="italic">💡 Bôi đen hoặc click bất kỳ từ nào để tra cứu AI</span>
-                <span className="text-[#9CB953] font-bold cursor-pointer hover:underline">Chi tiết &rarr;</span>
+              <div className="relative z-10 flex justify-between items-center text-xs text-[#7A7060] pt-2 border-t border-[#EBE4D5]/80">
+                <span className="italic">💡 Bối cảnh hoặc click bất kỳ từ nào để tra cứu AI</span>
+                <span className="text-[#3D5226] font-bold cursor-pointer hover:underline">Chi tiết &rarr;</span>
               </div>
             </div>
 
@@ -190,12 +206,7 @@ export const HeroSection = () => {
               <div className="space-y-2.5">
                 {WATCHLIST.map((item, idx) => (
                   <div key={idx} className="flex justify-between items-center p-2.5 hover:bg-[#F5F8F0] rounded-xl transition-colors">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 bg-[#E8EDE0] rounded-lg flex items-center justify-center font-bold text-xs text-[#3D5226]">
-                        {item.symbol}
-                      </div>
-                      <span className="font-bold text-xs text-[#2B3A1A]">{item.symbol}</span>
-                    </div>
+                    <span className="font-bold text-sm text-[#2B3A1A]">{item.symbol}</span>
                     <div className="text-right">
                       <div className="text-xs font-mono font-bold text-[#2B3A1A]">{item.value}</div>
                       <div className={`text-[11px] font-mono font-bold flex items-center justify-end ${item.up ? 'text-[#3D5226]' : 'text-[#C96B54]'}`}>

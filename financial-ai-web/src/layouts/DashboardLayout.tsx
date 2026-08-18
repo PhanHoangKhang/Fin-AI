@@ -36,7 +36,7 @@ export const DashboardLayout: React.FC = () => {
     },
     { 
       path: '/dashboard/dictionary', 
-      label: 'Từ điển F0 & Pop-up', 
+      label: 'Tra cứu tài chính', 
       icon: <BookOpenIcon className="w-5 h-5 shrink-0" aria-hidden="true" /> 
     },
     { 
