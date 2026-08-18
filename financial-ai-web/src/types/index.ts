@@ -98,3 +98,17 @@ export interface StockInfo {
   summary: string;
   searchKeyword: string
 }
+
+export interface PortfolioAlertDto {
+  alertId: string;
+  ticker: string;
+  alertType: 'NEGATIVE_RISK' | 'POSITIVE_OPPORTUNITY';
+  title: string;
+  summary: string;
+  link: string;
+  publishedDate: string;
+  avgPrice: number;
+  currentPrice: number;
+  profitLossPct: number;
+  suggestedAction: string;
+}

@@ -18,7 +18,7 @@ public class NewsService {
 
     private static final String RSS_URL = "https://vnexpress.net/rss/kinh-doanh.rss";
     private static final String DEFAULT_SOURCE = "VnExpress Kinh Doanh";
-    private static final int MAX_ITEMS = 10;
+    private static final int MAX_ITEMS = 20;
 
     @Autowired
     private GeminiService geminiService;
