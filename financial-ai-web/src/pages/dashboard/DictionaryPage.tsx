@@ -5,6 +5,7 @@ import axios from 'axios';
 import type { Term, CategoryOption, StockInfo } from '../../types';
 import { DictionaryCard } from '../../components/DictionaryCard';
 import { DictionaryModal } from '../../components/DictionaryModal';
+import { StockLogo } from '../../components/StockLogo';
 
 const API_BASE_URL = 'http://localhost:8080/api/v1';
 
@@ -307,19 +308,22 @@ export const DictionaryPage: React.FC = () => {
             {stockInfo && (
               <div className="bg-white border border-[#E8EDE0] rounded-xl p-6 space-y-6 shadow-sm">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#F8F5F0] pb-4">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-2xl font-bold text-[#2B3A1A]">{stockInfo.ticker}</h2>
-                      <span className="text-xs px-2 py-0.5 bg-[#F8F5F0] text-slate-600 rounded font-medium">HOSE / HNX</span>
+                  <div className="flex items-center gap-4">
+                    <StockLogo ticker={stockInfo.ticker} size="lg" alt={stockInfo.companyName} />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h2 className="text-2xl font-bold text-[#2B3A1A]">{stockInfo.ticker}</h2>
+                        <span className="text-xs px-2 py-0.5 bg-[#E8F5E0] text-[#3D5226] rounded font-bold font-mono">HOSE / HNX</span>
+                      </div>
+                      <p className="text-sm text-[#7A7060] font-medium mt-0.5">{stockInfo.companyName}</p>
                     </div>
-                    <p className="text-sm text-slate-500 mt-0.5">{stockInfo.companyName}</p>
                   </div>
 
                   <div className="text-left md:text-right">
-                    <div className="text-2xl font-bold text-[#2B3A1A]">
+                    <div className="text-2xl font-bold text-[#3D5226] font-mono">
                       {stockInfo.currentPrice ? stockInfo.currentPrice.toLocaleString('vi-VN') + ' VND' : 'N/A'}
                     </div>
-                    <span className="text-xs text-slate-400">Giá thị trường</span>
+                    <span className="text-xs text-[#7A7060] font-medium">Giá thị trường</span>
                   </div>
                 </div>
 

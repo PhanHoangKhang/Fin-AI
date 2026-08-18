@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import type { StockInfo } from '../types';
+import { StockLogo } from './StockLogo';
 
 export const StockSearchPage: React.FC = () => {
   const [ticker, setTicker] = useState<string>('');
@@ -74,16 +75,19 @@ export const StockSearchPage: React.FC = () => {
             
             {/* Header info */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#F0EDE6] pb-4">
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-2xl font-serif font-bold text-[#2B3A1A]">{stockInfo.ticker}</h2>
-                  <span className="text-xs px-2.5 py-0.5 bg-[#E8F5E0] text-[#3D5226] rounded-md font-bold">HOSE / HNX</span>
+              <div className="flex items-center gap-4">
+                <StockLogo ticker={stockInfo.ticker} size="lg" alt={stockInfo.companyName} />
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-2xl font-serif font-bold text-[#2B3A1A]">{stockInfo.ticker}</h2>
+                    <span className="text-xs px-2.5 py-0.5 bg-[#E8F5E0] text-[#3D5226] rounded-md font-bold font-mono">HOSE / HNX</span>
+                  </div>
+                  <p className="text-sm text-[#7A7060] mt-0.5">{stockInfo.companyName}</p>
                 </div>
-                <p className="text-sm text-[#7A7060] mt-0.5">{stockInfo.companyName}</p>
               </div>
 
               <div className="text-left md:text-right">
-                <div className="text-2xl font-mono font-bold text-[#2B3A1A]">
+                <div className="text-2xl font-mono font-bold text-[#3D5226]">
                   {stockInfo.currentPrice ? stockInfo.currentPrice.toLocaleString('vi-VN') + ' VND' : 'N/A'}
                 </div>
                 <span className="text-xs text-[#A09888]">Giá thị trường</span>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { NewsItem } from '../types';
 import { TERM_DEFS } from './TermPopup';
+import { StockLogo, isStockTicker } from './StockLogo';
 
 interface NewsCardProps {
   news: NewsItem;
@@ -67,11 +68,15 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
         <div className="flex items-center justify-between gap-3 mb-3">
           {/* Cụm góc trái: Thẻ phân loại/Ticker (có icon nametag) + Nguồn báo + Thời gian */}
           <div className="flex items-center gap-2 flex-wrap">
-            {/* Thẻ phân loại tin tức / Ticker góc trái có icon nametag */}
+            {/* Thẻ phân loại tin tức / Ticker góc trái: Nếu là mã CP thì hiện Logo thật, nếu là Category/Vĩ mô thì chỉ hiện icon nametag */}
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#E8F5E0] text-[#3D5226] font-bold text-xs rounded-lg border border-[#C8DFB0] shadow-2xs">
-              <svg className="w-3.5 h-3.5 text-[#7A9B58] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-              </svg>
+              {isStockTicker(news.ticker) ? (
+                <StockLogo ticker={news.ticker} size="xs" fallback="none" />
+              ) : (
+                <svg className="w-3.5 h-3.5 text-[#7A9B58] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                </svg>
+              )}
               <span className="font-mono uppercase">{news.ticker || 'VĨ MÔ'}</span>
             </span>
 

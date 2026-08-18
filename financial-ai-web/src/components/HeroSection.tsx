@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, TrendingUp, TrendingDown, Sparkles } from 'lucide-react';
+import { StockLogo } from './StockLogo';
 
 const TICKER_ITEMS = [
   { symbol: 'HPG', value: '29,550', change: '+350', percent: '+1.22%', up: true },
@@ -151,9 +152,7 @@ export const HeroSection = () => {
 
               <div className="relative z-10 flex justify-between items-start mb-4">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-12 h-12 rounded-full bg-[#5C7140] flex items-center justify-center font-bold text-white shadow-xs shrink-0">
-                    HPG
-                  </div>
+                  <StockLogo ticker="HPG" size="lg" alt="Hòa Phát Group" className="border border-[#E0DDD6] shadow-sm" />
                   <div>
                     <h3 className="font-serif font-bold text-[#2B3A1A] text-lg leading-snug">Hòa Phát Group</h3>
                     <span className="text-xs text-[#7A7060] font-mono">Giá: 29,550đ (+1.22%)</span>
