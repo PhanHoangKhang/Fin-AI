@@ -7,17 +7,18 @@ import {
   addTicker,
   removeTicker,
 } from "../../utils/portfolioStorage";
+import { PortfolioForm } from "../../components/portfolio/PortfolioForm";
+import { PortfolioTags } from "../../components/portfolio/PortfolioTags";
+import { AlertList } from "../../components/portfolio/AlertList";
 
 export const PortfolioPage: React.FC = () => {
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
   const [alerts, setAlerts] = useState<PortfolioAlertDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Form states
   const [newTicker, setNewTicker] = useState<string>("");
   const [newPrice, setNewPrice] = useState<string>("");
 
-  // 1. Fetch dữ liệu khi Component Mount
   useEffect(() => {
     const savedPortfolio = getPortfolio();
     setPortfolio(savedPortfolio);
@@ -34,7 +35,6 @@ export const PortfolioPage: React.FC = () => {
       });
   }, []);
 
-  // 2. Thêm mã cổ phiếu vào localStorage
   const handleAdd = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newTicker.trim() || !newPrice || isNaN(Number(newPrice))) return;
@@ -45,184 +45,52 @@ export const PortfolioPage: React.FC = () => {
     setNewPrice("");
   };
 
-  // 3. Xóa mã cổ phiếu
   const handleRemove = (tickerToRemove: string) => {
     const updated = removeTicker(tickerToRemove);
     setPortfolio(updated);
   };
 
-  // 4. FILTER: Lọc bài báo dựa trên danh mục trong localStorage
   const filteredAlerts = alerts.filter((alert) =>
     portfolio.some((item) => item.ticker === alert.ticker),
   );
 
   return (
-    <div
-      style={{
-        padding: "24px",
-        maxWidth: "800px",
-        margin: "0 auto",
-        fontFamily: "sans-serif",
-      }}
-    >
-      <h2>💼 Quản Lý Danh Mục (Local Storage)</h2>
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8 font-sans">
+      {/* KHU VỰC QUẢN LÝ DANH MỤC */}
+      <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
+        <div className="border-b border-slate-100 pb-4">
+          <h2 className="text-base font-bold text-slate-900 uppercase tracking-wide">
+            Quản Lý Danh Mục
+          </h2>
+          <p className="text-xs text-slate-500 mt-1">
+            Lưu danh mục trên thiết bị để tự động lọc tin tức phù hợp.
+          </p>
+        </div>
 
-      {/* FORM THÊM MÃ */}
-      <form
-        onSubmit={handleAdd}
-        style={{ display: "flex", gap: "8px", marginBottom: "20px" }}
-      >
-        <input
-          type="text"
-          placeholder="Mã CP (vd: VIC)"
-          value={newTicker}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setNewTicker(e.target.value)
-          }
-          style={{
-            padding: "8px",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-          }}
+        <PortfolioForm
+          newTicker={newTicker}
+          newPrice={newPrice}
+          onTickerChange={(e: ChangeEvent<HTMLInputElement>) => setNewTicker(e.target.value)}
+          onPriceChange={(e: ChangeEvent<HTMLInputElement>) => setNewPrice(e.target.value)}
+          onSubmit={handleAdd}
         />
-        <input
-          type="number"
-          step="0.1"
-          placeholder="Giá vốn (vd: 45.0)"
-          value={newPrice}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setNewPrice(e.target.value)
-          }
-          style={{
-            padding: "8px",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-          }}
-        />
-        <button
-          type="submit"
-          style={{
-            padding: "8px 16px",
-            backgroundColor: "#0070f3",
-            color: "#fff",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
-          + Thêm
-        </button>
-      </form>
 
-      {/* DANH SÁCH MÃ ĐANG THEO DÕI */}
-      <div
-        style={{
-          display: "flex",
-          gap: "10px",
-          flexWrap: "wrap",
-          marginBottom: "24px",
-        }}
-      >
-        {portfolio.map((item) => (
-          <span
-            key={item.ticker}
-            style={{
-              padding: "6px 12px",
-              backgroundColor: "#f0f0f0",
-              borderRadius: "16px",
-              fontSize: "14px",
-            }}
-          >
-            <strong>{item.ticker}</strong> (Giá vốn: {item.avgPrice}k)
-            <button
-              onClick={() => handleRemove(item.ticker)}
-              style={{
-                marginLeft: "8px",
-                border: "none",
-                background: "none",
-                color: "#ff4d4f",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
-              ✕
-            </button>
+        <PortfolioTags portfolio={portfolio} onRemove={handleRemove} />
+      </section>
+
+      {/* KHU VỰC HIỂN THỊ CẢNH BÁO */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+          <h2 className="text-base font-bold text-slate-900 uppercase tracking-wide">
+            Cảnh Báo Cá Nhân Hóa
+          </h2>
+          <span className="text-xs font-semibold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full border border-slate-200">
+            {filteredAlerts.length} bài viết
           </span>
-        ))}
-      </div>
+        </div>
 
-      <hr
-        style={{
-          border: "none",
-          borderTop: "1px solid #eee",
-          margin: "20px 0",
-        }}
-      />
-
-      {/* DANH SÁCH CẢNH BÁO ĐÃ LỌC */}
-      <h2>🚨 Cảnh Báo Cá Nhân Hóa ({filteredAlerts.length})</h2>
-
-      {loading ? (
-        <p>Đang tải dữ liệu từ server...</p>
-      ) : filteredAlerts.length === 0 ? (
-        <p style={{ color: "#888" }}>
-          Không có cảnh báo nào cho các mã cổ phiếu trong danh mục của bạn.
-        </p>
-      ) : (
-        filteredAlerts.map((alert) => (
-          <div
-            key={alert.alertId}
-            style={{
-              borderLeft: `4px solid ${
-                alert.alertType === "NEGATIVE_RISK" ? "#ff4d4f" : "#52c41a"
-              }`,
-              backgroundColor: "#fafafa",
-              padding: "16px",
-              marginBottom: "16px",
-              borderRadius: "0 8px 8px 0",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: "8px",
-              }}
-            >
-              <span
-                style={{
-                  fontWeight: "bold",
-                  color:
-                    alert.alertType === "NEGATIVE_RISK" ? "#ff4d4f" : "#52c41a",
-                }}
-              >
-                [{alert.ticker}] -{" "}
-                {alert.alertType === "NEGATIVE_RISK"
-                  ? "CẢNH BÁO RỦI RO"
-                  : "CƠ HỘI TÍCH CỰC"}
-              </span>
-              <small style={{ color: "#888" }}>{alert.publishedDate}</small>
-            </div>
-
-            <h3 style={{ margin: "0 0 8px 0" }}>{alert.title}</h3>
-            <p style={{ margin: "0 0 12px 0", color: "#555" }}>
-              {alert.summary}
-            </p>
-
-            <div
-              style={{
-                padding: "8px 12px",
-                backgroundColor: "#fff",
-                borderRadius: "4px",
-                border: "1px solid #eee",
-                fontSize: "13px",
-              }}
-            >
-              <strong>Khuyến nghị AI:</strong> {alert.suggestedAction}
-            </div>
-          </div>
-        ))
-      )}
+        <AlertList alerts={filteredAlerts} loading={loading} />
+      </section>
     </div>
   );
 };
