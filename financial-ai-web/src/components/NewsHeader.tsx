@@ -238,8 +238,11 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
       {/* 1. TOP METADATA & BADGES */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#F0EDE6] pb-4">
         <div className="flex items-center gap-3">
-          <span className="px-3.5 py-1 bg-[#3D5226] text-white font-extrabold text-xs rounded-lg tracking-wider">
-            {news.ticker || 'VĨ MÔ'}
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#3D5226] text-white font-extrabold text-xs rounded-lg tracking-wider shadow-sm">
+            <svg className="w-3.5 h-3.5 text-[#9CB953] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+            </svg>
+            <span>{news.ticker || 'VĨ MÔ'}</span>
           </span>
           <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-[#7A7060]">
             <BuildingLibraryIcon className="w-4 h-4 text-[#A09888]" />
