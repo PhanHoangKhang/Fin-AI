@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { newsService } from '../../services/api';
+import { newsService, stockService, type TickerData } from '../../services/api';
 import type { NewsItem } from '../../types';
 import { NewsCard } from '../../components/NewsCard';
 import { NewsSkeleton } from '../../components/NewsSkeleton';
@@ -10,12 +10,12 @@ import { getPortfolio } from '../../utils/portfolioStorage';
 const SOURCES = ['Tất cả', 'CAFEF', 'VIETSTOCK', 'VNECONOMY', 'NDH'];
 
 const STOCK_DETAILS_MAP: Record<string, { name: string; price: string; ch: string; up: boolean }> = {
-  HPG: { name: 'Hòa Phát Group', price: '29,300', ch: '+1.2%', up: true },
-  MBB: { name: 'MB Bank', price: '21,850', ch: '-0.8%', up: false },
-  FPT: { name: 'FPT Corporation', price: '125,400', ch: '+2.1%', up: true },
-  VNM: { name: 'Vinamilk', price: '72,100', ch: '-0.5%', up: false },
-  VIC: { name: 'Vingroup', price: '44,200', ch: '-1.2%', up: false },
-  VHM: { name: 'Vinhomes', price: '38,700', ch: '+0.8%', up: true },
+  HPG: { name: 'Hòa Phát Group', price: '20,950', ch: '+1.2%', up: true },
+  MBB: { name: 'MB Bank', price: '24,350', ch: '-0.8%', up: false },
+  FPT: { name: 'FPT Corporation', price: '131,200', ch: '+2.1%', up: true },
+  VNM: { name: 'Vinamilk', price: '68,400', ch: '-0.5%', up: false },
+  VIC: { name: 'Vingroup', price: '42,600', ch: '-1.2%', up: false },
+  VHM: { name: 'Vinhomes', price: '39,100', ch: '+0.8%', up: true },
   PLX: { name: 'Petrolimex', price: '41,500', ch: '+0.5%', up: true },
   VCB: { name: 'Vietcombank', price: '92,600', ch: '+0.65%', up: true },
   TCB: { name: 'Techcombank', price: '24,300', ch: '+1.4%', up: true },
@@ -23,20 +23,13 @@ const STOCK_DETAILS_MAP: Record<string, { name: string; price: string; ch: strin
   MWG: { name: 'Thế Giới Di Động', price: '64,200', ch: '+1.8%', up: true },
 };
 
-const DEFAULT_WATCHLIST = [
-  { t: 'HPG', name: 'Hòa Phát Group', price: '29,300', ch: '+1.2%', up: true },
-  { t: 'MBB', name: 'MB Bank', price: '21,850', ch: '-0.8%', up: false },
-  { t: 'FPT', name: 'FPT Corporation', price: '125,400', ch: '+2.1%', up: true },
-  { t: 'VNM', name: 'Vinamilk', price: '72,100', ch: '-0.5%', up: false },
-  { t: 'VIC', name: 'Vingroup', price: '44,200', ch: '-1.2%', up: false },
-  { t: 'VHM', name: 'Vinhomes', price: '38,700', ch: '+0.8%', up: true },
-];
-
 export const OverviewPage: React.FC = () => {
   const [newsFeed, setNewsFeed] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeSource, setActiveSource] = useState('Tất cả');
   const [portfolioTickers, setPortfolioTickers] = useState<string[]>([]);
+  const [realtimeData, setRealtimeData] = useState<Record<string, TickerData>>({});
+  const [loadingPrices, setLoadingPrices] = useState(false);
 
   const loadNews = async () => {
     setLoading(true);
@@ -50,30 +43,82 @@ export const OverviewPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    loadNews();
-    const saved = getPortfolio();
-    if (saved && saved.length > 0) {
-      setPortfolioTickers(saved.map(item => item.ticker.toUpperCase()));
+  const fetchRealtimePrices = useCallback(async (tickers: string[]) => {
+    if (!tickers || tickers.length === 0) return;
+    setLoadingPrices(true);
+    try {
+      const data = await stockService.getTickerList(tickers.join(','));
+      if (data && Array.isArray(data) && data.length > 0) {
+        const map: Record<string, TickerData> = {};
+        data.forEach(item => {
+          if (item && item.symbol) {
+            map[item.symbol.toUpperCase()] = item;
+          }
+        });
+        setRealtimeData(prev => ({ ...prev, ...map }));
+      }
+    } catch (err) {
+      console.warn('Lỗi khi fetch giá realtime từ backend:', err);
+    } finally {
+      setLoadingPrices(false);
     }
   }, []);
 
-  // Compute watchlist items: priority to user's tracked portfolio stocks
+  const loadData = useCallback(() => {
+    loadNews();
+    const saved = getPortfolio();
+    const tickers = (saved && saved.length > 0)
+      ? saved.map(item => item.ticker.toUpperCase())
+      : ['HPG', 'MBB', 'FPT', 'VNM', 'VIC', 'VHM'];
+    
+    setPortfolioTickers(saved && saved.length > 0 ? tickers : []);
+    fetchRealtimePrices(tickers);
+  }, [fetchRealtimePrices]);
+
+  useEffect(() => {
+    loadData();
+
+    // Tự động cập nhật lại giá mỗi 15 giây
+    const interval = setInterval(() => {
+      const saved = getPortfolio();
+      const tickers = (saved && saved.length > 0)
+        ? saved.map(item => item.ticker.toUpperCase())
+        : ['HPG', 'MBB', 'FPT', 'VNM', 'VIC', 'VHM'];
+      fetchRealtimePrices(tickers);
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, [loadData, fetchRealtimePrices]);
+
+  // Compute watchlist items: priority to user's tracked portfolio stocks with realtime values from backend
   const displayWatchlist = useMemo(() => {
-    if (portfolioTickers.length > 0) {
-      return portfolioTickers.map(t => {
-        const known = STOCK_DETAILS_MAP[t];
-        return {
-          t,
-          name: known?.name || `Cổ phiếu ${t}`,
-          price: known?.price || '28,500',
-          ch: known?.ch || '+0.8%',
-          up: known ? known.up : true,
-        };
-      });
-    }
-    return DEFAULT_WATCHLIST;
-  }, [portfolioTickers]);
+    const targetTickers = portfolioTickers.length > 0 
+      ? portfolioTickers 
+      : ['HPG', 'MBB', 'FPT', 'VNM', 'VIC', 'VHM'];
+
+    return targetTickers.map(t => {
+      const known = STOCK_DETAILS_MAP[t];
+      const live = realtimeData[t];
+
+      let displayPrice = known?.price ? `${known.price}đ` : '28,500đ';
+      let displayPercent = known?.ch || '+0.0%';
+      let isUp = known ? known.up : true;
+
+      if (live && live.value && live.value !== 'N/A') {
+        displayPrice = live.value.endsWith('đ') ? live.value : `${live.value}đ`;
+        displayPercent = live.percent || `${live.change}`;
+        isUp = live.up;
+      }
+
+      return {
+        t,
+        name: known?.name || `Cổ phiếu ${t}`,
+        price: displayPrice,
+        ch: displayPercent,
+        up: isUp,
+      };
+    });
+  }, [portfolioTickers, realtimeData]);
 
   const filteredNews = activeSource === 'Tất cả' 
     ? newsFeed 
@@ -94,14 +139,14 @@ export const OverviewPage: React.FC = () => {
 
         <button 
           type="button"
-          onClick={loadNews}
-          disabled={loading}
+          onClick={loadData}
+          disabled={loading || loadingPrices}
           className="self-start sm:self-auto flex items-center gap-2 bg-white border border-[#E8EDE0] px-4 py-2 rounded-xl text-xs font-bold text-[#2B3A1A] hover:bg-[#F5F8F0] hover:text-[#3D5226] transition shadow-sm disabled:opacity-50"
         >
-          <svg className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-[#3D5226]' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className={`w-3.5 h-3.5 ${loading || loadingPrices ? 'animate-spin text-[#3D5226]' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
-          <span>{loading ? 'Đang cập nhật...' : 'Làm mới feed'}</span>
+          <span>{loading || loadingPrices ? 'Đang cập nhật...' : 'Làm mới feed'}</span>
         </button>
       </div>
 
@@ -153,7 +198,7 @@ export const OverviewPage: React.FC = () => {
         {/* Right Column - Sidebar */}
         <aside className="space-y-4 sticky top-20">
           
-          {/* Watchlist Card - Hiển thị mã cổ phiếu trong Danh mục với Logo thật */}
+          {/* Watchlist Card - Hiển thị mã cổ phiếu trong Danh mục với Logo thật & Giá Realtime từ Backend */}
           <div className="bg-white rounded-2xl border border-[#E8EDE0] overflow-hidden shadow-sm">
             <div className="px-4 py-3.5 border-b border-[#F0EDE6] flex items-center justify-between">
               <div>

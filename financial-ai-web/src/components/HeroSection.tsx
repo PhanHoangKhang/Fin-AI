@@ -68,31 +68,42 @@ const TICKER_ITEMS = [
   },
 ];
 
-const WATCHLIST_SYMBOLS = ["HPG", "MBB", "FPT", "VNM"];
+import { stockService } from "../services/api";
+
+const WATCHLIST_SYMBOLS = ["VNM", "FPT", "HPG", "PLX"];
+
+const DEFAULT_HERO_WATCHLIST = [
+  { symbol: "VNM", value: "68,400", percent: "-0.50%", up: false },
+  { symbol: "FPT", value: "131,200", percent: "+2.10%", up: true },
+  { symbol: "HPG", value: "20,950", percent: "+1.22%", up: true },
+  { symbol: "PLX", value: "41,500", percent: "+0.50%", up: true },
+];
 
 export const HeroSection = () => {
   const [tickerInput, setTickerInput] = useState("");
-  const [watchlist, setWatchlist] = useState<
-    { symbol: string; value: string; percent: string; up: boolean }[]
-  >([]);
-  const [loadingWatchlist, setLoadingWatchlist] = useState(true);
+  const [watchlist, setWatchlist] = useState<{ symbol: string; value: string; percent: string; up: boolean }[]>(DEFAULT_HERO_WATCHLIST);
+  const [loadingWatchlist, setLoadingWatchlist] = useState(false);
 
   const fetchWatchlist = useCallback(async () => {
     setLoadingWatchlist(true);
     try {
-      const response = await fetch(
-        `http://localhost:8001/api/stock/ticker-list?tickers=${WATCHLIST_SYMBOLS.join(",")}`,
-      );
-
-      if (!response.ok) {
-        throw new Error(`Stock service returned ${response.status}`);
+      const data = await stockService.getTickerList(WATCHLIST_SYMBOLS.join(","));
+      if (Array.isArray(data) && data.length > 0) {
+        const fetchedMap = new Map(data.map(d => [d.symbol?.toUpperCase(), d]));
+        const merged = WATCHLIST_SYMBOLS.map(sym => {
+          const item = fetchedMap.get(sym);
+          const fallback = DEFAULT_HERO_WATCHLIST.find(d => d.symbol === sym)!;
+          return {
+            symbol: sym,
+            value: item && item.value && item.value !== "N/A" ? item.value : fallback.value,
+            percent: item && item.percent ? item.percent : fallback.percent,
+            up: item ? item.up : fallback.up,
+          };
+        });
+        setWatchlist(merged);
       }
-
-      const data = await response.json();
-      setWatchlist(Array.isArray(data) ? data : []);
     } catch (error) {
-      console.error("Lỗi fetch watchlist:", error);
-      setWatchlist([]);
+      console.warn("Lỗi fetch watchlist hero:", error);
     } finally {
       setLoadingWatchlist(false);
     }
@@ -353,37 +364,34 @@ export const HeroSection = () => {
               </div>
 
               <div className="space-y-2.5">
-                {loadingWatchlist && watchlist.length === 0 ? (
-                  <div className="py-4 text-center text-xs font-mono text-[#7A7060]">
-                    Đang tải dữ liệu giá...
-                  </div>
-                ) : (
-                  watchlist.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex justify-between items-center p-2.5 hover:bg-[#F5F8F0] rounded-xl transition-colors"
-                    >
-                      <span className="font-bold text-sm text-[#2B3A1A]">
+                {watchlist.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex justify-between items-center p-2.5 hover:bg-[#F5F8F0] rounded-xl transition-colors cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <StockLogo ticker={item.symbol} size="xs" fallback="none" />
+                      <span className="font-bold text-sm text-[#2B3A1A] font-mono group-hover:text-[#3D5226] transition-colors">
                         {item.symbol}
                       </span>
-                      <div className="text-right">
-                        <div className="text-xs font-mono font-bold text-[#2B3A1A]">
-                          {item.value}
-                        </div>
-                        <div
-                          className={`text-[11px] font-mono font-bold flex items-center justify-end ${item.up ? "text-[#3D5226]" : "text-[#C96B54]"}`}
-                        >
-                          {item.up ? (
-                            <TrendingUp size={11} className="mr-0.5" />
-                          ) : (
-                            <TrendingDown size={11} className="mr-0.5" />
-                          )}
-                          {item.percent}
-                        </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs font-mono font-bold text-[#2B3A1A]">
+                        {item.value.endsWith('đ') ? item.value : `${item.value}đ`}
+                      </div>
+                      <div
+                        className={`text-[11px] font-mono font-bold flex items-center justify-end ${item.up ? "text-[#3D5226]" : "text-[#C96B54]"}`}
+                      >
+                        {item.up ? (
+                          <TrendingUp size={11} className="mr-0.5" />
+                        ) : (
+                          <TrendingDown size={11} className="mr-0.5" />
+                        )}
+                        {item.percent}
                       </div>
                     </div>
-                  ))
-                )}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
