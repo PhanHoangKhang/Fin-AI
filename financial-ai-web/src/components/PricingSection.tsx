@@ -1,24 +1,29 @@
 import { Check, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import background4Img from '../assets/background4.svg';
 
 export const PricingSection = () => {
   return (
-    <section className="py-24 bg-[#F5F0E8] font-sans" id="pricing">
+    <section 
+      className="py-24 bg-cover bg-center bg-no-repeat relative font-sans" 
+      id="pricing"
+      style={{ backgroundImage: `url(${background4Img})` }}
+    >
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="text-center mb-16">
           <div 
-            className="text-[#7A9B58] text-[34px] sm:text-[40px] font-bold mb-2 tracking-wide select-none"
+            className="text-white text-[34px] sm:text-[40px] font-bold mb-2 tracking-wide select-none"
             style={{ fontFamily: "'Dancing Script', cursive, sans-serif" }}
           >
             Chọn gói phù hợp
           </div>
-          <h2 className="text-4xl text-[#2B3A1A] font-serif mb-6" style={{ fontFamily: 'Lora, serif' }}>Bảng giá Dịch vụ</h2>
-          <p className="text-[#7A7060] text-lg max-w-2xl mx-auto">Bắt đầu miễn phí, nâng cấp khi cần. Chọn gói phù hợp với nhu cầu đầu tư của bạn.</p>
+          <h2 className="text-4xl text-white font-serif mb-6" style={{ fontFamily: 'Lora, serif' }}>Bảng giá Dịch vụ</h2>
+          <p className="text-white/80 text-lg max-w-2xl mx-auto">Bắt đầu miễn phí, nâng cấp khi cần. Chọn gói phù hợp với nhu cầu đầu tư của bạn.</p>
         </div>
 
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-stretch">
           {/* Free Plan */}
-          <div className="bg-white rounded-3xl p-8 border border-[#E8EDE0] shadow-sm flex flex-col justify-between transition-all duration-300 ease-out hover:scale-[1.03] hover:shadow-2xl hover:border-[#9CB953]/60 group relative overflow-hidden cursor-pointer">
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 border border-[#E8EDE0] shadow-sm flex flex-col justify-between transition-all duration-300 ease-out hover:scale-[1.03] hover:shadow-2xl hover:border-[#9CB953]/60 group relative overflow-hidden cursor-pointer">
             {/* Ambient glow on hover */}
             <div className="absolute -top-20 -right-20 w-48 h-48 bg-[#9CB953]/15 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
@@ -62,7 +67,7 @@ export const PricingSection = () => {
           </div>
 
           {/* Pro Plan */}
-          <div className="bg-[#2B3A1A] rounded-3xl p-8 border border-[#3D5226] shadow-xl flex flex-col justify-between relative overflow-hidden transition-all duration-300 ease-out hover:scale-[1.03] hover:shadow-2xl hover:border-[#9CB953] group cursor-pointer">
+          <div className="bg-[#2B3A1A]/95 backdrop-blur-sm rounded-3xl p-8 border border-[#3D5226] shadow-xl flex flex-col justify-between relative overflow-hidden transition-all duration-300 ease-out hover:scale-[1.03] hover:shadow-2xl hover:border-[#9CB953] group cursor-pointer">
             {/* Ambient glow on hover */}
             <div className="absolute -top-20 -right-20 w-48 h-48 bg-[#9CB953]/25 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
