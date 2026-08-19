@@ -1,34 +1,52 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { newsService, stockService, type TickerData } from '../../services/api';
-import type { NewsItem } from '../../types';
-import { NewsCard } from '../../components/NewsCard';
-import { NewsSkeleton } from '../../components/NewsSkeleton';
-import { StockLogo } from '../../components/StockLogo';
-import { getPortfolio } from '../../utils/portfolioStorage';
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { Link } from "react-router-dom";
+import { newsService, stockService, type TickerData } from "../../services/api";
+import type { NewsItem } from "../../types";
+import { NewsCard } from "../../components/NewsCard";
+import { NewsSkeleton } from "../../components/NewsSkeleton";
+import { StockLogo } from "../../components/StockLogo";
+import { getPortfolio } from "../../utils/portfolioStorage";
 
-const SOURCES = ['Tất cả', 'CAFEF', 'VIETSTOCK', 'VNECONOMY', 'NDH'];
+const SOURCE_FILTERS = [
+  { label: "Tất cả", keywords: [] },
+  { label: "VNEXPRESS", keywords: ["vnexpress"] },
+  { label: "CAFEF", keywords: ["cafef"] },
+  { label: "VIETSTOCK", keywords: ["vietstock"] },
+  { label: "VNECONOMY", keywords: ["vneconomy"] },
+];
 
-const STOCK_DETAILS_MAP: Record<string, { name: string; price: string; ch: string; up: boolean }> = {
-  HPG: { name: 'Hòa Phát Group', price: '20,950', ch: '+1.2%', up: true },
-  MBB: { name: 'MB Bank', price: '24,350', ch: '-0.8%', up: false },
-  FPT: { name: 'FPT Corporation', price: '131,200', ch: '+2.1%', up: true },
-  VNM: { name: 'Vinamilk', price: '68,400', ch: '-0.5%', up: false },
-  VIC: { name: 'Vingroup', price: '42,600', ch: '-1.2%', up: false },
-  VHM: { name: 'Vinhomes', price: '39,100', ch: '+0.8%', up: true },
-  PLX: { name: 'Petrolimex', price: '41,500', ch: '+0.5%', up: true },
-  VCB: { name: 'Vietcombank', price: '92,600', ch: '+0.65%', up: true },
-  TCB: { name: 'Techcombank', price: '24,300', ch: '+1.4%', up: true },
-  SSI: { name: 'Chứng khoán SSI', price: '32,500', ch: '-0.3%', up: false },
-  MWG: { name: 'Thế Giới Di Động', price: '64,200', ch: '+1.8%', up: true },
+const normalizeSource = (source: string) =>
+  source
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+
+const STOCK_DETAILS_MAP: Record<
+  string,
+  { name: string; price: string; ch: string; up: boolean }
+> = {
+  HPG: { name: "Hòa Phát Group", price: "20,950", ch: "+1.2%", up: true },
+  MBB: { name: "MB Bank", price: "24,350", ch: "-0.8%", up: false },
+  FPT: { name: "FPT Corporation", price: "131,200", ch: "+2.1%", up: true },
+  VNM: { name: "Vinamilk", price: "68,400", ch: "-0.5%", up: false },
+  VIC: { name: "Vingroup", price: "42,600", ch: "-1.2%", up: false },
+  VHM: { name: "Vinhomes", price: "39,100", ch: "+0.8%", up: true },
+  PLX: { name: "Petrolimex", price: "41,500", ch: "+0.5%", up: true },
+  VCB: { name: "Vietcombank", price: "92,600", ch: "+0.65%", up: true },
+  TCB: { name: "Techcombank", price: "24,300", ch: "+1.4%", up: true },
+  SSI: { name: "Chứng khoán SSI", price: "32,500", ch: "-0.3%", up: false },
+  MWG: { name: "Thế Giới Di Động", price: "64,200", ch: "+1.8%", up: true },
 };
 
 export const OverviewPage: React.FC = () => {
   const [newsFeed, setNewsFeed] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeSource, setActiveSource] = useState('Tất cả');
+  const [activeSource, setActiveSource] = useState("Tất cả");
   const [portfolioTickers, setPortfolioTickers] = useState<string[]>([]);
-  const [realtimeData, setRealtimeData] = useState<Record<string, TickerData>>({});
+  const [realtimeData, setRealtimeData] = useState<Record<string, TickerData>>(
+    {},
+  );
   const [loadingPrices, setLoadingPrices] = useState(false);
 
   const loadNews = async () => {
@@ -37,7 +55,7 @@ export const OverviewPage: React.FC = () => {
       const feed = await newsService.getFeed();
       setNewsFeed(feed || []);
     } catch (error) {
-      console.error('Error loading news from backend:', error);
+      console.error("Error loading news from backend:", error);
     } finally {
       setLoading(false);
     }
@@ -47,18 +65,18 @@ export const OverviewPage: React.FC = () => {
     if (!tickers || tickers.length === 0) return;
     setLoadingPrices(true);
     try {
-      const data = await stockService.getTickerList(tickers.join(','));
+      const data = await stockService.getTickerList(tickers.join(","));
       if (data && Array.isArray(data) && data.length > 0) {
         const map: Record<string, TickerData> = {};
-        data.forEach(item => {
+        data.forEach((item) => {
           if (item && item.symbol) {
             map[item.symbol.toUpperCase()] = item;
           }
         });
-        setRealtimeData(prev => ({ ...prev, ...map }));
+        setRealtimeData((prev) => ({ ...prev, ...map }));
       }
     } catch (err) {
-      console.warn('Lỗi khi fetch giá realtime từ backend:', err);
+      console.warn("Lỗi khi fetch giá realtime từ backend:", err);
     } finally {
       setLoadingPrices(false);
     }
@@ -67,10 +85,11 @@ export const OverviewPage: React.FC = () => {
   const loadData = useCallback(() => {
     loadNews();
     const saved = getPortfolio();
-    const tickers = (saved && saved.length > 0)
-      ? saved.map(item => item.ticker.toUpperCase())
-      : ['HPG', 'MBB', 'FPT', 'VNM', 'VIC', 'VHM'];
-    
+    const tickers =
+      saved && saved.length > 0
+        ? saved.map((item) => item.ticker.toUpperCase())
+        : ["HPG", "MBB", "FPT", "VNM", "VIC", "VHM"];
+
     setPortfolioTickers(saved && saved.length > 0 ? tickers : []);
     fetchRealtimePrices(tickers);
   }, [fetchRealtimePrices]);
@@ -81,9 +100,10 @@ export const OverviewPage: React.FC = () => {
     // Tự động cập nhật lại giá mỗi 15 giây
     const interval = setInterval(() => {
       const saved = getPortfolio();
-      const tickers = (saved && saved.length > 0)
-        ? saved.map(item => item.ticker.toUpperCase())
-        : ['HPG', 'MBB', 'FPT', 'VNM', 'VIC', 'VHM'];
+      const tickers =
+        saved && saved.length > 0
+          ? saved.map((item) => item.ticker.toUpperCase())
+          : ["HPG", "MBB", "FPT", "VNM", "VIC", "VHM"];
       fetchRealtimePrices(tickers);
     }, 15000);
 
@@ -92,20 +112,21 @@ export const OverviewPage: React.FC = () => {
 
   // Compute watchlist items: priority to user's tracked portfolio stocks with realtime values from backend
   const displayWatchlist = useMemo(() => {
-    const targetTickers = portfolioTickers.length > 0 
-      ? portfolioTickers 
-      : ['HPG', 'MBB', 'FPT', 'VNM', 'VIC', 'VHM'];
+    const targetTickers =
+      portfolioTickers.length > 0
+        ? portfolioTickers
+        : ["HPG", "MBB", "FPT", "VNM", "VIC", "VHM"];
 
-    return targetTickers.map(t => {
+    return targetTickers.map((t) => {
       const known = STOCK_DETAILS_MAP[t];
       const live = realtimeData[t];
 
-      let displayPrice = known?.price ? `${known.price}đ` : '28,500đ';
-      let displayPercent = known?.ch || '+0.0%';
+      let displayPrice = known?.price ? `${known.price}đ` : "28,500đ";
+      let displayPercent = known?.ch || "+0.0%";
       let isUp = known ? known.up : true;
 
-      if (live && live.value && live.value !== 'N/A') {
-        displayPrice = live.value.endsWith('đ') ? live.value : `${live.value}đ`;
+      if (live && live.value && live.value !== "N/A") {
+        displayPrice = live.value.endsWith("đ") ? live.value : `${live.value}đ`;
         displayPercent = live.percent || `${live.change}`;
         isUp = live.up;
       }
@@ -120,16 +141,32 @@ export const OverviewPage: React.FC = () => {
     });
   }, [portfolioTickers, realtimeData]);
 
-  const filteredNews = activeSource === 'Tất cả' 
-    ? newsFeed 
-    : newsFeed.filter(n => n.source?.toUpperCase() === activeSource.toUpperCase());
+  const filteredNews = useMemo(() => {
+    const selectedFilter = SOURCE_FILTERS.find(
+      (filter) => filter.label === activeSource,
+    );
+
+    if (!selectedFilter || selectedFilter.keywords.length === 0) {
+      return newsFeed;
+    }
+
+    return newsFeed.filter((news) => {
+      const source = normalizeSource(`${news.source || ""} ${news.link || ""}`);
+      return selectedFilter.keywords.some((keyword) =>
+        source.includes(keyword),
+      );
+    });
+  }, [activeSource, newsFeed]);
 
   return (
     <div className="pb-10 font-sans">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-serif font-bold text-[#2B3A1A] mb-1" style={{ fontFamily: 'Lora, serif' }}>
+          <h1
+            className="text-2xl font-serif font-bold text-[#2B3A1A] mb-1"
+            style={{ fontFamily: "Lora, serif" }}
+          >
             Bản tin thị trường AI
           </h1>
           <p className="text-sm text-[#7A7060]">
@@ -137,16 +174,28 @@ export const OverviewPage: React.FC = () => {
           </p>
         </div>
 
-        <button 
+        <button
           type="button"
           onClick={loadData}
           disabled={loading || loadingPrices}
           className="self-start sm:self-auto flex items-center gap-2 bg-white border border-[#E8EDE0] px-4 py-2 rounded-xl text-xs font-bold text-[#2B3A1A] hover:bg-[#F5F8F0] hover:text-[#3D5226] transition shadow-sm disabled:opacity-50"
         >
-          <svg className={`w-3.5 h-3.5 ${loading || loadingPrices ? 'animate-spin text-[#3D5226]' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          <svg
+            className={`w-3.5 h-3.5 ${loading || loadingPrices ? "animate-spin text-[#3D5226]" : ""}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
           </svg>
-          <span>{loading || loadingPrices ? 'Đang cập nhật...' : 'Làm mới feed'}</span>
+          <span>
+            {loading || loadingPrices ? "Đang cập nhật..." : "Làm mới feed"}
+          </span>
         </button>
       </div>
 
@@ -155,17 +204,17 @@ export const OverviewPage: React.FC = () => {
         <div className="flex flex-col gap-6">
           {/* Source Filter */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
-            {SOURCES.map(src => (
+            {SOURCE_FILTERS.map(({ label }) => (
               <button
-                key={src}
-                onClick={() => setActiveSource(src)}
+                key={label}
+                onClick={() => setActiveSource(label)}
                 className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-colors border ${
-                  activeSource === src 
-                    ? 'bg-[#3D5226] text-white border-[#3D5226] shadow-sm' 
-                    : 'bg-white text-[#5A5248] border-[#E8EDE0] hover:border-[#9CB953] hover:text-[#2B3A1A]'
+                  activeSource === label
+                    ? "bg-[#3D5226] text-white border-[#3D5226] shadow-sm"
+                    : "bg-white text-[#5A5248] border-[#E8EDE0] hover:border-[#9CB953] hover:text-[#2B3A1A]"
                 }`}
               >
-                {src}
+                {label}
               </button>
             ))}
             <span className="text-[11px] text-[#A09888] ml-auto whitespace-nowrap hidden sm:inline">
@@ -185,50 +234,83 @@ export const OverviewPage: React.FC = () => {
           ) : (
             <div className="bg-white rounded-2xl p-10 text-center border border-[#E8EDE0] shadow-sm">
               <div className="w-16 h-16 mx-auto bg-[#F5F8F0] rounded-full flex items-center justify-center mb-4">
-                <svg className="w-8 h-8 text-[#9CB953]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15" />
+                <svg
+                  className="w-8 h-8 text-[#9CB953]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15"
+                  />
                 </svg>
               </div>
-              <h3 className="text-base font-bold text-[#2B3A1A] mb-1">Không có tin tức nào</h3>
-              <p className="text-[#7A7060] text-xs">Chưa có bản tin nào từ nguồn "{activeSource}". Vui lòng nhấn "Làm mới feed" để cập nhật.</p>
+              <h3 className="text-base font-bold text-[#2B3A1A] mb-1">
+                Không có tin tức nào
+              </h3>
+              <p className="text-[#7A7060] text-xs">
+                Chưa có bản tin nào từ nguồn "{activeSource}". Vui lòng nhấn
+                "Làm mới feed" để cập nhật.
+              </p>
             </div>
           )}
         </div>
 
         {/* Right Column - Sidebar */}
         <aside className="space-y-4 sticky top-20">
-          
           {/* Watchlist Card - Hiển thị mã cổ phiếu trong Danh mục với Logo thật & Giá Realtime từ Backend */}
           <div className="bg-white rounded-2xl border border-[#E8EDE0] overflow-hidden shadow-sm">
             <div className="px-4 py-3.5 border-b border-[#F0EDE6] flex items-center justify-between">
               <div>
-                <h3 className="text-xs font-bold text-[#2B3A1A] mb-0.5">Bảng giá thời gian thực</h3>
+                <h3 className="text-xs font-bold text-[#2B3A1A] mb-0.5">
+                  Bảng giá thời gian thực
+                </h3>
                 <p className="text-[10px] text-[#A09888]">
-                  {portfolioTickers.length > 0 ? 'Mã trong Danh mục của bạn' : 'HOSE · HNX · UPCOM'}
+                  {portfolioTickers.length > 0
+                    ? "Mã trong Danh mục của bạn"
+                    : "HOSE · HNX · UPCOM"}
                 </p>
               </div>
-              <Link 
-                to="/dashboard/portfolio" 
+              <Link
+                to="/dashboard/portfolio"
                 className="text-[11px] font-bold text-[#2B3A1A] bg-transparent hover:text-[#3D5226] border border-[#DDD8CE] hover:border-[#7A9B58] px-3 py-1 rounded-full transition-all duration-200 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-98"
                 title="Quản lý danh mục theo dõi"
               >
-                {portfolioTickers.length > 0 ? `${portfolioTickers.length} mã` : 'Quản lý'}
+                {portfolioTickers.length > 0
+                  ? `${portfolioTickers.length} mã`
+                  : "Quản lý"}
               </Link>
             </div>
-            
+
             <div className="divide-y divide-[#F8F5F0]">
-              {displayWatchlist.map(stock => (
-                <div key={stock.t} className="flex items-center justify-between px-4 py-3 hover:bg-[#FAFAF7] transition-colors cursor-pointer group">
+              {displayWatchlist.map((stock) => (
+                <div
+                  key={stock.t}
+                  className="flex items-center justify-between px-4 py-3 hover:bg-[#FAFAF7] transition-colors cursor-pointer group"
+                >
                   <div className="flex items-center gap-3">
                     <StockLogo ticker={stock.t} size="sm" />
                     <div>
-                      <div className="text-xs font-bold text-[#2B3A1A] font-mono group-hover:text-[#3D5226] transition-colors">{stock.t}</div>
-                      <div className="text-[10px] text-[#7A7060]">{stock.name}</div>
+                      <div className="text-xs font-bold text-[#2B3A1A] font-mono group-hover:text-[#3D5226] transition-colors">
+                        {stock.t}
+                      </div>
+                      <div className="text-[10px] text-[#7A7060]">
+                        {stock.name}
+                      </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs font-mono font-bold text-[#2B3A1A]">{stock.price}</div>
-                    <div className={`text-[10px] font-mono font-bold ${stock.up ? 'text-[#3D5226]' : 'text-[#C96B54]'}`}>{stock.ch}</div>
+                    <div className="text-xs font-mono font-bold text-[#2B3A1A]">
+                      {stock.price}
+                    </div>
+                    <div
+                      className={`text-[10px] font-mono font-bold ${stock.up ? "text-[#3D5226]" : "text-[#C96B54]"}`}
+                    >
+                      {stock.ch}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -241,31 +323,45 @@ export const OverviewPage: React.FC = () => {
               <div className="w-6 h-6 bg-[#3D5226] text-white rounded-full flex items-center justify-center shadow-2xs">
                 <span className="text-[9px] font-bold">AI</span>
               </div>
-              <span className="text-[11px] font-bold text-[#3D5226] uppercase tracking-widest">Mẹo hôm nay</span>
+              <span className="text-[11px] font-bold text-[#3D5226] uppercase tracking-widest">
+                Mẹo hôm nay
+              </span>
             </div>
             <p className="text-[12px] text-[#5A5248] leading-relaxed mb-3">
-              Bôi đen bất kỳ từ ngữ tài chính nào trong bài báo để nhận giải thích tức thì từ AI — không cần tìm Google.
+              Bôi đen bất kỳ từ ngữ tài chính nào trong bài báo để nhận giải
+              thích tức thì từ AI — không cần tìm Google.
             </p>
             <div className="bg-white border border-[#E0DDD5] rounded-xl px-3 py-2 flex items-center gap-2 shadow-2xs">
-              <span className="text-[11px] text-[#3D5226] font-mono font-medium">Thử với: "EBITDA", "NIM", "P/E"</span>
+              <span className="text-[11px] text-[#3D5226] font-mono font-medium">
+                Thử với: "EBITDA", "NIM", "P/E"
+              </span>
             </div>
           </div>
 
           {/* Community Stats */}
           <div className="bg-white rounded-2xl border border-[#E8EDE0] p-4 shadow-sm">
-            <div className="text-[10px] font-bold tracking-widest text-[#A09888] uppercase mb-3">Cộng đồng FinAI</div>
+            <div className="text-[10px] font-bold tracking-widest text-[#A09888] uppercase mb-3">
+              Cộng đồng FinAI
+            </div>
             <div className="grid grid-cols-2 gap-3 text-center">
               <div className="bg-[#F8F5F0] rounded-xl p-3">
-                <div className="text-base font-bold text-[#2B3A1A] font-serif">5,200+</div>
-                <div className="text-[10px] text-[#7A7060] mt-0.5">Nhà đầu tư F0</div>
+                <div className="text-base font-bold text-[#2B3A1A] font-serif">
+                  5,200+
+                </div>
+                <div className="text-[10px] text-[#7A7060] mt-0.5">
+                  Nhà đầu tư F0
+                </div>
               </div>
               <div className="bg-[#F8F5F0] rounded-xl p-3">
-                <div className="text-base font-bold text-[#3D5226] font-serif">94.2%</div>
-                <div className="text-[10px] text-[#7A7060] mt-0.5">Độ chuẩn xác</div>
+                <div className="text-base font-bold text-[#3D5226] font-serif">
+                  94.2%
+                </div>
+                <div className="text-[10px] text-[#7A7060] mt-0.5">
+                  Độ chuẩn xác
+                </div>
               </div>
             </div>
           </div>
-
         </aside>
       </div>
     </div>
