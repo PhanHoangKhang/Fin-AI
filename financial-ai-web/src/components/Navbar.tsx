@@ -33,7 +33,6 @@ export const Navbar = () => {
           <a href="#features" className="hover:text-[#7A9B58] transition-colors">Sản phẩm</a>
           <a href="#how-it-works" className="hover:text-[#7A9B58] transition-colors">Dành cho F0</a>
           <a href="#pricing" className="hover:text-[#7A9B58] transition-colors">Gói dịch vụ</a>
-          <a href="#learn" className="hover:text-[#7A9B58] transition-colors">Học đầu tư</a>
         </div>
 
         <Link to="/dashboard" className="bg-[#3D5226] text-white px-6 py-2.5 rounded-full font-medium hover:bg-[#2B3A1A] transition-all duration-200 hover:shadow-lg hover:-translate-y-px flex items-center gap-2 font-sans">

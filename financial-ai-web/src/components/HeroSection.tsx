@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, TrendingUp, TrendingDown, Sparkles } from 'lucide-react';
 import { StockLogo } from './StockLogo';
+import backgroundImg from '../assets/background.svg';
 
 const TICKER_ITEMS = [
   { symbol: 'HPG', value: '29,550', change: '+350', percent: '+1.22%', up: true },
@@ -31,7 +32,10 @@ export const HeroSection = () => {
   };
 
   return (
-    <div className="relative pt-24 pb-16 overflow-hidden">
+    <div 
+      className="relative pt-24 pb-16 overflow-hidden bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${backgroundImg})` }}
+    >
       {/* Ticker bar - Khung đóng tách biệt màu be đậm */}
       <div className="container mx-auto px-6 max-w-7xl mb-12">
         <div className="bg-[#EBE4D5] border border-[#DDD4C1] text-[#2B3A1A] py-2.5 px-4 rounded-2xl overflow-hidden shadow-2xs">
