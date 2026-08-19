@@ -48,15 +48,38 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   };
 
   // Determine sentiment properties
-  const getSentimentInfo = (type?: string) => {
+  const getSentimentInfo = (type?: string, score?: number) => {
     const upper = type?.toUpperCase();
-    if (upper === 'POSITIVE') return { color: 'bg-[#3D5226]', text: '▲ MUA', textColor: 'text-[#3D5226]', bg: 'bg-[#E8F5E0]', border: 'border-[#9CB953]' };
-    if (upper === 'NEGATIVE') return { color: 'bg-[#C96B54]', text: '▼ BÁN', textColor: 'text-[#C96B54]', bg: 'bg-[#FBF0EE]', border: 'border-[#C96B54]' };
-    return { color: 'bg-[#C9973E]', text: '◆ NẮM GIỮ', textColor: 'text-[#C9973E]', bg: 'bg-[#FFF8E8]', border: 'border-[#C9973E]' };
+    const scoreText = score && score > 0 ? ` (${score}%)` : '';
+    if (upper === 'POSITIVE') {
+      return { 
+        color: 'bg-[#3D5226]', 
+        text: `▲ Tích cực${scoreText}`, 
+        textColor: 'text-[#3D5226]', 
+        bg: 'bg-[#E8F5E0]', 
+        border: 'border-[#9CB953]' 
+      };
+    }
+    if (upper === 'NEGATIVE') {
+      return { 
+        color: 'bg-[#C96B54]', 
+        text: `▼ Tiêu cực${scoreText}`, 
+        textColor: 'text-[#C96B54]', 
+        bg: 'bg-[#FBF0EE]', 
+        border: 'border-[#C96B54]' 
+      };
+    }
+    return { 
+      color: 'bg-[#7A7060]', 
+      text: `◆ Trung lập${scoreText}`, 
+      textColor: 'text-[#5A5248]', 
+      bg: 'bg-[#F8F5F0]', 
+      border: 'border-[#DDD8CE]' 
+    };
   };
 
-  const sentimentInfo = getSentimentInfo(news.sentimentType);
   const score = news.sentimentScore ?? 0;
+  const sentimentInfo = getSentimentInfo(news.sentimentType, score);
 
   return (
     <article className="bg-white rounded-2xl shadow-sm border border-[#E8EDE0] hover:border-[#9CB953] transition-all duration-200 overflow-hidden flex flex-col group">
@@ -92,7 +115,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
           {/* Góc phải: Sentiment Rating */}
           <div className="flex items-center gap-2 shrink-0">
             <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider border ${sentimentInfo.bg} ${sentimentInfo.textColor} ${sentimentInfo.border}`}>
-              {sentimentInfo.text} {score > 0 && `(${score}%)`}
+              {sentimentInfo.text}
             </span>
           </div>
         </div>
