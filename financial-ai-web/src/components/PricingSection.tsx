@@ -48,6 +48,10 @@ export const PricingSection = () => {
                 </li>
                 <li className="flex items-start gap-3 text-[#2B3A1A]">
                   <Check className="text-[#7A9B58] mt-0.5" size={20} />
+                  <span>Tra cứu thuật ngữ chuyên ngành 5 lần / ngày</span>
+                </li>
+                <li className="flex items-start gap-3 text-[#2B3A1A]">
+                  <Check className="text-[#7A9B58] mt-0.5" size={20} />
                   <span>Theo dõi bảng giá thời gian thực</span>
                 </li>
                 <li className="flex items-start gap-3 text-[#7A7060]/50 line-through">
@@ -80,8 +84,9 @@ export const PricingSection = () => {
                 <h3 className="text-2xl font-bold text-white mb-2">Gói Pro (AI Portfolio)</h3>
                 <p className="text-white/70">Cảnh báo rủi ro danh mục cá nhân hóa & AI Tutor.</p>
               </div>
-              <div className="mb-8">
-                <span className="text-4xl font-bold text-white">49,000 VNĐ</span>
+              <div className="mb-8 flex items-baseline gap-2.5 flex-wrap">
+                <span className="text-lg text-white/40 line-through font-semibold">149,000 VNĐ</span>
+                <span className="text-4xl font-bold text-white">79,000 VNĐ</span>
                 <span className="text-white/70"> / tháng</span>
               </div>
               
@@ -92,15 +97,19 @@ export const PricingSection = () => {
                 </li>
                 <li className="flex items-start gap-3 text-white">
                   <Check className="text-[#9CB953] mt-0.5" size={20} />
-                  <span>Giải thích thuật ngữ chuyên sâu tức thì</span>
+                  <span>Tra cứu từ điển tài chính nâng cao</span>
+                </li>
+                <li className="flex items-start gap-3 text-white">
+                  <Check className="text-[#9CB953] mt-0.5" size={20} />
+                  <span>Tra cứu thuật ngữ chuyên ngành <strong>không giới hạn</strong></span>
+                </li>
+                <li className="flex items-start gap-3 text-white">
+                  <Check className="text-[#9CB953] mt-0.5" size={20} />
+                  <span>Theo dõi bảng giá thời gian thực</span>
                 </li>
                 <li className="flex items-start gap-3 text-white">
                   <Check className="text-[#9CB953] mt-0.5" size={20} />
                   <span>Cảnh báo rủi ro danh mục cá nhân hóa</span>
-                </li>
-                <li className="flex items-start gap-3 text-white">
-                  <Check className="text-[#9CB953] mt-0.5" size={20} />
-                  <span>Đánh giá Sentiment chuyên sâu (MultiInsight)</span>
                 </li>
               </ul>
             </div>

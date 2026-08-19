@@ -37,14 +37,22 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   };
 
   // Determine source color
-  const getSourceColor = (source: string) => {
-    switch (source?.toUpperCase()) {
-      case 'CAFEF': return '#E8562A';
-      case 'VIETSTOCK': return '#1A5EAB';
-      case 'VNECONOMY': return '#2E7D32';
-      case 'NDH': return '#7B1FA2';
-      default: return '#7A9B58';
-    }
+  const getSourceColor = (source: string, link?: string) => {
+    const text = `${source || ''} ${link || ''}`.toUpperCase();
+    if (text.includes('CAFEF')) return '#E8562A';
+    if (text.includes('VIETSTOCK')) return '#1A5EAB';
+    if (text.includes('VNECONOMY')) return '#2E7D32';
+    if (text.includes('VNEXPRESS')) return '#8E24AA';
+    return '#7A9B58';
+  };
+
+  const getSourceLabel = (source?: string, link?: string) => {
+    const text = `${source || ''} ${link || ''}`.toUpperCase();
+    if (text.includes('CAFEF')) return 'CAFEF';
+    if (text.includes('VIETSTOCK')) return 'VIETSTOCK';
+    if (text.includes('VNECONOMY')) return 'VNECONOMY';
+    if (text.includes('VNEXPRESS')) return 'VNEXPRESS';
+    return source || 'TIN TỨC';
   };
 
   // Determine sentiment properties
@@ -105,9 +113,9 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
 
             <span 
               className="text-[10px] font-bold px-2 py-0.5 rounded text-white" 
-              style={{ backgroundColor: getSourceColor(news.source) }}
+              style={{ backgroundColor: getSourceColor(news.source, news.link) }}
             >
-              {news.source || 'TIN TỨC'}
+              {getSourceLabel(news.source, news.link)}
             </span>
             <span className="text-xs text-[#7A7060]">{news.publishedDate}</span>
           </div>
