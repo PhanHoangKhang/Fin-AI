@@ -8,19 +8,54 @@ import { StockLogo } from "../../components/StockLogo";
 import { getPortfolio } from "../../utils/portfolioStorage";
 
 const SOURCE_FILTERS = [
-  { label: "Tất cả", keywords: [] },
-  { label: "VNEXPRESS", keywords: ["vnexpress"] },
-  { label: "CAFEF", keywords: ["cafef"] },
-  { label: "VIETSTOCK", keywords: ["vietstock"] },
-  { label: "VNECONOMY", keywords: ["vneconomy"] },
+  { label: "Tất cả", key: "ALL" },
+  { label: "VNEXPRESS", key: "VNEXPRESS" },
+  { label: "CAFEF", key: "CAFEF" },
+  { label: "VIETSTOCK", key: "VIETSTOCK" },
+  { label: "VNECONOMY", key: "VNECONOMY" },
 ];
 
-const normalizeSource = (source: string) =>
-  source
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim();
+const detectSourceKey = (source?: string, link?: string): string => {
+  const text = `${source || ""} ${link || ""}`.toLowerCase();
+  if (text.includes("cafef")) return "CAFEF";
+  if (text.includes("vietstock")) return "VIETSTOCK";
+  if (text.includes("vneconomy")) return "VNECONOMY";
+  if (text.includes("vnexpress")) return "VNEXPRESS";
+  return "OTHER";
+};
+
+// Đan xen bài viết từ các nguồn khác nhau để tab "Tất cả" hiển thị đa dạng ngay từ đầu
+const interleaveNewsSources = (items: NewsItem[]): NewsItem[] => {
+  if (!items || items.length === 0) return [];
+
+  const groups: Record<string, NewsItem[]> = {
+    VNEXPRESS: [],
+    CAFEF: [],
+    VIETSTOCK: [],
+    VNECONOMY: [],
+    OTHER: [],
+  };
+
+  items.forEach((item) => {
+    const key = detectSourceKey(item.source, item.link);
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(item);
+  });
+
+  const result: NewsItem[] = [];
+  const sourceKeys = ["VNEXPRESS", "CAFEF", "VIETSTOCK", "VNECONOMY", "OTHER"];
+  const maxLen = Math.max(...Object.values(groups).map((g) => g.length), 0);
+
+  for (let i = 0; i < maxLen; i++) {
+    for (const key of sourceKeys) {
+      if (i < groups[key].length) {
+        result.push(groups[key][i]);
+      }
+    }
+  }
+
+  return result;
+};
 
 const STOCK_DETAILS_MAP: Record<
   string,
@@ -42,7 +77,7 @@ const STOCK_DETAILS_MAP: Record<
 export const OverviewPage: React.FC = () => {
   const [newsFeed, setNewsFeed] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeSource, setActiveSource] = useState("Tất cả");
+  const [activeSource, setActiveSource] = useState("ALL");
   const [portfolioTickers, setPortfolioTickers] = useState<string[]>([]);
   const [realtimeData, setRealtimeData] = useState<Record<string, TickerData>>({});
   const [loadingPrices, setLoadingPrices] = useState(false);
@@ -51,7 +86,8 @@ export const OverviewPage: React.FC = () => {
     setLoading(true);
     try {
       const feed = await newsService.getFeed();
-      setNewsFeed(feed || []);
+      const interleaved = interleaveNewsSources(feed || []);
+      setNewsFeed(interleaved);
     } catch (error) {
       console.error("Error loading news from backend:", error);
     } finally {
@@ -139,20 +175,14 @@ export const OverviewPage: React.FC = () => {
     });
   }, [portfolioTickers, realtimeData]);
 
+  // Lọc theo nguồn được chọn
   const filteredNews = useMemo(() => {
-    const selectedFilter = SOURCE_FILTERS.find(
-      (filter) => filter.label === activeSource,
-    );
-
-    if (!selectedFilter || selectedFilter.keywords.length === 0) {
+    if (activeSource === "ALL") {
       return newsFeed;
     }
-
     return newsFeed.filter((news) => {
-      const source = normalizeSource(`${news.source || ""} ${news.link || ""}`);
-      return selectedFilter.keywords.some((keyword) =>
-        source.includes(keyword),
-      );
+      const key = detectSourceKey(news.source, news.link);
+      return key === activeSource;
     });
   }, [activeSource, newsFeed]);
 
@@ -168,7 +198,7 @@ export const OverviewPage: React.FC = () => {
             Bản tin thị trường AI
           </h1>
           <p className="text-sm text-[#7A7060]">
-            Tổng hợp realtime từ RSS & Phân tích tác động bằng Trí tuệ nhân tạo.
+            Tổng hợp realtime từ 4 nguồn báo tài chính hàng đầu & Phân tích tác động bằng AI.
           </p>
         </div>
 
@@ -202,20 +232,40 @@ export const OverviewPage: React.FC = () => {
         <div className="flex flex-col gap-6">
           {/* Source Filter */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
-            {SOURCE_FILTERS.map(({ label }) => (
-              <button
-                key={label}
-                onClick={() => setActiveSource(label)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-colors border ${
-                  activeSource === label
-                    ? "bg-[#3D5226] text-white border-[#3D5226] shadow-sm"
-                    : "bg-white text-[#5A5248] border-[#E8EDE0] hover:border-[#9CB953] hover:text-[#2B3A1A]"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-            <span className="text-[11px] text-[#A09888] ml-auto whitespace-nowrap hidden sm:inline">
+            {SOURCE_FILTERS.map((filter) => {
+              const count =
+                filter.key === "ALL"
+                  ? newsFeed.length
+                  : newsFeed.filter((n) => detectSourceKey(n.source, n.link) === filter.key).length;
+
+              const isSelected = activeSource === filter.key;
+
+              return (
+                <button
+                  key={filter.key}
+                  onClick={() => setActiveSource(filter.key)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-colors border flex items-center gap-1.5 ${
+                    isSelected
+                      ? "bg-[#3D5226] text-white border-[#3D5226] shadow-sm"
+                      : "bg-white text-[#5A5248] border-[#E8EDE0] hover:border-[#9CB953] hover:text-[#2B3A1A]"
+                  }`}
+                >
+                  <span>{filter.label}</span>
+                  {count > 0 && (
+                    <span
+                      className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                        isSelected
+                          ? "bg-white/20 text-white"
+                          : "bg-[#F0EDE6] text-[#7A7060]"
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+            <span className="text-[11px] text-[#A09888] ml-auto whitespace-nowrap hidden sm:inline font-mono">
               {filteredNews.length} bản tin
             </span>
           </div>
@@ -333,31 +383,6 @@ export const OverviewPage: React.FC = () => {
               <span className="text-[11px] text-[#3D5226] font-mono font-medium">
                 Thử với: "EBITDA", "NIM", "P/E"
               </span>
-            </div>
-          </div>
-
-          {/* Community Stats */}
-          <div className="bg-white rounded-2xl border border-[#E8EDE0] p-4 shadow-sm">
-            <div className="text-[10px] font-bold tracking-widest text-[#A09888] uppercase mb-3">
-              Cộng đồng FinAI
-            </div>
-            <div className="grid grid-cols-2 gap-3 text-center">
-              <div className="bg-[#F8F5F0] rounded-xl p-3">
-                <div className="text-base font-bold text-[#2B3A1A] font-serif">
-                  5,200+
-                </div>
-                <div className="text-[10px] text-[#7A7060] mt-0.5">
-                  Nhà đầu tư F0
-                </div>
-              </div>
-              <div className="bg-[#F8F5F0] rounded-xl p-3">
-                <div className="text-base font-bold text-[#3D5226] font-serif">
-                  94.2%
-                </div>
-                <div className="text-[10px] text-[#7A7060] mt-0.5">
-                  Độ chuẩn xác
-                </div>
-              </div>
             </div>
           </div>
         </aside>

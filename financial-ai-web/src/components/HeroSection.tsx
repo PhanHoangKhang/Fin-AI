@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
-  Search,
   TrendingUp,
   TrendingDown,
   Sparkles,
@@ -80,7 +79,6 @@ const DEFAULT_HERO_WATCHLIST = [
 ];
 
 export const HeroSection = () => {
-  const [tickerInput, setTickerInput] = useState("");
   const [watchlist, setWatchlist] = useState<{ symbol: string; value: string; percent: string; up: boolean }[]>(DEFAULT_HERO_WATCHLIST);
   const [loadingWatchlist, setLoadingWatchlist] = useState(false);
 
@@ -112,13 +110,6 @@ export const HeroSection = () => {
   useEffect(() => {
     void fetchWatchlist();
   }, [fetchWatchlist]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (tickerInput.trim()) {
-      window.location.href = `/dashboard?ticker=${encodeURIComponent(tickerInput.trim())}`;
-    }
-  };
 
   return (
     <div
@@ -182,29 +173,6 @@ export const HeroSection = () => {
               mới. Loại bỏ tin đồn, giải thích thuật ngữ bình dân và cảnh báo
               danh mục tự động.
             </p>
-
-            {/* Search Bar */}
-            <form onSubmit={handleSearch} className="flex max-w-md gap-2">
-              <div className="relative flex-1">
-                <input
-                  type="text"
-                  value={tickerInput}
-                  onChange={(e) => setTickerInput(e.target.value)}
-                  placeholder="Nhập mã cổ phiếu (VD: HPG, FPT)..."
-                  className="w-full pl-11 pr-4 py-3.5 bg-white border border-[#E8EDE0] rounded-full text-sm placeholder-[#7A7060]/60 text-[#2B3A1A] focus:outline-none focus:border-[#7A9B58] focus:ring-2 focus:ring-[#9CB953]/20 shadow-sm font-sans"
-                />
-                <Search
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7A7060]"
-                  size={18}
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-[#3D5226] text-white px-6 py-3.5 rounded-full font-bold text-sm hover:bg-[#2B3A1A] transition-all hover:shadow-lg hover:-translate-y-px whitespace-nowrap font-sans"
-              >
-                Tra cứu AI
-              </button>
-            </form>
 
             {/* Interactive Financial Term Highlight Feature Demo - Không khung bao */}
             <div className="max-w-xl">
