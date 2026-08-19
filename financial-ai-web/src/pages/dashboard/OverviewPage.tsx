@@ -44,9 +44,7 @@ export const OverviewPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [activeSource, setActiveSource] = useState("Tất cả");
   const [portfolioTickers, setPortfolioTickers] = useState<string[]>([]);
-  const [realtimeData, setRealtimeData] = useState<Record<string, TickerData>>(
-    {},
-  );
+  const [realtimeData, setRealtimeData] = useState<Record<string, TickerData>>({});
   const [loadingPrices, setLoadingPrices] = useState(false);
 
   const loadNews = async () => {
