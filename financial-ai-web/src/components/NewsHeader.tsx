@@ -9,7 +9,6 @@ import {
   ArrowUpRightIcon,
   ChartBarIcon,
   ChartPieIcon,
-  PresentationChartLineIcon,
   SignalIcon,
   CurrencyDollarIcon,
   QueueListIcon,
@@ -229,7 +228,6 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
   const hasMetrics =
     hasEntries(news.radarMetrics) ||
     hasEntries(news.technicalSignals) ||
-    hasEntries(news.timelineGrowthData) ||
     hasEntries(news.sentimentBreakdown) ||
     hasEntries(news.chartData);
 
@@ -468,7 +466,7 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
             <ChartBarIcon className="w-4 h-4 text-[#3D5226]" />
             <span>Chỉ số định lượng tổng hợp</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <MetricGroup
               icon={ChartBarIcon}
               label="Khía cạnh trọng yếu (360°)"
@@ -480,12 +478,6 @@ export const NewsHeader: React.FC<NewsHeaderProps> = ({ news }) => {
               label="Tín hiệu kỹ thuật & dòng tiền"
               data={news.technicalSignals}
               accent="text-indigo-600"
-            />
-            <MetricGroup
-              icon={PresentationChartLineIcon}
-              label="Xung lực tăng trưởng theo quý"
-              data={news.timelineGrowthData}
-              accent="text-emerald-600"
             />
             <MetricGroup
               icon={ChartPieIcon}
