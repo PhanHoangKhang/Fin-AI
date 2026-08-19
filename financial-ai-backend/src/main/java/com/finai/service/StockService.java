@@ -31,4 +31,14 @@ public class StockService {
             return null;
         }
     }
+
+    public Object getTickerList(String tickers) {
+        try {
+            String url = PYTHON_SERVICE_URL + "/ticker-list?tickers=" + tickers;
+            return restTemplate.getForObject(url, Object.class);
+        } catch (Exception e) {
+            System.err.println("Lỗi gọi Python Service Ticker: " + e.getMessage());
+            return null;
+        }
+    }
 }

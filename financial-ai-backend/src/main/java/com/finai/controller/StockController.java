@@ -26,4 +26,15 @@ public class StockController {
         Object priceData = stockService.getStockPriceHistory(ticker);
         return ResponseEntity.ok(priceData);
     }
+
+    // Lấy danh sách Ticker Realtime cho thanh cuộn Hero Section
+    @GetMapping("/ticker-list")
+    public ResponseEntity<?> getTickerList(
+            @RequestParam(defaultValue = "HPG,VN-INDEX,MBB,FPT,VCB,VIC,HNX-INDEX") String tickers) {
+        Object tickerData = stockService.getTickerList(tickers);
+        if (tickerData == null) {
+            return ResponseEntity.internalServerError().body("Lỗi khi kết nối dữ liệu ticker từ Python Service");
+        }
+        return ResponseEntity.ok(tickerData);
+    }
 }

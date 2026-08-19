@@ -57,3 +57,39 @@ def get_stock_price(ticker: str):
         return records
     except Exception as e:
         return {"error": f"Lỗi lấy giá từ Yahoo Finance: {str(e)}"}
+
+# 3. API lấy dữ liệu Realtime cho thanh Ticker
+@app.get("/api/stock/ticker-list")
+def get_ticker_list(tickers: str = "HPG,MBB,FPT,VCB,VIC"):
+    ticker_array = [t.strip().upper() for t in tickers.split(",") if t.strip()]
+    results = []
+    
+    for symbol in ticker_array:
+        # Xử lý riêng mã chỉ số VN-Index, HNX-Index nếu dùng Yahoo Finance (^VNINDEX) hoặc cổ phiếu (.VN)
+        yf_symbol = f"{symbol}.VN" if not symbol.startswith("^") else symbol
+        if symbol == "VN-INDEX": yf_symbol = "^VNINDEX"
+        elif symbol == "HNX-INDEX": yf_symbol = "^HNX"
+        
+        try:
+            stock = yf.Ticker(yf_symbol)
+            fast_info = stock.fast_info
+            
+            # Lấy giá hiện tại và giá đóng cửa phiên trước
+            current = fast_info.last_price or 0
+            prev_close = fast_info.previous_close or current
+            
+            change = current - prev_close
+            percent = (change / prev_close * 100) if prev_close else 0
+            
+            results.append({
+                "symbol": symbol,
+                "value": f"{current:,.2f}" if "INDEX" in symbol else f"{current:,.0f}",
+                "change": f"{change:+,.2f}" if "INDEX" in symbol else f"{change:+,.0f}",
+                "percent": f"{percent:+.2f}%",
+                "up": change >= 0
+            })
+        except Exception:
+            # Fallback nếu mã gặp lỗi
+            results.append({"symbol": symbol, "value": "N/A", "change": "0", "percent": "0.00%", "up": True})
+            
+    return results
