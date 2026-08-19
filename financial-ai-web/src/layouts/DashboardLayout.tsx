@@ -164,16 +164,6 @@ export const DashboardLayout: React.FC = () => {
               {currentTitle}
             </h1>
           </nav>
-
-          {/* User Profile Badge */}
-          <aside aria-label="Thông tin người dùng" className="flex items-center gap-4">
-            <div className="flex items-center gap-2.5 bg-[#F5F8F0] border border-[#E8EDE0] px-3.5 py-1.5 rounded-full shadow-sm">
-              <div className="w-7 h-7 bg-[#3D5226] rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0">
-                F0
-              </div>
-              <span className="text-xs font-bold text-[#3D5226]">Tài khoản F0 (Standard)</span>
-            </div>
-          </aside>
         </header>
 
         {/* Sub-Pages Container */}
