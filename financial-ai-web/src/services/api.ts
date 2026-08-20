@@ -1,9 +1,23 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
-const STOCK_SERVICE_URL = import.meta.env.VITE_STOCK_SERVICE_URL || 'http://localhost:8001/api/stock';
+function normalizeApiUrl(url: string | undefined, defaultUrl: string, defaultPath: string): string {
+  if (!url || !url.trim()) return defaultUrl;
+  let cleaned = url.trim().replace(/\/+$/, '');
+  if (!cleaned.startsWith('http://') && !cleaned.startsWith('https://')) {
+    cleaned = 'https://' + cleaned;
+  }
+  // Nếu người dùng nhập URL gốc không có path (vd: https://finai-backend.onrender.com)
+  if (!cleaned.endsWith(defaultPath) && !cleaned.includes('/api/')) {
+    cleaned = `${cleaned}${defaultPath}`;
+  }
+  return cleaned;
+}
+
+export const BASE_URL = normalizeApiUrl(import.meta.env.VITE_API_URL, 'http://localhost:8080/api/v1', '/api/v1');
+export const STOCK_SERVICE_URL = normalizeApiUrl(import.meta.env.VITE_STOCK_SERVICE_URL, 'http://localhost:8001/api/stock', '/api/stock');
 
 // Hàm helper fetch chung
 async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const response = await fetch(`${BASE_URL}${cleanEndpoint}`, {
     headers: {
       'Content-Type': 'application/json',
       ...options?.headers,
@@ -25,6 +39,11 @@ export const newsService = {
 
   // Lấy chi tiết 1 bài viết theo ID (Dùng chung fetchAPI)
   getById: (id: string) => fetchAPI<any>(`/news/${encodeURIComponent(id)}`),
+};
+
+// Định nghĩa các hàm gọi API cho Từ điển
+export const glossaryService = {
+  getAll: () => fetchAPI<any[]>('/glossary'),
 };
 
 export interface TickerData {

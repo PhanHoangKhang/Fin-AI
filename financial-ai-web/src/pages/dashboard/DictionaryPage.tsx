@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Term, CategoryOption, StockInfo } from '../../types';
+import type { Term, CategoryOption } from '../../types';
 import { DictionaryCard } from '../../components/DictionaryCard';
 import { DictionaryModal } from '../../components/DictionaryModal';
 import { StockLogo } from '../../components/StockLogo';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
+import { glossaryService, stockService, type StockInfo } from '../../services/api';
 
 // Bộ dữ liệu thuật ngữ tài chính chuyên sâu & phong phú
 const COMPREHENSIVE_TERMS: Term[] = [
@@ -435,11 +433,10 @@ export const DictionaryPage: React.FC = () => {
     const fetchTerms = async () => {
       try {
         setLoadingTerms(true);
-        const response = await axios.get<Term[]>(`${API_BASE_URL}/glossary`);
-        if (Array.isArray(response.data) && response.data.length >= COMPREHENSIVE_TERMS.length) {
-          setTerms(response.data);
+        const data = await glossaryService.getAll();
+        if (Array.isArray(data) && data.length >= COMPREHENSIVE_TERMS.length) {
+          setTerms(data);
         } else {
-          // Merge hoặc dùng bộ thuật ngữ chuyên sâu
           setTerms(COMPREHENSIVE_TERMS);
         }
       } catch (error) {
@@ -474,19 +471,22 @@ export const DictionaryPage: React.FC = () => {
   // Handler Tra cứu Cổ phiếu
   const handleStockSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!ticker.trim()) return;
+    const cleanTicker = ticker.trim().toUpperCase();
+    if (!cleanTicker) return;
 
     setLoadingStock(true);
     setStockError('');
     setStockInfo(null);
 
     try {
-      const response = await axios.get<StockInfo>(
-        `${API_BASE_URL}/stocks/${ticker.trim().toUpperCase()}/info`
-      );
-      setStockInfo(response.data);
+      const data = await stockService.getStockInfo(cleanTicker);
+      if (data && data.ticker) {
+        setStockInfo(data);
+      } else {
+        setStockError(`Không tìm thấy dữ liệu cho mã cổ phiếu "${cleanTicker}"`);
+      }
     } catch (err) {
-      setStockError(`Không tìm thấy dữ liệu cho mã cổ phiếu "${ticker.toUpperCase()}"`);
+      setStockError(`Không tìm thấy dữ liệu cho mã cổ phiếu "${cleanTicker}"`);
     } finally {
       setLoadingStock(false);
     }

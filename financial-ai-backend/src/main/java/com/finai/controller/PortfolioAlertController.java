@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/alerts")
+@RequestMapping({"/api/alerts", "/api/v1/alerts"})
 @CrossOrigin(origins = "*")
 public class PortfolioAlertController {
     
     @Autowired
     private PortfolioAlertService alertService;
 
-    // Frontend gọi ngắn gọn: GET http://localhost:8080/api/alerts/my-alerts
+    // Frontend gọi: GET /api/alerts/my-alerts hoặc /api/v1/alerts/my-alerts
     @GetMapping("/my-alerts")
     public ResponseEntity<List<PortfolioAlertDto>> getMyPortfolioAlerts() {
         String hardcodedUserId = "user_demo_01";
