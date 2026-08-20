@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { Term, CategoryOption, StockInfo } from '../../types';
 import { DictionaryCard } from '../../components/DictionaryCard';
 import { DictionaryModal } from '../../components/DictionaryModal';
@@ -561,11 +562,13 @@ export const DictionaryPage: React.FC = () => {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredTerms.map((term) => (
-                  <DictionaryCard key={term.id} term={term} onClick={setSelectedTerm} />
-                ))}
-              </div>
+              <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <AnimatePresence mode="popLayout">
+                  {filteredTerms.map((term) => (
+                    <DictionaryCard key={term.id} term={term} onClick={setSelectedTerm} />
+                  ))}
+                </AnimatePresence>
+              </motion.div>
             )}
 
             <DictionaryModal term={selectedTerm} onClose={() => setSelectedTerm(null)} />

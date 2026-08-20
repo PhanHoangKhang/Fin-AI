@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import type { NewsItem } from '../types';
 import { TERM_DEFS } from './TermPopup';
 import { StockLogo, isStockTicker } from './StockLogo';
@@ -90,16 +91,27 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   const sentimentInfo = getSentimentInfo(news.sentimentType, score);
 
   return (
-    <article className="bg-white rounded-2xl shadow-sm border border-[#E8EDE0] hover:border-[#9CB953] transition-all duration-200 overflow-hidden flex flex-col group">
+    <motion.article 
+      layout
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ 
+        y: -4, 
+        boxShadow: "0 12px 28px -6px rgba(43, 58, 26, 0.08)",
+        borderColor: "rgba(156, 185, 83, 0.6)"
+      }}
+      className="bg-white rounded-2xl shadow-sm border border-[#E8EDE0] transition-colors overflow-hidden flex flex-col group cursor-pointer"
+    >
       {/* Top Sentiment Strip */}
       <div className={`h-[3px] w-full ${sentimentInfo.color}`}></div>
       
       <div className="p-5 flex-1 flex flex-col">
         {/* Header: Category/Ticker with nametag icon on LEFT, Sentiment Badge on RIGHT */}
         <div className="flex items-center justify-between gap-3 mb-3">
-          {/* Cụm góc trái: Thẻ phân loại/Ticker (có icon nametag) + Nguồn báo + Thời gian */}
+          {/* Cụm góc trái: Thẻ phân loại/Ticker + Nguồn báo + Thời gian */}
           <div className="flex items-center gap-2 flex-wrap">
-            {/* Thẻ phân loại tin tức / Ticker góc trái: Nếu là mã CP thì hiện Logo thật, nếu là Category/Vĩ mô thì chỉ hiện icon nametag */}
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#E8F5E0] text-[#3D5226] font-bold text-xs rounded-lg border border-[#C8DFB0] shadow-2xs">
               {isStockTicker(news.ticker) ? (
                 <StockLogo ticker={news.ticker} size="xs" fallback="none" />
@@ -200,16 +212,14 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
           
           <Link 
             to={`/dashboard/news/${news.id}`} 
-            className="font-bold text-[#3D5226] hover:text-[#2B3A1A] flex items-center gap-1 transition-colors"
+            className="font-bold text-[#3D5226] hover:text-[#2B3A1A] flex items-center gap-1 transition-colors group/link"
           >
             <span>Xem phân tích AI</span>
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-            </svg>
+            <span className="transition-transform group-hover/link:translate-x-0.5">&rarr;</span>
           </Link>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 };
 
