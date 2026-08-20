@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { NewsItem } from '../types';
 import { TERM_DEFS } from './TermPopup';
@@ -11,6 +11,7 @@ interface NewsCardProps {
 
 export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
 
   // Helper tự động gắn hiệu ứng liquid-glass cho thuật ngữ tài chính
   const renderHighlightedContent = (text?: string) => {
@@ -28,6 +29,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
             className="liquid-glass-highlight"
             data-term={lower}
             title={`Click để xem giải thích AI: ${part}`}
+            onClick={(e) => e.stopPropagation()}
           >
             {part}
           </span>
@@ -90,6 +92,28 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   const score = news.sentimentScore ?? 0;
   const sentimentInfo = getSentimentInfo(news.sentimentType, score);
 
+  // Khi click vào bất kỳ đâu trong card, chuyển hướng tới trang chi tiết phân tích AI
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Không chuyển trang nếu người dùng đang bôi đen text để tra cứu
+    const selection = window.getSelection();
+    if (selection && selection.toString().trim().length > 0) {
+      return;
+    }
+
+    // Không chuyển trang nếu click vào thẻ a (Bài gốc), button (Thu gọn), hoặc từ khóa tra cứu thuật ngữ
+    const target = e.target as HTMLElement;
+    if (
+      target.closest('a') ||
+      target.closest('button') ||
+      target.closest('.liquid-glass-highlight') ||
+      target.hasAttribute('data-term')
+    ) {
+      return;
+    }
+
+    navigate(`/dashboard/news/${news.id}`);
+  };
+
   return (
     <motion.article 
       layout
@@ -98,10 +122,11 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ 
-        y: -4, 
+        y: -3, 
         boxShadow: "0 12px 28px -6px rgba(43, 58, 26, 0.08)",
         borderColor: "rgba(156, 185, 83, 0.6)"
       }}
+      onClick={handleCardClick}
       className="bg-white rounded-2xl shadow-sm border border-[#E8EDE0] transition-colors overflow-hidden flex flex-col group cursor-pointer"
     >
       {/* Top Sentiment Strip */}
@@ -141,11 +166,11 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
         </div>
 
         {/* Title */}
-        <Link to={`/dashboard/news/${news.id}`} className="block mb-2 group">
+        <div className="block mb-2 group">
           <h2 className="text-[17px] leading-snug font-serif font-bold text-[#2B3A1A] group-hover:text-[#3D5226] transition-colors">
             {renderHighlightedContent(news.title)}
           </h2>
-        </Link>
+        </div>
 
         {/* Keywords / Tags với nametag icon */}
         {news.keywords && news.keywords.length > 0 && (
@@ -185,7 +210,10 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
         {news.aiSummary && news.aiSummary.length > 180 && (
           <button
             type="button"
-            onClick={() => setExpanded(!expanded)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpanded(!expanded);
+            }}
             className="text-[11px] font-semibold text-[#7A9B58] hover:text-[#3D5226] mb-3 self-start transition-colors"
           >
             {expanded ? 'Thu gọn ↑' : 'Đọc thêm ↓'}
@@ -199,7 +227,8 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
               href={news.link} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="text-[#7A7060] hover:text-[#2B3A1A] font-semibold flex items-center gap-1 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+              className="text-[#7A7060] hover:text-[#2B3A1A] font-semibold flex items-center gap-1 transition-colors z-10"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -210,13 +239,10 @@ export const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
             <span />
           )}
           
-          <Link 
-            to={`/dashboard/news/${news.id}`} 
-            className="font-bold text-[#3D5226] hover:text-[#2B3A1A] flex items-center gap-1 transition-colors group/link"
-          >
+          <div className="font-bold text-[#3D5226] group-hover:text-[#2B3A1A] flex items-center gap-1 transition-colors">
             <span>Xem phân tích AI</span>
-            <span className="transition-transform group-hover/link:translate-x-0.5">&rarr;</span>
-          </Link>
+            <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+          </div>
         </div>
       </div>
     </motion.article>
