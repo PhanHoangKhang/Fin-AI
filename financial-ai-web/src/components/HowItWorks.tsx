@@ -69,9 +69,9 @@ export const HowItWorks = () => {
                 borderColor: "rgba(156, 185, 83, 0.8)",
                 boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.35)"
               }}
-              className={`bg-[#2B3A1A]/85 backdrop-blur-md border border-[#3D5226] rounded-3xl p-8 relative overflow-hidden group shadow-lg transition-colors cursor-pointer ${stepItem.delayClass}`}
+              className={`bg-[#2B3A1A]/85 backdrop-blur-md border border-[#3D5226] rounded-[10px] p-8 relative overflow-hidden group shadow-lg transition-colors cursor-pointer ${stepItem.delayClass}`}
             >
-              {/* Animated watermark number */}
+              {/* Watermark number */}
               <motion.div 
                 whileHover={{ scale: 1.1, rotate: -5 }}
                 className="absolute -right-4 -top-4 text-8xl font-bold text-[#3D5226]/30 group-hover:text-[#9CB953]/30 transition-colors pointer-events-none select-none font-mono"
@@ -79,7 +79,7 @@ export const HowItWorks = () => {
                 {stepItem.num}
               </motion.div>
 
-              <div className="inline-block px-3 py-1 bg-[#3D5226]/80 text-[#9CB953] font-bold text-xs rounded-full mb-4 relative z-10 border border-[#9CB953]/30">
+              <div className="inline-block px-3 py-1 bg-[#3D5226]/80 text-[#9CB953] font-bold text-xs rounded-[10px] mb-4 relative z-10 border border-[#9CB953]/30">
                 {stepItem.step}
               </div>
 

@@ -1,12 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
   TrendingUp,
   TrendingDown,
-  Sparkles,
   RefreshCw,
   ArrowRight,
+  HelpCircle,
 } from "lucide-react";
 import { StockLogo } from "./StockLogo";
 import backgroundImg from "../assets/background.svg";
@@ -66,18 +65,13 @@ export const HeroSection = () => {
   }, [fetchWatchlist]);
 
   return (
-    <div
-      className="relative pt-24 pb-16 overflow-hidden bg-cover bg-center bg-no-repeat"
+    <section
+      className="relative pt-28 pb-20 overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${backgroundImg})` }}
     >
-      {/* Ticker bar - Khung đóng tách biệt màu be đậm */}
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="container mx-auto px-6 max-w-7xl mb-12"
-      >
-        <div className="bg-[#EBE4D5] border border-[#DDD4C1] text-[#2B3A1A] py-2.5 px-4 rounded-2xl overflow-hidden shadow-2xs">
+      {/* Ticker bar - Khung đóng bo nhẹ 10px */}
+      <div className="container mx-auto px-6 max-w-7xl mb-12">
+        <div className="bg-[#EBE4D5]/90 border border-[#DDD4C1] text-[#2B3A1A] py-2 px-4 rounded-[10px] overflow-hidden shadow-2xs">
           <div className="animate-[ticker_32s_linear_infinite] flex items-center gap-10 whitespace-nowrap text-xs font-sans ticker-track">
             {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map(
               (item, i) => (
@@ -89,13 +83,13 @@ export const HeroSection = () => {
                     {item.value}
                   </span>
                   <span
-                    className={`flex items-center font-bold text-[11px] ${item.up ? "text-[#4D6E28]" : "text-[#C96B54]"}`}
+                    className={`flex items-center font-bold text-[11px] ${item.up ? "text-[#3D5226]" : "text-[#C96B54]"}`}
                   >
                     {item.percent}
                     {item.up ? (
-                      <TrendingUp size={12} className="ml-1 text-[#4D6E28]" />
+                      <TrendingUp size={12} className="ml-0.5 text-[#3D5226]" />
                     ) : (
-                      <TrendingDown size={12} className="ml-1 text-[#C96B54]" />
+                      <TrendingDown size={12} className="ml-0.5 text-[#C96B54]" />
                     )}
                   </span>
                 </div>
@@ -103,34 +97,24 @@ export const HeroSection = () => {
             )}
           </div>
         </div>
-      </motion.div>
+      </div>
 
       <div className="container mx-auto px-6 max-w-7xl">
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Left Column */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="space-y-6"
-          >
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1, duration: 0.4 }}
-              className="inline-flex items-center gap-2 select-none"
-            >
-              <span className="w-2 h-2 rounded-full bg-[#9CB953] live-dot"></span>
-              <span className="text-[#3D5226] text-xs font-extrabold tracking-wider uppercase font-sans">
-                NỀN TẢNG AI CHỨNG KHOÁN
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          
+          {/* CỘT TRÁI: THÔNG ĐIỆP & NÚT THỬ NGAY & BÔI ĐEN THUẬT NGỮ */}
+          <div className="lg:col-span-7 space-y-7">
+            {/* Tag định danh bo nhẹ 10px */}
+            <div className="inline-flex items-center gap-2 select-none px-3 py-1 bg-white/70 rounded-[10px] border border-[#E0DDD6] shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-[#7A9B58] live-dot"></span>
+              <span className="text-[#3D5226] text-[11px] font-bold tracking-wider uppercase font-sans">
+                Trợ lý Đọc tin & Quản trị Danh mục
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl sm:text-5xl lg:text-[56px] text-[#2B3A1A] leading-[1.15] font-serif font-bold tracking-tight"
+            {/* Tiêu đề chính font Lora thanh lịch */}
+            <h1
+              className="text-4xl sm:text-5xl lg:text-[54px] text-[#2B3A1A] leading-[1.18] font-serif font-bold tracking-tight"
               style={{ fontFamily: "Lora, serif" }}
             >
               Đọc tin chứng khoán,
@@ -138,61 +122,45 @@ export const HeroSection = () => {
               <span className="text-[#3D5226]">hiểu ngay tác động</span>
               <br />
               chỉ trong 30 giây.
-            </motion.h1>
+            </h1>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, duration: 0.6 }}
-              className="text-[#5A5248] text-base lg:text-lg leading-relaxed font-sans max-w-xl"
-            >
-              Nền tảng AI đơn giản hóa tin tức tài chính dành riêng cho người
-              mới. Loại bỏ tin đồn, giải thích thuật ngữ bình dân và cảnh báo
-              danh mục tự động.
-            </motion.p>
+            {/* Mô tả súc tích, ấm áp */}
+            <p className="text-[#5A5248] text-base lg:text-lg leading-relaxed font-sans max-w-xl">
+              Nền tảng đơn giản hóa tin tức tài chính dành riêng cho nhà đầu tư mới. 
+              Tóm tắt trọng tâm, giải thích thuật ngữ bình dân và cảnh báo biến động danh mục kịp thời.
+            </p>
 
-            {/* Quick Action CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45, duration: 0.5 }}
-              className="flex items-center gap-4 pt-1"
-            >
+            {/* NÚT THỬ NGAY (BO VIỀN 10PX) */}
+            <div className="flex flex-wrap items-center gap-4 pt-1">
               <Link
                 to="/dashboard"
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#3D5226] hover:bg-[#2B3A1A] text-white rounded-full font-bold text-sm shadow-md hover:shadow-xl transition-all duration-300 group font-sans hover:-translate-y-0.5 active:scale-98"
+                className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#3D5226] hover:bg-[#2B3A1A] text-white rounded-[10px] font-bold text-sm sm:text-base shadow-sm hover:shadow-md transition-all duration-200 group font-sans hover:-translate-y-0.5 active:scale-98"
               >
-                <span>Khám phá Dashboard</span>
+                <span>Thử ngay</span>
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </Link>
               <a
                 href="#how-it-works"
-                className="inline-flex items-center px-5 py-3.5 text-sm font-bold text-[#3D5226] hover:text-[#2B3A1A] hover:bg-[#E8EDE0]/60 rounded-full transition font-sans"
+                className="inline-flex items-center px-5 py-3.5 text-sm font-bold text-[#5A5248] hover:text-[#2B3A1A] hover:bg-white/60 rounded-[10px] transition duration-150 font-sans"
               >
                 Xem cách hoạt động
               </a>
-            </motion.div>
+            </div>
 
-            {/* Interactive Financial Term Highlight Feature Demo */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.55, duration: 0.6 }}
-              className="max-w-xl pt-2"
-            >
+            {/* BÔI ĐEN TỪ NGỮ CHUYÊN MÔN VÀ GIẢI THÍCH */}
+            <div className="pt-4 border-t border-[#E8EDE0]/90 max-w-xl">
               <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-4 h-4 text-[#7A9B58] shrink-0" />
+                <HelpCircle className="w-4 h-4 text-[#7A9B58] shrink-0" />
                 <span className="text-xs font-bold text-[#3D5226] uppercase tracking-wider">
-                  TRẢI NGHIỆM GIẢI THÍCH THUẬT NGỮ (CLICK HOẶC BÔI ĐEN):
+                  Trải nghiệm giải thích thuật ngữ tức thì:
                 </span>
               </div>
 
-              <p className="text-xs text-[#6B6355] leading-relaxed mb-4">
-                Thử click hoặc bôi đen các thuật ngữ khó hiểu để xem popup AI
-                giải thích ngay:
+              <p className="text-xs text-[#6B6355] leading-relaxed mb-3">
+                Bôi đen hoặc click trực tiếp vào các từ khóa bên dưới để xem popup AI giải nghĩa:
               </p>
 
-              <div className="flex flex-wrap items-center gap-2.5">
+              <div className="flex flex-wrap items-center gap-2">
                 {[
                   { term: "ebitda", label: "EBITDA" },
                   { term: "p/e", label: "Chỉ số P/E" },
@@ -201,111 +169,82 @@ export const HeroSection = () => {
                   { term: "margin call", label: "Margin Call" },
                   { term: "cagr", label: "CAGR" },
                 ].map((item) => (
-                  <motion.span
+                  <span
                     key={item.term}
                     data-term={item.term}
                     title={`Click để xem giải thích AI: ${item.label}`}
-                    whileHover={{ y: -2, scale: 1.04 }}
-                    whileTap={{ scale: 0.96 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#F5F2EC] hover:bg-[#EAE4D7] border border-[#E2DDD3] hover:border-[#D0C7B8] rounded-xl text-xs font-bold text-[#2B3A1A] cursor-pointer shadow-2xs transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-[#F5F8F0] border border-[#DDD8CE] hover:border-[#7A9B58] rounded-[10px] text-xs font-bold text-[#2B3A1A] cursor-pointer shadow-2xs transition-all duration-150 hover:-translate-y-0.5 active:scale-95"
                   >
-                    <span className="text-[#D4A03D] text-[13px] leading-none">
-                      ✨
-                    </span>
+                    <span className="text-[#9CB953] text-xs">✦</span>
                     <span>{item.label}</span>
-                  </motion.span>
+                  </span>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
-            {/* Sources */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.65, duration: 0.6 }}
-              className="flex items-center gap-4 text-xs font-semibold text-[#7A7060] font-sans pt-2"
-            >
-              <span className="uppercase tracking-wider text-[#A09888]">
-                Tổng hợp từ:
-              </span>
-              <span className="bg-white px-2.5 py-1 rounded-md border border-[#E8EDE0] text-[#5A5248]">
-                CAFEF
-              </span>
-              <span className="bg-white px-2.5 py-1 rounded-md border border-[#E8EDE0] text-[#5A5248]">
-                VIETSTOCK
-              </span>
-              <span className="bg-white px-2.5 py-1 rounded-md border border-[#E8EDE0] text-[#5A5248]">
-                VNECONOMY
-              </span>
-              <span className="bg-white px-2.5 py-1 rounded-md border border-[#E8EDE0] text-[#5A5248]">
-                VNEXPRESS
-              </span>
-            </motion.div>
-          </motion.div>
+            {/* Nguồn tin tổng hợp */}
+            <div className="flex items-center gap-2 sm:gap-3 text-xs text-[#7A7060] font-sans pt-1 flex-wrap">
+              <span className="font-semibold text-[#8C8272]">Nguồn chính thống:</span>
+              <span className="bg-white/80 px-2.5 py-1 rounded-[6px] border border-[#E8EDE0] text-[#3D372E] font-medium text-[11px]">VnExpress</span>
+              <span className="bg-white/80 px-2.5 py-1 rounded-[6px] border border-[#E8EDE0] text-[#3D372E] font-medium text-[11px]">CafeF</span>
+              <span className="bg-white/80 px-2.5 py-1 rounded-[6px] border border-[#E8EDE0] text-[#3D372E] font-medium text-[11px]">Vietstock</span>
+              <span className="bg-white/80 px-2.5 py-1 rounded-[6px] border border-[#E8EDE0] text-[#3D372E] font-medium text-[11px]">VnEconomy</span>
+            </div>
+          </div>
 
-          {/* Right Column */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="relative space-y-6 lg:pt-2"
-          >
-            {/* Alert Card With Liquid-Glass Highlight & LOGO Fin-AI_Gray Watermark */}
-            <motion.div 
-              whileHover={{ y: -3, transition: { duration: 0.2 } }}
-              className="bg-[#FAF7F0] text-[#2B3A1A] p-6 rounded-3xl shadow-md border border-[#EBE4D5] relative overflow-hidden transition-shadow hover:shadow-xl"
-            >
-              {/* Hoạ tiết LOGO Fin-AI_Gray ở góc phải box */}
+          {/* CỘT PHẢI: BẢN TIN MẪU & XEM CỔ PHIẾU NHANH (BO VIỀN 10PX) */}
+          <div className="lg:col-span-5 space-y-6">
+            
+            {/* THẺ BẢN TIN MẪU CÓ TỪ NGỮ HIGHLIGHT (BO 10PX) */}
+            <div className="bg-[#FAF7F0] text-[#2B3A1A] p-6 rounded-[10px] shadow-[0_4px_20px_rgba(43,58,26,0.05)] border border-[#EBE4D5] relative overflow-hidden">
+              {/* Hoạ tiết watermark chìm trang nhã */}
               <img
                 src="/LOGO Fin-AI_Gray.svg"
                 alt=""
-                className="absolute -right-2 -bottom-2 w-48 h-48 object-contain opacity-35 pointer-events-none select-none z-0"
+                className="absolute -right-3 -bottom-3 w-40 h-40 object-contain opacity-25 pointer-events-none select-none z-0"
               />
 
               <div className="relative z-10 flex justify-between items-start mb-4">
-                <div className="flex items-center gap-3.5">
+                <div className="flex items-center gap-3">
                   <StockLogo
                     ticker="HPG"
-                    size="lg"
+                    size="md"
                     alt="Hòa Phát Group"
-                    className="border border-[#E0DDD6] shadow-sm"
+                    className="border border-[#E0DDD6] shadow-2xs rounded-[6px]"
                   />
                   <div>
-                    <h3 className="font-serif font-bold text-[#2B3A1A] text-lg leading-snug">
-                      Hòa Phát Group
+                    <h3 className="font-serif font-bold text-[#2B3A1A] text-base leading-snug">
+                      Hòa Phát Group (HPG)
                     </h3>
                     <span className="text-xs text-[#7A7060] font-mono">
-                      Giá: 29,550đ (+1.22%)
+                      29,550đ (+1.22%)
                     </span>
                   </div>
                 </div>
-                <span className="bg-transparent border border-[#DDD5C7] text-[#3D5226] text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-2xs">
-                  <TrendingUp size={13} className="text-[#3D5226]" /> Tích cực
-                  86%
+                <span className="bg-[#E8F5E0] text-[#3D5226] border border-[#C8DFB0] text-xs font-bold px-3 py-1 rounded-[10px] flex items-center gap-1 shadow-2xs">
+                  <TrendingUp size={12} /> Tích cực 86%
                 </span>
               </div>
 
-              {/* AI Summary Box */}
-              <div className="bg-white/55 backdrop-blur-md p-5 rounded-2xl mb-4 border border-white/80 shadow-[0_4px_20px_rgba(43,58,26,0.04)] relative z-10">
-                <div className="text-xs font-bold text-[#3D5226] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-[#5C7140] shrink-0" />
-                  AI TÓM TẮT TRỌNG TÂM CHO NHÀ ĐẦU TƯ MỚI
+              {/* Hộp tóm tắt AI (BO 10PX) */}
+              <div className="bg-white/80 backdrop-blur-xs p-4 rounded-[10px] mb-4 border border-[#E8EDE0] relative z-10">
+                <div className="text-[11px] font-bold text-[#3D5226] uppercase tracking-wider mb-2 flex items-center gap-1">
+                  <span>✦ AI Tóm tắt trọng tâm</span>
                 </div>
                 <p className="text-xs text-[#2B3A1A] leading-relaxed select-text font-sans">
-                  Giá quặng sắt thế giới giảm giúp HPG cải thiện biên lợi nhuận{" "}
+                  Giá quặng sắt thế giới hạ nhiệt giúp HPG cải thiện biên lợi nhuận, kỳ vọng{" "}
                   <span
-                    className="inline-flex items-center mx-1 px-2.5 py-0.5 bg-white/80 hover:bg-white border border-[#D5CFC0]/60 rounded-lg font-bold text-[#2B3A1A] cursor-pointer shadow-2xs transition-all hover:-translate-y-px"
+                    className="inline-flex items-center mx-0.5 px-2 py-0.5 bg-[#F5F8F0] hover:bg-[#E8F5E0] border border-[#C8DFB0] rounded-[6px] font-bold text-[#2B3A1A] cursor-pointer shadow-2xs transition-colors"
                     data-term="ebitda"
-                    title="Bôi đen hoặc click để xem giải thích"
+                    title="Click để xem giải thích AI"
                   >
                     EBITDA
                   </span>{" "}
-                  tăng 38% và duy trì định giá{" "}
+                  tăng trưởng và duy trì chỉ số định giá{" "}
                   <span
-                    className="inline-flex items-center mx-1 px-2.5 py-0.5 bg-white/80 hover:bg-white border border-[#D5CFC0]/60 rounded-lg font-bold text-[#2B3A1A] cursor-pointer shadow-2xs transition-all hover:-translate-y-px"
+                    className="inline-flex items-center mx-0.5 px-2 py-0.5 bg-[#F5F8F0] hover:bg-[#E8F5E0] border border-[#C8DFB0] rounded-[6px] font-bold text-[#2B3A1A] cursor-pointer shadow-2xs transition-colors"
                     data-term="p/e"
-                    title="Bôi đen hoặc click để xem giải thích"
+                    title="Click để xem giải thích AI"
                   >
                     P/E
                   </span>{" "}
@@ -313,32 +252,28 @@ export const HeroSection = () => {
                 </p>
               </div>
 
-              <div className="relative z-10 flex justify-between items-center text-xs text-[#7A7060] pt-2 border-t border-[#EBE4D5]/80">
-                <span className="italic">
-                  💡 Bối cảnh hoặc click bất kỳ từ nào để tra cứu AI
+              <div className="relative z-10 flex justify-between items-center text-xs text-[#7A7060] pt-2 border-t border-[#EBE4D5]">
+                <span className="italic text-[11px]">
+                  💡 Bôi đen bất kỳ chữ nào để tra cứu AI
                 </span>
-                <Link to="/dashboard" className="text-[#3D5226] font-bold hover:underline flex items-center gap-1">
-                  <span>Chi tiết</span>
-                  <span>&rarr;</span>
+                <Link to="/dashboard" className="text-[#3D5226] font-bold hover:underline">
+                  Vào Dashboard &rarr;
                 </Link>
               </div>
-            </motion.div>
+            </div>
 
-            {/* Watchlist Preview */}
-            <motion.div 
-              whileHover={{ y: -3, transition: { duration: 0.2 } }}
-              className="bg-white rounded-3xl p-6 border border-[#E8EDE0] shadow-sm transition-shadow hover:shadow-xl"
-            >
+            {/* XEM CỔ PHIẾU NHANH (BO 10PX) */}
+            <div className="bg-white rounded-[10px] p-6 border border-[#E8EDE0] shadow-[0_2px_12px_rgba(43,58,26,0.04)]">
               <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center gap-2">
-                  <h4 className="font-bold text-[#2B3A1A] text-sm">
-                    Bảng giá theo dõi nhanh
+                  <h4 className="font-bold text-[#2B3A1A] text-sm font-serif">
+                    Xem cổ phiếu nhanh
                   </h4>
                   <button
                     onClick={fetchWatchlist}
                     disabled={loadingWatchlist}
                     title="Làm mới giá"
-                    className="p-1 text-[#7A9B58] hover:text-[#3D5226] hover:bg-[#F5F8F0] rounded-md transition disabled:opacity-50"
+                    className="p-1 text-[#7A9B58] hover:text-[#3D5226] hover:bg-[#F5F8F0] rounded-[6px] transition disabled:opacity-50"
                   >
                     <RefreshCw
                       size={12}
@@ -354,16 +289,15 @@ export const HeroSection = () => {
                 </Link>
               </div>
 
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 {watchlist.map((item, idx) => (
-                  <motion.div
+                  <Link
+                    to="/dashboard"
                     key={idx}
-                    whileHover={{ x: 4, backgroundColor: "rgba(245, 248, 240, 1)" }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    className="flex justify-between items-center p-2.5 rounded-xl transition-colors cursor-pointer group"
+                    className="flex justify-between items-center p-2.5 hover:bg-[#FAF7F0] rounded-[10px] transition-colors group border border-transparent hover:border-[#E8EDE0]"
                   >
-                    <div className="flex items-center gap-2.5">
-                      <StockLogo ticker={item.symbol} size="xs" fallback="none" />
+                    <div className="flex items-center gap-3">
+                      <StockLogo ticker={item.symbol} size="xs" fallback="none" className="rounded-[4px]" />
                       <span className="font-bold text-sm text-[#2B3A1A] font-mono group-hover:text-[#3D5226] transition-colors">
                         {item.symbol}
                       </span>
@@ -383,11 +317,12 @@ export const HeroSection = () => {
                         {item.percent}
                       </div>
                     </div>
-                  </motion.div>
+                  </Link>
                 ))}
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+
+          </div>
         </div>
       </div>
 
@@ -401,7 +336,7 @@ export const HeroSection = () => {
       `,
         }}
       />
-    </div>
+    </section>
   );
 };
 
