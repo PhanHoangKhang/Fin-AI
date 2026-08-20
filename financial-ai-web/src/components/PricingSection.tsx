@@ -1,5 +1,4 @@
-import { motion } from 'framer-motion';
-import { Check, ArrowRight, Sparkles } from 'lucide-react';
+import { Check, ArrowRight, Sparkles, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import background4Img from '../assets/background4.svg';
 
@@ -11,73 +10,66 @@ export const PricingSection = () => {
       style={{ backgroundImage: `url(${background4Img})` }}
     >
       <div className="container mx-auto px-6 max-w-7xl">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-16"
-        >
+        {/* Section Header */}
+        <div className="text-center mb-16 space-y-3">
           <div 
-            className="text-white text-[34px] sm:text-[40px] font-bold mb-2 tracking-wide select-none"
+            className="text-white text-[34px] sm:text-[40px] font-bold tracking-wide select-none"
             style={{ fontFamily: "'Dancing Script', cursive, sans-serif" }}
           >
             Chọn gói phù hợp
           </div>
-          <h2 className="text-4xl text-white font-serif mb-6" style={{ fontFamily: 'Lora, serif' }}>
-            Bảng giá Dịch vụ
+          <h2 className="text-3xl sm:text-4xl text-white font-serif leading-snug" style={{ fontFamily: 'Lora, serif' }}>
+            Bảng giá Dịch vụ Minh bạch & Linh hoạt
           </h2>
-          <p className="text-white/80 text-lg max-w-2xl mx-auto">
-            Bắt đầu miễn phí, nâng cấp khi cần. Chọn gói phù hợp với nhu cầu đầu tư của bạn.
+          <p className="text-white/85 text-base sm:text-lg max-w-2xl mx-auto">
+            Bắt đầu hoàn toàn miễn phí, nâng cấp khi cần tính năng cá nhân hóa danh mục chuyên sâu.
           </p>
-        </motion.div>
+        </div>
 
-        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-stretch">
-          {/* Free Plan */}
-          <motion.div 
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ 
-              y: -6, 
-              scale: 1.01,
-              boxShadow: "0 20px 40px -12px rgba(0, 0, 0, 0.25)"
-            }}
-            className="bg-white/95 backdrop-blur-md rounded-[10px] p-8 border border-[#E8EDE0] shadow-sm flex flex-col justify-between group relative overflow-hidden cursor-pointer transition-colors"
-          >
-            {/* Ambient glow on hover */}
-            <div className="absolute -top-20 -right-20 w-48 h-48 bg-[#9CB953]/15 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
+        {/* 2-Card Value Matrix */}
+        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-stretch mb-12">
+          
+          {/* FREE PLAN (STANDARD) */}
+          <div className="bg-[#FAF7F0]/95 backdrop-blur-md rounded-[10px] p-8 border border-[#DDD5C7] shadow-[0_4px_24px_rgba(43,58,26,0.08)] flex flex-col justify-between group relative overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl">
             <div>
-              <div className="mb-8">
-                <h3 className="text-2xl font-bold text-[#2B3A1A] mb-2 font-serif">Miễn phí (Standard)</h3>
-                <p className="text-[#7A7060]">Dành cho học sinh, sinh viên & F0 mới tìm hiểu.</p>
-              </div>
-              <div className="mb-8">
-                <span className="text-4xl font-bold text-[#2B3A1A] font-mono">0 VNĐ</span>
-                <span className="text-[#7A7060]"> / tháng</span>
+              <div className="mb-6 pb-6 border-b border-[#E8EDE0]">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-2xl font-bold text-[#2B3A1A] font-serif">Gói Miễn phí</h3>
+                  <span className="text-xs font-bold text-[#2B3A1A] bg-[#EFE8DA] px-2.5 py-1 rounded-[6px] uppercase tracking-wider border border-[#DDD3C0]">
+                    Standard
+                  </span>
+                </div>
+                <p className="text-[#5A5248] text-sm">Dành cho học sinh, sinh viên & nhà đầu tư F0 mới tìm hiểu.</p>
+                
+                <div className="mt-6 flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-[#2B3A1A] font-mono">0 VNĐ</span>
+                  <span className="text-[#7A7060] text-sm"> / vĩnh viễn</span>
+                </div>
               </div>
               
-              <ul className="space-y-4 mb-8">
+              <div className="text-xs font-bold text-[#2B3A1A] uppercase tracking-wider mb-4">
+                Tính năng bao gồm:
+              </div>
+
+              <ul className="space-y-3.5 mb-8 text-sm">
                 <li className="flex items-start gap-3 text-[#2B3A1A]">
-                  <Check className="text-[#7A9B58] mt-0.5 shrink-0" size={20} />
+                  <Check className="text-[#7A9B58] mt-0.5 shrink-0" size={18} />
                   <span>Tóm tắt tin tức tự động hàng ngày</span>
                 </li>
                 <li className="flex items-start gap-3 text-[#2B3A1A]">
-                  <Check className="text-[#7A9B58] mt-0.5 shrink-0" size={20} />
+                  <Check className="text-[#7A9B58] mt-0.5 shrink-0" size={18} />
                   <span>Tra cứu từ điển tài chính cơ bản</span>
                 </li>
                 <li className="flex items-start gap-3 text-[#2B3A1A]">
-                  <Check className="text-[#7A9B58] mt-0.5 shrink-0" size={20} />
-                  <span>Tra cứu thuật ngữ chuyên ngành 5 lần / ngày</span>
+                  <Check className="text-[#7A9B58] mt-0.5 shrink-0" size={18} />
+                  <span>Tra cứu thuật ngữ chuyên ngành <strong>5 lần / ngày</strong></span>
                 </li>
                 <li className="flex items-start gap-3 text-[#2B3A1A]">
-                  <Check className="text-[#7A9B58] mt-0.5 shrink-0" size={20} />
+                  <Check className="text-[#7A9B58] mt-0.5 shrink-0" size={18} />
                   <span>Theo dõi bảng giá thời gian thực</span>
                 </li>
                 <li className="flex items-start gap-3 text-[#7A7060]/50 line-through">
-                  <Check className="text-[#7A7060]/30 mt-0.5 shrink-0" size={20} />
+                  <Check className="text-[#7A7060]/30 mt-0.5 shrink-0" size={18} />
                   <span>Cảnh báo rủi ro danh mục cá nhân</span>
                 </li>
               </ul>
@@ -85,78 +77,82 @@ export const PricingSection = () => {
 
             <Link 
               to="/dashboard"
-              className="w-full py-3.5 px-6 rounded-[10px] font-bold text-center transition-all duration-300 flex items-center justify-center gap-2 bg-[#E8EDE0] text-[#2B3A1A] group-hover:bg-white/90 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] group-hover:scale-[1.01]"
+              className="w-full py-3.5 px-6 rounded-[10px] font-bold text-center transition-all duration-200 flex items-center justify-center gap-2 bg-[#2B3A1A] hover:bg-[#1E2B12] text-white border border-[#4A6330] shadow-sm hover:shadow-md"
             >
-              <span>Thử ngay</span>
-              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              <span>Thử ngay miễn phí</span>
+              <ArrowRight size={16} className="text-[#9CB953] transition-transform group-hover:translate-x-1" />
             </Link>
-          </motion.div>
+          </div>
 
-          {/* Pro Plan */}
-          <motion.div 
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ 
-              y: -6, 
-              scale: 1.01,
-              boxShadow: "0 20px 45px -12px rgba(156, 185, 83, 0.35)",
-              borderColor: "rgba(156, 185, 83, 1)"
-            }}
-            className="bg-[#2B3A1A]/95 backdrop-blur-md rounded-[10px] p-8 border border-[#3D5226] shadow-xl flex flex-col justify-between relative overflow-hidden group cursor-pointer transition-colors"
-          >
-            {/* Ambient glow on hover */}
-            <div className="absolute -top-20 -right-20 w-48 h-48 bg-[#9CB953]/25 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-            <div className="absolute top-0 right-0 bg-[#9CB953] text-[#2B3A1A] text-xs font-bold px-4 py-1.5 rounded-bl-[10px] uppercase tracking-wider z-20 flex items-center gap-1">
+          {/* PRO PLAN (AI PORTFOLIO) */}
+          <div className="bg-[#1F2B13]/95 backdrop-blur-md rounded-[10px] p-8 border border-[#4A6330] shadow-[0_8px_32px_rgba(0,0,0,0.3)] flex flex-col justify-between relative overflow-hidden group transition-all duration-200 hover:-translate-y-1">
+            
+            {/* Top Badge */}
+            <div className="absolute top-0 right-0 bg-[#9CB953] text-[#1E2B12] text-xs font-bold px-4 py-1.5 rounded-bl-[10px] uppercase tracking-wider z-20 flex items-center gap-1 shadow-sm">
               <Sparkles size={12} />
-              <span>Gói Pro</span>
+              <span>Khuyên dùng cho F0</span>
             </div>
             
-            <div className="relative z-10">
-              <div className="mb-8">
-                <h3 className="text-2xl font-bold text-white mb-2 font-serif">Gói Pro (AI Portfolio)</h3>
-                <p className="text-white/70">Cảnh báo rủi ro danh mục cá nhân hóa & AI Tutor.</p>
-              </div>
-              <div className="mb-8 flex items-baseline gap-2.5 flex-wrap">
-                <span className="text-lg text-white/40 line-through font-semibold font-mono">149,000 VNĐ</span>
-                <span className="text-4xl font-bold text-white font-mono">79,000 VNĐ</span>
-                <span className="text-white/70"> / tháng</span>
+            <div>
+              <div className="mb-6 pb-6 border-b border-[#3D5226]">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-2xl font-bold text-white font-serif">Gói Pro AI</h3>
+                  <span className="text-xs font-bold text-[#9CB953] bg-[#2B3A1A] px-2.5 py-1 rounded-[6px] uppercase tracking-wider border border-[#4A6330]">
+                    AI Portfolio
+                  </span>
+                </div>
+                <p className="text-white/75 text-sm">Cảnh báo rủi ro danh mục cá nhân hóa & AI trợ lý đầu tư.</p>
+                
+                <div className="mt-6 flex items-baseline gap-2.5 flex-wrap">
+                  <span className="text-lg text-white/40 line-through font-semibold font-mono">149,000 VNĐ</span>
+                  <span className="text-4xl font-bold text-[#9CB953] font-mono">79,000 VNĐ</span>
+                  <span className="text-white/70 text-sm"> / tháng</span>
+                </div>
               </div>
               
-              <ul className="space-y-4 mb-8">
+              <div className="text-xs font-bold text-[#9CB953] uppercase tracking-wider mb-4">
+                Toàn bộ quyền lợi Standard kèm nâng cấp:
+              </div>
+
+              <ul className="space-y-3.5 mb-8 text-sm">
                 <li className="flex items-start gap-3 text-white">
-                  <Check className="text-[#9CB953] mt-0.5 shrink-0" size={20} />
+                  <Check className="text-[#9CB953] mt-0.5 shrink-0" size={18} />
                   <span>Tóm tắt tin tức <strong>không giới hạn</strong></span>
                 </li>
                 <li className="flex items-start gap-3 text-white">
-                  <Check className="text-[#9CB953] mt-0.5 shrink-0" size={20} />
+                  <Check className="text-[#9CB953] mt-0.5 shrink-0" size={18} />
                   <span>Tra cứu từ điển tài chính nâng cao</span>
                 </li>
                 <li className="flex items-start gap-3 text-white">
-                  <Check className="text-[#9CB953] mt-0.5 shrink-0" size={20} />
+                  <Check className="text-[#9CB953] mt-0.5 shrink-0" size={18} />
                   <span>Tra cứu thuật ngữ chuyên ngành <strong>không giới hạn</strong></span>
                 </li>
                 <li className="flex items-start gap-3 text-white">
-                  <Check className="text-[#9CB953] mt-0.5 shrink-0" size={20} />
+                  <Check className="text-[#9CB953] mt-0.5 shrink-0" size={18} />
                   <span>Theo dõi bảng giá thời gian thực</span>
                 </li>
                 <li className="flex items-start gap-3 text-white">
-                  <Check className="text-[#9CB953] mt-0.5 shrink-0" size={20} />
-                  <span>Cảnh báo rủi ro danh mục cá nhân hóa</span>
+                  <Check className="text-[#9CB953] mt-0.5 shrink-0" size={18} />
+                  <span><strong>Cảnh báo rủi ro danh mục cá nhân hóa tức thời</strong></span>
                 </li>
               </ul>
             </div>
 
             <Link
               to="/dashboard"
-              className="w-full py-3.5 px-6 rounded-[10px] font-bold text-center transition-all duration-300 flex items-center justify-center gap-2 relative z-10 bg-white/20 text-white backdrop-blur-sm border border-white/20 group-hover:bg-white group-hover:text-[#2B3A1A] group-hover:shadow-[0_8px_30px_rgba(255,255,255,0.25)] group-hover:scale-[1.01]"
+              className="w-full py-3.5 px-6 rounded-[10px] font-bold text-center transition-all duration-200 flex items-center justify-center gap-2 relative z-10 bg-[#9CB953] hover:bg-[#8AA842] text-[#1E2B12] shadow-[0_4px_18px_rgba(156,185,83,0.35)]"
             >
-              <span>Thử ngay</span>
+              <span>Nâng cấp ngay</span>
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
             </Link>
-          </motion.div>
+          </div>
+
+        </div>
+
+        {/* Guarantee Banner */}
+        <div className="max-w-2xl mx-auto text-center text-xs text-white/75 flex items-center justify-center gap-2">
+          <ShieldCheck size={16} className="text-[#9CB953]" />
+          <span>Cam kết không tự động gia hạn khi chưa có sự đồng ý. Hỗ trợ huỷ gói bất kỳ lúc nào.</span>
         </div>
       </div>
     </section>

@@ -18,7 +18,7 @@ export const Navbar = () => {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
-          ? 'bg-[#FAF7F0]/95 backdrop-blur-md shadow-[0_2px_12px_rgba(43,58,26,0.04)] border-b border-[#E8EDE0] py-3.5' 
+          ? 'bg-[#FAF7F0]/95 backdrop-blur-md shadow-[0_4px_20px_rgba(43,58,26,0.06)] border-b border-[#DDD5C7] py-3.5' 
           : 'bg-transparent py-5'
       }`}
     >
@@ -31,14 +31,14 @@ export const Navbar = () => {
           />
         </Link>
         
-        <nav className="hidden md:flex items-center gap-8 text-[#3D372E] font-semibold text-sm font-sans">
-          <a href="#features" className="hover:text-[#3D5226] transition-colors py-1">
+        <nav className="hidden md:flex items-center gap-8 text-[#2B3A1A] font-semibold text-sm font-sans">
+          <a href="#features" className="hover:text-[#5C7140] transition-colors py-1">
             Tính năng
           </a>
-          <a href="#how-it-works" className="hover:text-[#3D5226] transition-colors py-1">
+          <a href="#how-it-works" className="hover:text-[#5C7140] transition-colors py-1">
             Cách thức hoạt động
           </a>
-          <a href="#pricing" className="hover:text-[#3D5226] transition-colors py-1">
+          <a href="#pricing" className="hover:text-[#5C7140] transition-colors py-1">
             Bảng giá
           </a>
         </nav>
@@ -46,10 +46,10 @@ export const Navbar = () => {
         <div>
           <Link 
             to="/dashboard" 
-            className="inline-flex items-center gap-2 bg-[#3D5226] hover:bg-[#2B3A1A] text-white px-5 sm:px-6 py-2.5 rounded-[10px] font-bold text-xs sm:text-sm transition-all duration-200 shadow-xs hover:shadow-md active:scale-98 font-sans"
+            className="inline-flex items-center gap-2 bg-[#2B3A1A] hover:bg-[#1E2B12] text-white border border-[#4A6330] px-5 sm:px-6 py-2.5 rounded-[10px] font-bold text-xs sm:text-sm transition-all duration-200 shadow-[0_4px_14px_rgba(43,58,26,0.18)] hover:shadow-[0_6px_20px_rgba(43,58,26,0.25)] active:scale-98 font-sans"
           >
             <span>Thử ngay</span> 
-            <span aria-hidden="true">&rarr;</span>
+            <span aria-hidden="true" className="text-[#9CB953] font-bold">&rarr;</span>
           </Link>
         </div>
       </div>
