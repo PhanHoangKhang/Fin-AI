@@ -23,7 +23,8 @@ export const PortfolioPage: React.FC = () => {
     const savedPortfolio = getPortfolio();
     setPortfolio(savedPortfolio);
 
-    fetch("http://localhost:8080/api/alerts/my-alerts")
+    const baseUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/v1', '') : 'http://localhost:8080/api';
+    fetch(`${baseUrl}/alerts/my-alerts`)
       .then((res) => res.json())
       .then((data: PortfolioAlertDto[]) => {
         setAlerts(data);

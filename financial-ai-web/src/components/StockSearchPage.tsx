@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import type { StockInfo } from '../types';
 import { StockLogo } from './StockLogo';
+import { stockService, type StockInfo } from '../services/api';
 
 export const StockSearchPage: React.FC = () => {
   const [ticker, setTicker] = useState<string>('');
@@ -11,20 +10,23 @@ export const StockSearchPage: React.FC = () => {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!ticker.trim()) return;
+    const cleanTicker = ticker.trim().toUpperCase();
+    if (!cleanTicker) return;
 
     setLoading(true);
     setError('');
     setStockInfo(null);
 
     try {
-      // React gọi sang Spring Boot (Port 8080)
-      const response = await axios.get<StockInfo>(
-        `http://localhost:8080/api/v1/stocks/${ticker.trim().toUpperCase()}/info`
-      );
-      setStockInfo(response.data);
+      // Gọi qua stockService (Hỗ trợ Spring Boot và tự động fallback sang Python Service)
+      const data = await stockService.getStockInfo(cleanTicker);
+      if (data && data.ticker) {
+        setStockInfo(data);
+      } else {
+        setError(`Không tìm thấy dữ liệu cho mã cổ phiếu "${cleanTicker}"`);
+      }
     } catch (err) {
-      setError(`Không tìm thấy dữ liệu cho mã cổ phiếu "${ticker.toUpperCase()}"`);
+      setError(`Không thể kết nối đến máy chủ để lấy thông tin mã "${cleanTicker}"`);
     } finally {
       setLoading(false);
     }
