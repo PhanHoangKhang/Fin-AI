@@ -1,4 +1,4 @@
-# 📈 FinAI - Trợ Lý Phân Tích Tin Tức & Thị Trường Chứng Khoán AI
+# FinAI - Trợ Lý Phân Tích Tin Tức & Thị Trường Chứng Khoán AI
 
 <p align="center">
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
