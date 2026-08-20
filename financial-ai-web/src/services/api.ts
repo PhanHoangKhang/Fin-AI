@@ -1,4 +1,5 @@
-const BASE_URL = 'http://localhost:8080/api/v1';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
+const STOCK_SERVICE_URL = import.meta.env.VITE_STOCK_SERVICE_URL || 'http://localhost:8001/api/stock';
 
 // Hàm helper fetch chung
 async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> {
@@ -58,7 +59,7 @@ export const stockService = {
     } catch {
       try {
         // 2. Fallback gọi trực tiếp Python Stock Service
-        const res = await fetch(`http://localhost:8001/api/stock/ticker-list?tickers=${encodeURIComponent(tickers)}`);
+        const res = await fetch(`${STOCK_SERVICE_URL}/ticker-list?tickers=${encodeURIComponent(tickers)}`);
         if (res.ok) {
           return await res.json();
         }
@@ -75,7 +76,7 @@ export const stockService = {
       return await fetchAPI<StockInfo>(`/stocks/${encodeURIComponent(ticker)}/info`);
     } catch {
       try {
-        const res = await fetch(`http://localhost:8001/api/stock/info/${encodeURIComponent(ticker)}`);
+        const res = await fetch(`${STOCK_SERVICE_URL}/info/${encodeURIComponent(ticker)}`);
         if (res.ok) {
           return await res.json();
         }
@@ -92,12 +93,12 @@ export const stockService = {
       return await fetchAPI<any[]>(`/stocks/${encodeURIComponent(ticker)}/price`);
     } catch {
       try {
-        const res = await fetch(`http://localhost:8001/api/stock/price/${encodeURIComponent(ticker)}`);
+        const res = await fetch(`${STOCK_SERVICE_URL}/price/${encodeURIComponent(ticker)}`);
         if (res.ok) {
           return await res.json();
         }
       } catch (err) {
-        console.warn('Lỗi lấy lịch sử giá:', err);
+        console.warn('Lỗi lấy lịch sử giá cổ phiếu:', err);
       }
       return [];
     }
