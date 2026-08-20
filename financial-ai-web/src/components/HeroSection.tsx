@@ -1,73 +1,27 @@
 import { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   TrendingUp,
   TrendingDown,
   Sparkles,
   RefreshCw,
+  ArrowRight,
 } from "lucide-react";
 import { StockLogo } from "./StockLogo";
 import backgroundImg from "../assets/background.svg";
+import { stockService } from "../services/api";
 
 const TICKER_ITEMS = [
-  {
-    symbol: "HPG",
-    value: "29,550",
-    change: "+350",
-    percent: "+1.22%",
-    up: true,
-  },
-  {
-    symbol: "VN-Index",
-    value: "1,262.45",
-    change: "+4.02",
-    percent: "+0.32%",
-    up: true,
-  },
-  {
-    symbol: "MBB",
-    value: "21,150",
-    change: "-25",
-    percent: "-0.12%",
-    up: false,
-  },
-  {
-    symbol: "FPT",
-    value: "125,200",
-    change: "+450",
-    percent: "+0.36%",
-    up: true,
-  },
-  {
-    symbol: "VCB",
-    value: "92,600",
-    change: "+600",
-    percent: "+0.65%",
-    up: true,
-  },
-  {
-    symbol: "VIC",
-    value: "44,800",
-    change: "+200",
-    percent: "+0.45%",
-    up: true,
-  },
-  {
-    symbol: "HNX-Index",
-    value: "228.17",
-    change: "+1.45",
-    percent: "+0.64%",
-    up: true,
-  },
-  {
-    symbol: "UPCOM",
-    value: "91.24",
-    change: "-0.18",
-    percent: "-0.20%",
-    up: false,
-  },
+  { symbol: "HPG", value: "29,550", change: "+350", percent: "+1.22%", up: true },
+  { symbol: "VN-Index", value: "1,262.45", change: "+4.02", percent: "+0.32%", up: true },
+  { symbol: "MBB", value: "21,150", change: "-25", percent: "-0.12%", up: false },
+  { symbol: "FPT", value: "125,200", change: "+450", percent: "+0.36%", up: true },
+  { symbol: "VCB", value: "92,600", change: "+600", percent: "+0.65%", up: true },
+  { symbol: "VIC", value: "44,800", change: "+200", percent: "+0.45%", up: true },
+  { symbol: "HNX-Index", value: "228.17", change: "+1.45", percent: "+0.64%", up: true },
+  { symbol: "UPCOM", value: "91.24", change: "-0.18", percent: "-0.20%", up: false },
 ];
-
-import { stockService } from "../services/api";
 
 const WATCHLIST_SYMBOLS = ["VNM", "FPT", "HPG", "PLX"];
 
@@ -117,7 +71,12 @@ export const HeroSection = () => {
       style={{ backgroundImage: `url(${backgroundImg})` }}
     >
       {/* Ticker bar - Khung đóng tách biệt màu be đậm */}
-      <div className="container mx-auto px-6 max-w-7xl mb-12">
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="container mx-auto px-6 max-w-7xl mb-12"
+      >
         <div className="bg-[#EBE4D5] border border-[#DDD4C1] text-[#2B3A1A] py-2.5 px-4 rounded-2xl overflow-hidden shadow-2xs">
           <div className="animate-[ticker_32s_linear_infinite] flex items-center gap-10 whitespace-nowrap text-xs font-sans ticker-track">
             {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map(
@@ -144,20 +103,33 @@ export const HeroSection = () => {
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Left Column */}
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 select-none">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="space-y-6"
+          >
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
+              className="inline-flex items-center gap-2 select-none"
+            >
               <span className="w-2 h-2 rounded-full bg-[#9CB953] live-dot"></span>
               <span className="text-[#3D5226] text-xs font-extrabold tracking-wider uppercase font-sans">
                 NỀN TẢNG AI CHỨNG KHOÁN
               </span>
-            </div>
+            </motion.div>
 
-            <h1
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="text-4xl sm:text-5xl lg:text-[56px] text-[#2B3A1A] leading-[1.15] font-serif font-bold tracking-tight"
               style={{ fontFamily: "Lora, serif" }}
             >
@@ -166,16 +138,48 @@ export const HeroSection = () => {
               <span className="text-[#3D5226]">hiểu ngay tác động</span>
               <br />
               chỉ trong 30 giây.
-            </h1>
+            </motion.h1>
 
-            <p className="text-[#5A5248] text-base lg:text-lg leading-relaxed font-sans max-w-xl">
+            <motion.p 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, duration: 0.6 }}
+              className="text-[#5A5248] text-base lg:text-lg leading-relaxed font-sans max-w-xl"
+            >
               Nền tảng AI đơn giản hóa tin tức tài chính dành riêng cho người
               mới. Loại bỏ tin đồn, giải thích thuật ngữ bình dân và cảnh báo
               danh mục tự động.
-            </p>
+            </motion.p>
 
-            {/* Interactive Financial Term Highlight Feature Demo - Không khung bao */}
-            <div className="max-w-xl">
+            {/* Quick Action CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.5 }}
+              className="flex items-center gap-4 pt-1"
+            >
+              <Link
+                to="/dashboard"
+                className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#3D5226] hover:bg-[#2B3A1A] text-white rounded-full font-bold text-sm shadow-md hover:shadow-xl transition-all duration-300 group font-sans hover:-translate-y-0.5 active:scale-98"
+              >
+                <span>Khám phá Dashboard</span>
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              </Link>
+              <a
+                href="#how-it-works"
+                className="inline-flex items-center px-5 py-3.5 text-sm font-bold text-[#3D5226] hover:text-[#2B3A1A] hover:bg-[#E8EDE0]/60 rounded-full transition font-sans"
+              >
+                Xem cách hoạt động
+              </a>
+            </motion.div>
+
+            {/* Interactive Financial Term Highlight Feature Demo */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.55, duration: 0.6 }}
+              className="max-w-xl pt-2"
+            >
               <div className="flex items-center gap-2 mb-2">
                 <Sparkles className="w-4 h-4 text-[#7A9B58] shrink-0" />
                 <span className="text-xs font-bold text-[#3D5226] uppercase tracking-wider">
@@ -197,23 +201,31 @@ export const HeroSection = () => {
                   { term: "margin call", label: "Margin Call" },
                   { term: "cagr", label: "CAGR" },
                 ].map((item) => (
-                  <span
+                  <motion.span
                     key={item.term}
                     data-term={item.term}
                     title={`Click để xem giải thích AI: ${item.label}`}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#F5F2EC] hover:bg-[#EAE4D7] border border-[#E2DDD3] hover:border-[#D0C7B8] rounded-xl text-xs font-bold text-[#2B3A1A] cursor-pointer shadow-2xs transition-all hover:-translate-y-px active:scale-95"
+                    whileHover={{ y: -2, scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#F5F2EC] hover:bg-[#EAE4D7] border border-[#E2DDD3] hover:border-[#D0C7B8] rounded-xl text-xs font-bold text-[#2B3A1A] cursor-pointer shadow-2xs transition-colors"
                   >
                     <span className="text-[#D4A03D] text-[13px] leading-none">
                       ✨
                     </span>
                     <span>{item.label}</span>
-                  </span>
+                  </motion.span>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Sources */}
-            <div className="flex items-center gap-4 text-xs font-semibold text-[#7A7060] font-sans pt-2">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.65, duration: 0.6 }}
+              className="flex items-center gap-4 text-xs font-semibold text-[#7A7060] font-sans pt-2"
+            >
               <span className="uppercase tracking-wider text-[#A09888]">
                 Tổng hợp từ:
               </span>
@@ -227,15 +239,23 @@ export const HeroSection = () => {
                 VNECONOMY
               </span>
               <span className="bg-white px-2.5 py-1 rounded-md border border-[#E8EDE0] text-[#5A5248]">
-                NDH
+                VNEXPRESS
               </span>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right Column */}
-          <div className="relative space-y-6 lg:pt-2">
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="relative space-y-6 lg:pt-2"
+          >
             {/* Alert Card With Liquid-Glass Highlight & LOGO Fin-AI_Gray Watermark */}
-            <div className="bg-[#FAF7F0] text-[#2B3A1A] p-6 rounded-3xl shadow-md border border-[#EBE4D5] relative overflow-hidden">
+            <motion.div 
+              whileHover={{ y: -3, transition: { duration: 0.2 } }}
+              className="bg-[#FAF7F0] text-[#2B3A1A] p-6 rounded-3xl shadow-md border border-[#EBE4D5] relative overflow-hidden transition-shadow hover:shadow-xl"
+            >
               {/* Hoạ tiết LOGO Fin-AI_Gray ở góc phải box */}
               <img
                 src="/LOGO Fin-AI_Gray.svg"
@@ -266,7 +286,7 @@ export const HeroSection = () => {
                 </span>
               </div>
 
-              {/* AI Summary Box (Ô chữ nhật nhỏ với hiệu ứng Liquid-Glass trắng trong suốt) */}
+              {/* AI Summary Box */}
               <div className="bg-white/55 backdrop-blur-md p-5 rounded-2xl mb-4 border border-white/80 shadow-[0_4px_20px_rgba(43,58,26,0.04)] relative z-10">
                 <div className="text-xs font-bold text-[#3D5226] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#5C7140] shrink-0" />
@@ -297,15 +317,18 @@ export const HeroSection = () => {
                 <span className="italic">
                   💡 Bối cảnh hoặc click bất kỳ từ nào để tra cứu AI
                 </span>
-                <span className="text-[#3D5226] font-bold cursor-pointer hover:underline">
-                  Chi tiết &rarr;
-                </span>
+                <Link to="/dashboard" className="text-[#3D5226] font-bold hover:underline flex items-center gap-1">
+                  <span>Chi tiết</span>
+                  <span>&rarr;</span>
+                </Link>
               </div>
-            </div>
+            </motion.div>
 
             {/* Watchlist Preview */}
-            {/* Watchlist Preview */}
-            <div className="bg-white rounded-3xl p-6 border border-[#E8EDE0] shadow-sm">
+            <motion.div 
+              whileHover={{ y: -3, transition: { duration: 0.2 } }}
+              className="bg-white rounded-3xl p-6 border border-[#E8EDE0] shadow-sm transition-shadow hover:shadow-xl"
+            >
               <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center gap-2">
                   <h4 className="font-bold text-[#2B3A1A] text-sm">
@@ -323,19 +346,21 @@ export const HeroSection = () => {
                     />
                   </button>
                 </div>
-                <a
-                  href="/dashboard"
+                <Link
+                  to="/dashboard"
                   className="text-xs text-[#7A9B58] font-bold hover:text-[#3D5226] transition"
                 >
                   Xem tất cả &rarr;
-                </a>
+                </Link>
               </div>
 
               <div className="space-y-2.5">
                 {watchlist.map((item, idx) => (
-                  <div
+                  <motion.div
                     key={idx}
-                    className="flex justify-between items-center p-2.5 hover:bg-[#F5F8F0] rounded-xl transition-colors cursor-pointer group"
+                    whileHover={{ x: 4, backgroundColor: "rgba(245, 248, 240, 1)" }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className="flex justify-between items-center p-2.5 rounded-xl transition-colors cursor-pointer group"
                   >
                     <div className="flex items-center gap-2.5">
                       <StockLogo ticker={item.symbol} size="xs" fallback="none" />
@@ -358,11 +383,11 @@ export const HeroSection = () => {
                         {item.percent}
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 

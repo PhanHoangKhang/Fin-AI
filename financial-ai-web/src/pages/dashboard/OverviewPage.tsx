@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { newsService, stockService, type TickerData } from "../../services/api";
 import type { NewsItem } from "../../types";
 import { NewsCard } from "../../components/NewsCard";
@@ -189,7 +190,12 @@ export const OverviewPage: React.FC = () => {
   return (
     <div className="pb-10 font-sans">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8"
+      >
         <div>
           <h1
             className="text-2xl font-serif font-bold text-[#2B3A1A] mb-1"
@@ -202,7 +208,9 @@ export const OverviewPage: React.FC = () => {
           </p>
         </div>
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           type="button"
           onClick={loadData}
           disabled={loading || loadingPrices}
@@ -224,8 +232,8 @@ export const OverviewPage: React.FC = () => {
           <span>
             {loading || loadingPrices ? "Đang cập nhật..." : "Làm mới feed"}
           </span>
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-8 items-start">
         {/* Left Column - News Feed */}
@@ -241,8 +249,9 @@ export const OverviewPage: React.FC = () => {
               const isSelected = activeSource === filter.key;
 
               return (
-                <button
+                <motion.button
                   key={filter.key}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => setActiveSource(filter.key)}
                   className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-colors border flex items-center gap-1.5 ${
                     isSelected
@@ -262,7 +271,7 @@ export const OverviewPage: React.FC = () => {
                       {count}
                     </span>
                   )}
-                </button>
+                </motion.button>
               );
             })}
             <span className="text-[11px] text-[#A09888] ml-auto whitespace-nowrap hidden sm:inline font-mono">
@@ -274,13 +283,19 @@ export const OverviewPage: React.FC = () => {
           {loading ? (
             <NewsSkeleton />
           ) : filteredNews.length > 0 ? (
-            <div className="flex flex-col gap-4">
-              {filteredNews.map((news) => (
-                <NewsCard key={news.id} news={news} />
-              ))}
-            </div>
+            <motion.div layout className="flex flex-col gap-4">
+              <AnimatePresence mode="popLayout">
+                {filteredNews.map((news) => (
+                  <NewsCard key={news.id} news={news} />
+                ))}
+              </AnimatePresence>
+            </motion.div>
           ) : (
-            <div className="bg-white rounded-2xl p-10 text-center border border-[#E8EDE0] shadow-sm">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="bg-white rounded-2xl p-10 text-center border border-[#E8EDE0] shadow-sm"
+            >
               <div className="w-16 h-16 mx-auto bg-[#F5F8F0] rounded-full flex items-center justify-center mb-4">
                 <svg
                   className="w-8 h-8 text-[#9CB953]"
@@ -303,14 +318,19 @@ export const OverviewPage: React.FC = () => {
                 Chưa có bản tin nào từ nguồn "{activeSource}". Vui lòng nhấn
                 "Làm mới feed" để cập nhật.
               </p>
-            </div>
+            </motion.div>
           )}
         </div>
 
         {/* Right Column - Sidebar */}
         <aside className="space-y-4 sticky top-20">
-          {/* Watchlist Card - Hiển thị mã cổ phiếu trong Danh mục với Logo thật & Giá Realtime từ Backend */}
-          <div className="bg-white rounded-2xl border border-[#E8EDE0] overflow-hidden shadow-sm">
+          {/* Watchlist Card */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="bg-white rounded-2xl border border-[#E8EDE0] overflow-hidden shadow-sm"
+          >
             <div className="px-4 py-3.5 border-b border-[#F0EDE6] flex items-center justify-between">
               <div>
                 <h3 className="text-xs font-bold text-[#2B3A1A] mb-0.5">
@@ -335,9 +355,11 @@ export const OverviewPage: React.FC = () => {
 
             <div className="divide-y divide-[#F8F5F0]">
               {displayWatchlist.map((stock) => (
-                <div
+                <motion.div
                   key={stock.t}
-                  className="flex items-center justify-between px-4 py-3 hover:bg-[#FAFAF7] transition-colors cursor-pointer group"
+                  whileHover={{ backgroundColor: "rgba(250, 250, 247, 1)", x: 2 }}
+                  transition={{ duration: 0.15 }}
+                  className="flex items-center justify-between px-4 py-3 transition-colors cursor-pointer group"
                 >
                   <div className="flex items-center gap-3">
                     <StockLogo ticker={stock.t} size="sm" />
@@ -360,13 +382,18 @@ export const OverviewPage: React.FC = () => {
                       {stock.ch}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          {/* AI Tip Card - Nền màu xám nhạt */}
-          <div className="bg-[#F2EFE9] rounded-2xl p-4 text-[#2B3A1A] shadow-xs border border-[#DDD8CE] relative overflow-hidden">
+          {/* AI Tip Card */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="bg-[#F2EFE9] rounded-2xl p-4 text-[#2B3A1A] shadow-xs border border-[#DDD8CE] relative overflow-hidden"
+          >
             <div className="flex items-center gap-2 mb-3">
               <div className="w-6 h-6 bg-[#3D5226] text-white rounded-full flex items-center justify-center shadow-2xs">
                 <span className="text-[9px] font-bold">AI</span>
@@ -384,7 +411,7 @@ export const OverviewPage: React.FC = () => {
                 Thử với: "EBITDA", "NIM", "P/E"
               </span>
             </div>
-          </div>
+          </motion.div>
         </aside>
       </div>
     </div>
